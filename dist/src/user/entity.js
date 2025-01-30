@@ -113,6 +113,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    accountApproved: {
+        type: Boolean,
+        default: false,
+    },
     updatedAt: {
         type: Date,
         default: Date.now

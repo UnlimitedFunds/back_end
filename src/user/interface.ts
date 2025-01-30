@@ -41,6 +41,7 @@ export interface IUser {
   proofOfAddress: string;
   transferPin: string;
   ssn: string;
+  accountApproved: boolean;
   updatedAt: Date;
   createdAt: Date;
 }
