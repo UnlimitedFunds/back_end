@@ -3,19 +3,17 @@ import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import { MessageResponse } from "../utils/enum";
 import fs from "fs/promises";
+import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { MulterFiles } from "./interface";
 import { userService } from "../user/service";
 import { IUserInput } from "../user/interface";
+import { ISignIn } from "./enum";
 
 dotenv.config();
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
-});
-
+//const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
+const jwtSecret = process.env.JWT_SECRET || "";
 
 class AuthController {
   public async signUp(req: Request, res: Response) {
@@ -61,6 +59,47 @@ class AuthController {
         data: null,
       });
   
+  }
+
+  public async signIn(req: Request, res: Response) {
+    const body:ISignIn = req.body;
+
+    const password = body.password;
+
+    const userExist = await userService.findUserByEmail(body.email);
+
+    if (!userExist) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Wrong user credentials!",
+        data: null,
+      });
+    }
+
+    //password is null when user signs up with google
+    if (userExist.password !== password) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Wrong user credentials!",
+        data: null,
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: userExist._id },
+      jwtSecret,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Logged in successfully",
+      data: {
+        token,
+      },
+    });
   }
 }
 

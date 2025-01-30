@@ -20,3 +20,10 @@ AuthRouter.post(
   [upload, authValidator.signUp ],
   wrapAsync(authController.signUp)
 );
+
+//Login account
+AuthRouter.post(
+  "/signin",
+  [authValidator.signIn],
+  wrapAsync(authController.signIn)
+);

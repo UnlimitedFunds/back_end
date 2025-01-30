@@ -17,14 +17,12 @@ const cloudinary_1 = require("cloudinary");
 const dotenv_1 = __importDefault(require("dotenv"));
 const enum_1 = require("../utils/enum");
 const promises_1 = __importDefault(require("fs/promises"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const uuid_1 = require("uuid");
 const service_1 = require("../user/service");
 dotenv_1.default.config();
-cloudinary_1.v2.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET,
-});
+//const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
+const jwtSecret = process.env.JWT_SECRET || "";
 class AuthController {
     signUp(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,6 +55,38 @@ class AuthController {
                 message: enum_1.MessageResponse.Success,
                 description: "Congratulations your account has been created, await approval!",
                 data: null,
+            });
+        });
+    }
+    signIn(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const body = req.body;
+            const password = body.password;
+            const userExist = yield service_1.userService.findUserByEmail(body.email);
+            if (!userExist) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Wrong user credentials!",
+                    data: null,
+                });
+            }
+            //password is null when user signs up with google
+            if (userExist.password !== password) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Wrong user credentials!",
+                    data: null,
+                });
+            }
+            const token = jsonwebtoken_1.default.sign({ userId: userExist._id }, jwtSecret, {
+                expiresIn: "1h",
+            });
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Logged in successfully",
+                data: {
+                    token,
+                },
             });
         });
     }
