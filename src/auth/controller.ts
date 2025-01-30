@@ -84,6 +84,14 @@ class AuthController {
       });
     }
 
+    if (!userExist.accountApproved) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Your account has not been approved!",
+        data: null,
+      });
+    }
+
     const token = jwt.sign(
       { userId: userExist._id },
       jwtSecret,

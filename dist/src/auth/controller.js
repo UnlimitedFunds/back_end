@@ -77,6 +77,13 @@ class AuthController {
                     data: null,
                 });
             }
+            if (!userExist.accountApproved) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Your account has not been approved!",
+                    data: null,
+                });
+            }
             const token = jsonwebtoken_1.default.sign({ userId: userExist._id }, jwtSecret, {
                 expiresIn: "1h",
             });
