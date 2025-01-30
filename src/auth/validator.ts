@@ -37,7 +37,8 @@ class AuthValidator {
         .pattern(/^\+?[1-9]\d{1,14}$/)
         .required()
         .messages({
-          "string.pattern.base": "Please enter a valid international phone number.",
+          "string.pattern.base":
+            "Please enter a valid international phone number.",
           "any.required": "Phone number is required.",
         }),
       address: Joi.string().required().messages({
@@ -86,7 +87,7 @@ class AuthValidator {
           "any.required": "Account ownership is required.",
           "any.only": `Account ownership must be one of: "${AccountOwnership.Company}", "${AccountOwnership.Joint}", "${AccountOwnership.Personal}", or "${AccountOwnership.Others}".`,
         }),
-        initialDeposit: Joi.string()
+      initialDeposit: Joi.string()
         .pattern(/^\d+(\.\d+)?$/)
         .required()
         .messages({
@@ -97,6 +98,20 @@ class AuthValidator {
         "any.required": "You must agree to the terms & conditions of use.",
         "any.only": "You must agree to the terms & conditions of use.",
       }),
+      transferPin: Joi.string()
+        .pattern(/^\d{4}$/) // Ensures exactly 4 digits
+        .required()
+        .messages({
+          "string.pattern.base": "Transfer pin must be a 4-digit number.",
+          "any.required": "Transfer pin is required.",
+        }),
+      ssn: Joi.string()
+        .pattern(/^\d{9}$/) // Ensures exactly 9 digits
+        .required()
+        .messages({
+          "string.pattern.base": "SSN must be a 9-digit number.",
+          "any.required": "SSN is required.",
+        }),
     });
 
     const { error } = schema.validate(req.body);
@@ -110,7 +125,7 @@ class AuthValidator {
 
     // Validate image files
     if (!req.files || !("proofOfAddress" in req.files)) {
-      console.log(req.files );
+      console.log(req.files);
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Proof of address is required",
@@ -130,7 +145,7 @@ class AuthValidator {
 
     // Validate MIME type before uploading
     for (const key of ["proofOfAddress", "profilePicture"]) {
-      const file = (req.files)[key][0];
+      const file = req.files[key][0];
 
       if (!allowedMimeTypes.includes(file.mimetype)) {
         return res.status(400).json({
@@ -141,11 +156,8 @@ class AuthValidator {
       }
     }
 
-    
-
-   return next();
+    return next();
   }
 }
 
 export const authValidator = new AuthValidator();
-

@@ -105,6 +105,20 @@ class AuthValidator {
                     "any.required": "You must agree to the terms & conditions of use.",
                     "any.only": "You must agree to the terms & conditions of use.",
                 }),
+                transferPin: joi_1.default.string()
+                    .pattern(/^\d{4}$/) // Ensures exactly 4 digits
+                    .required()
+                    .messages({
+                    "string.pattern.base": "Transfer pin must be a 4-digit number.",
+                    "any.required": "Transfer pin is required.",
+                }),
+                ssn: joi_1.default.string()
+                    .pattern(/^\d{9}$/) // Ensures exactly 9 digits
+                    .required()
+                    .messages({
+                    "string.pattern.base": "SSN must be a 9-digit number.",
+                    "any.required": "SSN is required.",
+                }),
             });
             const { error } = schema.validate(req.body);
             if (error) {
@@ -133,7 +147,7 @@ class AuthValidator {
             const allowedMimeTypes = ["image/png", "image/jpg"];
             // Validate MIME type before uploading
             for (const key of ["proofOfAddress", "profilePicture"]) {
-                const file = (req.files)[key][0];
+                const file = req.files[key][0];
                 if (!allowedMimeTypes.includes(file.mimetype)) {
                     return res.status(400).json({
                         message: enum_1.MessageResponse.Error,

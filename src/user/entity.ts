@@ -65,6 +65,14 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true
   },
+  transferPin: {
+    type: String, 
+    required: true
+  },
+  ssn: {
+    type: String,
+    required: true
+  },
   profilePicture: {
     type: String,
     required: true

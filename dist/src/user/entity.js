@@ -97,6 +97,14 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    transferPin: {
+        type: String,
+        required: true
+    },
+    ssn: {
+        type: String,
+        required: true
+    },
     profilePicture: {
         type: String,
         required: true
