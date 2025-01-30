@@ -112,6 +112,13 @@ class AuthValidator {
                     "string.pattern.base": "Transfer pin must be a 4-digit number.",
                     "any.required": "Transfer pin is required.",
                 }),
+                confirmTransferPin: joi_1.default.string()
+                    .valid(joi_1.default.ref("transferPin"))
+                    .required()
+                    .messages({
+                    "any.required": "Confirm transfer pin is required.",
+                    "any.only": "transfer pins do not match",
+                }),
                 ssn: joi_1.default.string()
                     .pattern(/^\d{9}$/) // Ensures exactly 9 digits
                     .required()

@@ -70,7 +70,6 @@ class AuthController {
                     data: null,
                 });
             }
-            //password is null when user signs up with google
             if (userExist.password !== password) {
                 return res.status(400).json({
                     message: enum_1.MessageResponse.Error,
