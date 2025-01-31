@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import { IUser } from "./interface";
 import { AccountOwnership, AccountType } from "../utils/enum";
+import { AccountStatus, GenderStatus, MaritialStatus } from "./enum";
 
 const userSchema: Schema = new Schema({
   firstName: {
@@ -84,6 +85,25 @@ const userSchema: Schema = new Schema({
   accountApproved: {
     type: Boolean,
     default: false,
+  },
+  occupation: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true,
+    enum: Object.values(GenderStatus),
+  },
+  maritalStatus: {
+    type: String,
+    required: true,
+    enum: Object.values(MaritialStatus),
+  },
+  status: {
+    type: String,
+    default: AccountStatus.Hold,
+    enum: Object.values(AccountStatus),
   },
   updatedAt: {
     type: Date,

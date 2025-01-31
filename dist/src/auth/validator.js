@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authValidator = void 0;
 const joi_1 = __importDefault(require("joi"));
 const enum_1 = require("../utils/enum");
+const enum_2 = require("../user/enum");
 class AuthValidator {
     signUp(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -125,6 +126,26 @@ class AuthValidator {
                     .messages({
                     "string.pattern.base": "SSN must be a 9-digit number.",
                     "any.required": "SSN is required.",
+                }),
+                occupation: joi_1.default.string().required().messages({
+                    "string.base": "Occupation must be text",
+                    "any.required": "Occupation is required.",
+                }),
+                gender: joi_1.default.string()
+                    .valid(enum_2.GenderStatus.Male, enum_2.GenderStatus.Female)
+                    .required()
+                    .messages({
+                    "string.base": `Gender must be either: "${enum_2.GenderStatus.Male}" or "${enum_2.GenderStatus.Female}".`,
+                    "any.required": "Gender is required.",
+                    "any.only": `Gender must be either: "${enum_2.GenderStatus.Male}" or "${enum_2.GenderStatus.Female}".`,
+                }),
+                maritalStatus: joi_1.default.string()
+                    .valid(enum_2.MaritialStatus.Divorce, enum_2.MaritialStatus.Married, enum_2.MaritialStatus.Single)
+                    .required()
+                    .messages({
+                    "string.base": `Marital Status must be one of: "${enum_2.MaritialStatus.Divorce}", "${enum_2.MaritialStatus.Married}" or "${enum_2.MaritialStatus.Single}".`,
+                    "any.required": "Marital Status is required.",
+                    "any.only": `Marital Status must be one of: "${enum_2.MaritialStatus.Divorce}", "${enum_2.MaritialStatus.Married}" or "${enum_2.MaritialStatus.Single}".`,
                 }),
             });
             const { error } = schema.validate(req.body);

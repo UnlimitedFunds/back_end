@@ -9,6 +9,7 @@ import { userService } from "../user/service";
 import { IUserInput } from "../user/interface";
 import { ISignIn } from "./enum";
 import cloudinary from "../../config/cloudinary";
+import { AccountStatus } from "../user/enum";
 
 dotenv.config();
 
@@ -19,9 +20,9 @@ class AuthController {
   public async signUp(req: Request, res: Response) {
     const body: IUserInput = req.body;
       // Type assertion for req.files
-      const files = req.files as MulterFiles;
+    const files = req.files as MulterFiles;
 
-      const emailExists = await userService.findUserByEmail(body.email);
+    const emailExists = await userService.findUserByEmail(body.email);
 
     if (emailExists) {
       return res.status(400).json({
@@ -79,6 +80,7 @@ class AuthController {
     const userExist = await userService.findUserByEmail(body.email);
 
     if (!userExist) {
+
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Wrong user credentials!",
@@ -87,6 +89,7 @@ class AuthController {
     }
 
     if (userExist.password !== password) {
+
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Wrong user credentials!",
@@ -94,7 +97,8 @@ class AuthController {
       });
     }
 
-    if (!userExist.accountApproved) {
+    if (userExist.status != AccountStatus.Active) {
+
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Your account has not been approved!",

@@ -20,6 +20,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const uuid_1 = require("uuid");
 const service_1 = require("../user/service");
 const cloudinary_1 = __importDefault(require("../../config/cloudinary"));
+const enum_2 = require("../user/enum");
 dotenv_1.default.config();
 //const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
 const jwtSecret = process.env.JWT_SECRET || "";
@@ -85,7 +86,7 @@ class AuthController {
                     data: null,
                 });
             }
-            if (!userExist.accountApproved) {
+            if (userExist.status != enum_2.AccountStatus.Active) {
                 return res.status(400).json({
                     message: enum_1.MessageResponse.Error,
                     description: "Your account has not been approved!",

@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
 import { AccountOwnership, AccountType, MessageResponse } from "../utils/enum";
+import { GenderStatus, MaritialStatus } from "../user/enum";
 
 class AuthValidator {
   public async signUp(req: Request, res: Response, next: NextFunction) {
@@ -118,6 +119,33 @@ class AuthValidator {
         .messages({
           "string.pattern.base": "SSN must be a 9-digit number.",
           "any.required": "SSN is required.",
+        }),
+        occupation: Joi.string().required().messages({
+          "string.base": "Occupation must be text",
+          "any.required": "Occupation is required.",
+        }),
+        gender: Joi.string()
+        .valid(
+          GenderStatus.Male,
+          GenderStatus.Female,
+        )
+        .required()
+        .messages({
+          "string.base": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
+          "any.required": "Gender is required.",
+          "any.only": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
+        }),
+        maritalStatus: Joi.string()
+        .valid(
+          MaritialStatus.Divorce,
+          MaritialStatus.Married,
+          MaritialStatus.Single,
+        )
+        .required()
+        .messages({
+          "string.base": `Marital Status must be one of: "${MaritialStatus.Divorce}", "${MaritialStatus.Married}" or "${MaritialStatus.Single}".`,
+          "any.required": "Marital Status is required.",
+          "any.only": `Marital Status must be one of: "${MaritialStatus.Divorce}", "${MaritialStatus.Married}" or "${MaritialStatus.Single}".`,
         }),
     });
 

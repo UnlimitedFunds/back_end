@@ -35,6 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const enum_1 = require("../utils/enum");
+const enum_2 = require("./enum");
 const userSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
@@ -116,6 +117,25 @@ const userSchema = new mongoose_1.Schema({
     accountApproved: {
         type: Boolean,
         default: false,
+    },
+    occupation: {
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true,
+        enum: Object.values(enum_2.GenderStatus),
+    },
+    maritalStatus: {
+        type: String,
+        required: true,
+        enum: Object.values(enum_2.MaritialStatus),
+    },
+    status: {
+        type: String,
+        default: enum_2.AccountStatus.Hold,
+        enum: Object.values(enum_2.AccountStatus),
     },
     updatedAt: {
         type: Date,

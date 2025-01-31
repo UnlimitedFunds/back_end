@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export interface IUserInput {
   firstName: string;
   middleName: string;
@@ -22,6 +20,10 @@ export interface IUserInput {
   confirmTransferPin: string;
   ssn: string;
   agreeToTerms: boolean;
+  occupation: string;
+  gender: string;
+  maritalStatus: string;
+
 }
 
 export interface IUser {
@@ -43,7 +45,10 @@ export interface IUser {
   proofOfAddress: string;
   transferPin: string;
   ssn: string;
-  accountApproved: boolean;
+  occupation: string;
+  gender: string;
+  maritalStatus: string;
+  status: string;
   updatedAt: Date;
   createdAt: Date;
 }
