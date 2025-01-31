@@ -31,6 +31,16 @@ class AuthController {
       });
     }
 
+    const userNameExists = await userService.findUserByUserName(body.userName);
+
+    if (userNameExists) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Username already exist!",
+        data: null,
+      });
+    }
+
       // Upload cover image
       const coverImageBuffer = files["proofOfAddress"][0].buffer;
       const coverImageTempFile = `${uuidv4()}.jpg`;

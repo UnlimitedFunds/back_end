@@ -37,6 +37,14 @@ class AuthController {
                     data: null,
                 });
             }
+            const userNameExists = yield service_1.userService.findUserByUserName(body.userName);
+            if (userNameExists) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Username already exist!",
+                    data: null,
+                });
+            }
             // Upload cover image
             const coverImageBuffer = files["proofOfAddress"][0].buffer;
             const coverImageTempFile = `${(0, uuid_1.v4)()}.jpg`;
