@@ -16,8 +16,6 @@ const upload = (0, multer_1.default)({ storage: storage }).fields([
     { name: "profilePicture", maxCount: 1 },
 ]);
 //Create account
-exports.AuthRouter.post("/signup", [upload,
-    //authValidator.signUp 
-], (0, utils_1.wrapAsync)(controller_1.authController.signUp));
+exports.AuthRouter.post("/signup", [upload, validator_1.authValidator.signUp], (0, utils_1.wrapAsync)(controller_1.authController.signUp));
 //Login account
 exports.AuthRouter.post("/signin", [validator_1.authValidator.signIn], (0, utils_1.wrapAsync)(controller_1.authController.signIn));

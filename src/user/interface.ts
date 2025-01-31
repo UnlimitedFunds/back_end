@@ -12,13 +12,14 @@ export interface IUserInput {
   address: string;
   dateOfBirth: string;
   password: string;
-  confirm_password: string;
+  confirmPassword: string;
   accountType: string;
   accountOwnership: string;
   initialDeposit: string;
   profilePicture: string;
   proofOfAddress: string;
   transferPin: string;
+  confirmTransferPin: string;
   ssn: string;
   agreeToTerms: boolean;
 }

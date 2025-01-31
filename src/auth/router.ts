@@ -17,9 +17,7 @@ const upload = multer({ storage: storage }).fields([
 //Create account
 AuthRouter.post(
   "/signup",
-  [upload, 
-  //authValidator.signUp 
-],
+  [upload, authValidator.signUp ],
   wrapAsync(authController.signUp)
 );
 
