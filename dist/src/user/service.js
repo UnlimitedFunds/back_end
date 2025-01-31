@@ -30,6 +30,12 @@ class UserService {
             return user;
         });
     }
+    clear() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.deleteMany();
+            return user;
+        });
+    }
     findUserByUserName(userName) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield entity_1.default.findOne({

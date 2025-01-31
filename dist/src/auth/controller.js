@@ -28,7 +28,6 @@ class AuthController {
     signUp(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
-            // Type assertion for req.files
             const files = req.files;
             const emailExists = yield service_1.userService.findUserByEmail(body.email);
             if (emailExists) {

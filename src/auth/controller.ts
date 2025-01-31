@@ -19,7 +19,7 @@ const jwtSecret = process.env.JWT_SECRET || "";
 class AuthController {
   public async signUp(req: Request, res: Response) {
     const body: IUserInput = req.body;
-      // Type assertion for req.files
+    
     const files = req.files as MulterFiles;
 
     const emailExists = await userService.findUserByEmail(body.email);

@@ -22,6 +22,12 @@ class UserService {
     return user;
   }
 
+  public async clear() {
+    const user = await User.deleteMany();
+
+    return user;
+  }
+
   public async findUserByUserName(userName: string) {
     const user = await User.findOne({
       userName,
