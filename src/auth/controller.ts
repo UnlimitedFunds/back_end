@@ -20,10 +20,10 @@ class AuthController {
     const body: IUserInput = req.body;
       // Type assertion for req.files
 
-      console.log(`req.body ==> ${req.body}`);
+      console.log(req.body);
       return res.status(200).json({
         message: MessageResponse.Success,
-        description: `${req.body}  Logged in successfully`,
+        description: `Logged in successfully`,
         data: {
         
         },
