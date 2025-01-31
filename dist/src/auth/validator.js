@@ -102,7 +102,7 @@ class AuthValidator {
                     "any.required": "Initial deposit is required.",
                 }),
                 agreeToTerms: joi_1.default.boolean().valid(true).required().messages({
-                    "any.required": "You must agree to the terms & conditions of use.",
+                    "any.required": "Agree to terms is required.",
                     "any.only": "You must agree to the terms & conditions of use.",
                 }),
                 transferPin: joi_1.default.string()
