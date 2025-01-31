@@ -7,6 +7,7 @@ import { Server as HttpServer } from "http";
 import Logging from "./src/utils/loggin";
 import { MessageResponse } from "./src/utils/enum";
 import { AuthRouter } from "./src/auth/router";
+import { UserRouter } from "./src/user/router";
 
 const app: Express = express();
 
@@ -49,6 +50,7 @@ const StartServer = () => {
   app.use(
     "/api/v1",
    AuthRouter,
+   UserRouter,
   );
 
   // Health check
