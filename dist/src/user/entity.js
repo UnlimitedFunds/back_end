@@ -69,7 +69,7 @@ const userSchema = new mongoose_1.Schema({
     phoneNumber: {
         type: String,
         required: true,
-        unique: true
+        //unique: true
     },
     address: {
         type: String,
