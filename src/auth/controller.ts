@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import { MessageResponse } from "../utils/enum";
 import fs from "fs/promises";
@@ -9,6 +8,7 @@ import { MulterFiles } from "./interface";
 import { userService } from "../user/service";
 import { IUserInput } from "../user/interface";
 import { ISignIn } from "./enum";
+import cloudinary from "../../config/cloudinary";
 
 dotenv.config();
 

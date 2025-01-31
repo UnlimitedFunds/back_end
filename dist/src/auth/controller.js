@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authController = void 0;
-const cloudinary_1 = require("cloudinary");
 const dotenv_1 = __importDefault(require("dotenv"));
 const enum_1 = require("../utils/enum");
 const promises_1 = __importDefault(require("fs/promises"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const uuid_1 = require("uuid");
 const service_1 = require("../user/service");
+const cloudinary_1 = __importDefault(require("../../config/cloudinary"));
 dotenv_1.default.config();
 //const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
 const jwtSecret = process.env.JWT_SECRET || "";
@@ -41,13 +41,13 @@ class AuthController {
             const coverImageBuffer = files["proofOfAddress"][0].buffer;
             const coverImageTempFile = `${(0, uuid_1.v4)()}.jpg`;
             yield promises_1.default.writeFile(coverImageTempFile, coverImageBuffer);
-            const coverImageUpload = yield cloudinary_1.v2.uploader.upload(coverImageTempFile);
+            const coverImageUpload = yield cloudinary_1.default.uploader.upload(coverImageTempFile);
             yield promises_1.default.unlink(coverImageTempFile);
             // Upload profile image
             const profileImageBuffer = files["profilePicture"][0].buffer;
             const profileImageTempFile = `${(0, uuid_1.v4)()}.jpg`;
             yield promises_1.default.writeFile(profileImageTempFile, profileImageBuffer);
-            const profileImageUpload = yield cloudinary_1.v2.uploader.upload(profileImageTempFile);
+            const profileImageUpload = yield cloudinary_1.default.uploader.upload(profileImageTempFile);
             yield promises_1.default.unlink(profileImageTempFile);
             const newUser = Object.assign(Object.assign({}, body), { profilePicture: profileImageUpload.secure_url, proofOfAddress: coverImageUpload.secure_url });
             yield service_1.userService.createUser(newUser);
