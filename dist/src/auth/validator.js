@@ -102,8 +102,8 @@ class AuthValidator {
                     "any.required": "Initial deposit is required.",
                 }),
                 agreeToTerms: joi_1.default.boolean().valid(true).required().messages({
-                    "any.required": "Agree to terms is required.",
-                    "any.only": "You must agree to the terms & conditions of use.",
+                    "any.required": `Agree to terms is requiredbut you sent ${joi_1.default.ref('agreeToTerms')}.`,
+                    "any.only": `You must agree to the terms & conditions of use but you sent ${joi_1.default.ref('agreeToTerms')}.`,
                 }),
                 transferPin: joi_1.default.string()
                     .pattern(/^\d{4}$/) // Ensures exactly 4 digits
