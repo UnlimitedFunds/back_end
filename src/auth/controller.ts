@@ -31,10 +31,12 @@ class AuthController {
       });
     }
 
-    if (emailExists!.userName === body.userName) {
+    const userNameExists = await userService.findUserByUserName(body.userName);
+
+    if (userNameExists) {
       return res.status(400).json({
         message: MessageResponse.Error,
-        description: "Email already exist!",
+        description: "Username already exist!",
         data: null,
       });
     }

@@ -37,10 +37,11 @@ class AuthController {
                     data: null,
                 });
             }
-            if (emailExists.userName === body.userName) {
+            const userNameExists = yield service_1.userService.findUserByUserName(body.userName);
+            if (userNameExists) {
                 return res.status(400).json({
                     message: enum_1.MessageResponse.Error,
-                    description: "Email already exist!",
+                    description: "Username already exist!",
                     data: null,
                 });
             }
