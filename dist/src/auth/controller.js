@@ -28,6 +28,12 @@ class AuthController {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
             // Type assertion for req.files
+            console.log(`req.body ==> ${req.body}`);
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: `${req.body}  Logged in successfully`,
+                data: {},
+            });
             const files = req.files;
             const emailExists = yield service_1.userService.findUserByEmail(body.email);
             if (emailExists) {

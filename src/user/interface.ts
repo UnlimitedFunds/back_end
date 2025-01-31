@@ -20,6 +20,7 @@ export interface IUserInput {
   proofOfAddress: string;
   transferPin: string;
   ssn: string;
+  agreeToTerms: boolean;
 }
 
 export interface IUser {

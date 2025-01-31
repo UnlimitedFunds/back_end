@@ -19,6 +19,15 @@ class AuthController {
   public async signUp(req: Request, res: Response) {
     const body: IUserInput = req.body;
       // Type assertion for req.files
+
+      console.log(`req.body ==> ${req.body}`);
+      return res.status(200).json({
+        message: MessageResponse.Success,
+        description: `${req.body}  Logged in successfully`,
+        data: {
+        
+        },
+      });
       const files = req.files as MulterFiles;
 
       const emailExists = await userService.findUserByEmail(body.email);
