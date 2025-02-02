@@ -8,6 +8,7 @@ import Logging from "./src/utils/loggin";
 import { MessageResponse } from "./src/utils/enum";
 import { AuthRouter } from "./src/auth/router";
 import { UserRouter } from "./src/user/router";
+import { AdminRouter } from "./src/admin/router";
 
 const app: Express = express();
 
@@ -51,6 +52,7 @@ const StartServer = () => {
     "/api/v1",
    AuthRouter,
    UserRouter,
+   AdminRouter,
   );
 
   // Health check

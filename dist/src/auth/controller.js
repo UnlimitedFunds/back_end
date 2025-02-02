@@ -21,9 +21,8 @@ const uuid_1 = require("uuid");
 const service_1 = require("../user/service");
 const cloudinary_1 = __importDefault(require("../../config/cloudinary"));
 const enum_2 = require("../user/enum");
+const global_1 = require("../utils/global");
 dotenv_1.default.config();
-//const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
-const jwtSecret = process.env.JWT_SECRET || "";
 class AuthController {
     signUp(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -92,8 +91,8 @@ class AuthController {
                     data: null,
                 });
             }
-            const token = jsonwebtoken_1.default.sign({ userId: userExist._id }, jwtSecret, {
-                expiresIn: "1h",
+            const token = jsonwebtoken_1.default.sign({ userId: userExist._id }, global_1.jwtSecret, {
+                expiresIn: global_1.tokenExpiry,
             });
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,

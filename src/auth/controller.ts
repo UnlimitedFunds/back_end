@@ -10,11 +10,9 @@ import { IUserInput } from "../user/interface";
 import { ISignIn } from "./enum";
 import cloudinary from "../../config/cloudinary";
 import { AccountStatus } from "../user/enum";
+import { jwtSecret, tokenExpiry } from "../utils/global";
 
 dotenv.config();
-
-//const tokenExpiry = process.env.TOKEN_EXPIRY || "30D";
-const jwtSecret = process.env.JWT_SECRET || "";
 
 class AuthController {
   public async signUp(req: Request, res: Response) {
@@ -110,7 +108,7 @@ class AuthController {
       { userId: userExist._id },
       jwtSecret,
       {
-        expiresIn: "1h",
+        expiresIn: tokenExpiry,
       }
     );
 

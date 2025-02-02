@@ -137,6 +137,14 @@ const userSchema = new mongoose_1.Schema({
         default: enum_2.AccountStatus.Hold,
         enum: Object.values(enum_2.AccountStatus),
     },
+    emailVerificationOtp: {
+        type: String,
+        default: undefined,
+    },
+    emailVerificationOtpExpiration: {
+        type: Date,
+        default: undefined
+    },
     updatedAt: {
         type: Date,
         default: Date.now

@@ -4,8 +4,7 @@ import dotenv from "dotenv";
 
 import { CustomRequest } from "../utils/interface";
 import { MessageResponse } from "../utils/enum";
-
-dotenv.config();
+import { jwtSecret } from "../utils/global";
 
 interface DecodedToken extends JwtPayload {
   userId: string;
@@ -28,7 +27,7 @@ export const isAuth = async (
   const token = authHeader.split(" ")[1];
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+    decodedToken = jwt.verify(token, jwtSecret) as DecodedToken;
   } catch (err) {
     return res.status(401).json({
       message: MessageResponse.Error,

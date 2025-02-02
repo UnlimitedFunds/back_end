@@ -105,6 +105,14 @@ const userSchema: Schema = new Schema({
     default: AccountStatus.Hold,
     enum: Object.values(AccountStatus),
   },
+  emailVerificationOtp: {
+    type: String,
+    default: undefined,
+  },
+  emailVerificationOtpExpiration: {
+    type: Date,
+    default: undefined
+  },
   updatedAt: {
     type: Date,
     default: Date.now
