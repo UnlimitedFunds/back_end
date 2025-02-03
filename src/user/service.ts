@@ -2,11 +2,13 @@ import mongoose from "mongoose";
 
 import User from "./entity";
 import { IUserInput } from "./interface";
+import { generateAccNo } from "../utils";
 
 class UserService {
   public async createUser(input: IUserInput) {
     let newUser = new User({
       ...input,
+      accountNo: generateAccNo()
     });
 
     newUser = await newUser.save();

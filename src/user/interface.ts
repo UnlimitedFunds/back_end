@@ -49,6 +49,7 @@ export interface IUser {
   gender: string;
   maritalStatus: string;
   status: string;
+  accountNo: string;
   emailVerificationOtp: string;
   emailVerificationOtpExpiration: string;
   updatedAt: Date;

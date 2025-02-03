@@ -12,6 +12,10 @@ export const generateOtp = (): string  => {
   return Array.from({ length: 4 }, () => crypto.randomInt(0, 10)).join('');
 }
 
+export const generateAccNo= (): string => {
+  return Array.from({ length: 10 }, () => crypto.randomInt(0, 10)).join('');
+};
+
 export const generateOrderId = (): string  => {
   const prefix = "KY"; 
   const suffix = "US";
