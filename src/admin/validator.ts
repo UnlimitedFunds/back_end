@@ -139,8 +139,8 @@ class AdminValidator {
         }),
         status: Joi.string()
         .valid(
-          GenderStatus.Male,
-          GenderStatus.Female,
+          AccountStatus.Active,
+          AccountStatus.Hold,
         )
         .required()
         .messages({

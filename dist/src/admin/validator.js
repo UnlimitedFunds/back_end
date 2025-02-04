@@ -146,7 +146,7 @@ class AdminValidator {
                     "any.only": `Gender must be either: "${enum_2.GenderStatus.Male}" or "${enum_2.GenderStatus.Female}".`,
                 }),
                 status: joi_1.default.string()
-                    .valid(enum_2.GenderStatus.Male, enum_2.GenderStatus.Female)
+                    .valid(enum_2.AccountStatus.Active, enum_2.AccountStatus.Hold)
                     .required()
                     .messages({
                     "string.base": `Status must be either: "${enum_2.AccountStatus.Active}" or "${enum_2.AccountStatus.Hold}".`,
