@@ -69,9 +69,9 @@ class AdminController {
   }
 
   public async approveUserAccount(req: Request, res: Response) {
-    const { userId } = req.params;
+    const { id } = req.params;
 
-    const user = await userService.findUserById(userId);
+    const user = await userService.findUserById(id);
 
     if (!user) {
       return res.status(404).json({
@@ -81,7 +81,7 @@ class AdminController {
       });
     }
 
-    await adminService.approveUser(userId);
+    await adminService.approveUser(id);
 
     return res.status(200).json({
         message: MessageResponse.Success,
@@ -92,9 +92,9 @@ class AdminController {
   }
 
   public async deleteUserAccount(req: Request, res: Response) {
-    const { userId } = req.params;
+    const { id } = req.params;
 
-    const user = await userService.findUserById(userId);
+    const user = await userService.findUserById(id);
 
     if (!user) {
       return res.status(404).json({
@@ -104,7 +104,7 @@ class AdminController {
       });
     }
 
-    await adminService.deleteUser(userId);
+    await adminService.deleteUser(id);
 
     return res.status(200).json({
         message: MessageResponse.Success,

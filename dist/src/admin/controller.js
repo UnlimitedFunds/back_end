@@ -69,8 +69,8 @@ class AdminController {
     }
     approveUserAccount(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { userId } = req.params;
-            const user = yield service_2.userService.findUserById(userId);
+            const { id } = req.params;
+            const user = yield service_2.userService.findUserById(id);
             if (!user) {
                 return res.status(404).json({
                     message: enum_1.MessageResponse.Success,
@@ -78,7 +78,7 @@ class AdminController {
                     data: null,
                 });
             }
-            yield service_1.adminService.approveUser(userId);
+            yield service_1.adminService.approveUser(id);
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User has been approved!",
@@ -88,8 +88,8 @@ class AdminController {
     }
     deleteUserAccount(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { userId } = req.params;
-            const user = yield service_2.userService.findUserById(userId);
+            const { id } = req.params;
+            const user = yield service_2.userService.findUserById(id);
             if (!user) {
                 return res.status(404).json({
                     message: enum_1.MessageResponse.Success,
@@ -97,7 +97,7 @@ class AdminController {
                     data: null,
                 });
             }
-            yield service_1.adminService.deleteUser(userId);
+            yield service_1.adminService.deleteUser(id);
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User has been deleted!",
