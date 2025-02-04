@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import User from "./entity";
-import { IUserInput } from "./interface";
+import { IUserInput, IUserUpdate } from "./interface";
 import { generateAccNo } from "../utils";
 
 class UserService {
@@ -14,6 +14,20 @@ class UserService {
     newUser = await newUser.save();
 
     return newUser;
+  }
+
+  public async updateUser(input: IUserUpdate, _id: string) {
+   
+
+    const user = await User.findOneAndUpdate(
+      { _id }, // Query to find the user by ID
+      {
+        ...input
+      }, // Update the values
+      { new: true } // Return the updated document
+    );
+
+    return user;
   }
 
   public async findUserByEmail(email: string) {

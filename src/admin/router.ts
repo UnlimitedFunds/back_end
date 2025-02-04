@@ -23,23 +23,30 @@ AdminRouter.get(
 
 //Approve user acc
 AdminRouter.patch(
-  "/approve/user/:id",
+  "/admin/approve/user/:id",
   [isAuth],
   wrapAsync(adminController.approveUserAccount)
 );
 
 //Delete user acc
 AdminRouter.delete(
-  "/delete/user/:id",
+  "/admin/delete/user/:id",
   [isAuth],
   wrapAsync(adminController.deleteUserAccount)
 );
 
+
+AdminRouter.patch(
+  "/admin/update/user/:id",
+  [isAuth, adminValidator.userUpdate],
+  wrapAsync(adminController.updateUser)
+);
+
 //Create an admin
-AdminRouter.post(
-    "/admin/signup",
-    // [
-      // upload.none(),  // For FormData
-      // adminValidator.signUp],
-    wrapAsync(adminController.adminSignUp)
-  );
+// AdminRouter.post(
+//     "/admin/signup",
+//     // [
+//       // upload.none(),  // For FormData
+//       // adminValidator.signUp],
+//     wrapAsync(adminController.adminSignUp)
+//   );

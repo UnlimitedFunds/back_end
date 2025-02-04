@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { MessageResponse } from "../utils/enum";
 import { userService } from "./service";
 import { CustomRequest } from "../utils/interface";
+import { IUserUpdate } from "./interface";
 
 class UserController {
   public async fetchUserDetails(req: Request, res: Response) {
@@ -24,6 +25,8 @@ class UserController {
       data: userExist
     });
   }
+
+
 }
 
 export const userController = new UserController();

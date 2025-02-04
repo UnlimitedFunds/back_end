@@ -12,12 +12,15 @@ exports.AdminRouter.post("/admin/signin", [validator_1.adminValidator.adminLogin
 //Fetch Users
 exports.AdminRouter.get("/admin/users", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.fetchUsers));
 //Approve user acc
-exports.AdminRouter.patch("/approve/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.approveUserAccount));
+exports.AdminRouter.patch("/admin/approve/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.approveUserAccount));
 //Delete user acc
-exports.AdminRouter.delete("/delete/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.deleteUserAccount));
+exports.AdminRouter.delete("/admin/delete/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.deleteUserAccount));
+exports.AdminRouter.patch("/admin/update/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.userUpdate], (0, utils_1.wrapAsync)(controller_1.adminController.updateUser));
 //Create an admin
-exports.AdminRouter.post("/admin/signup", 
-// [
-// upload.none(),  // For FormData
-// adminValidator.signUp],
-(0, utils_1.wrapAsync)(controller_1.adminController.adminSignUp));
+// AdminRouter.post(
+//     "/admin/signup",
+//     // [
+//       // upload.none(),  // For FormData
+//       // adminValidator.signUp],
+//     wrapAsync(adminController.adminSignUp)
+//   );

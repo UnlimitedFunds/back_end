@@ -8,6 +8,7 @@ import { adminService } from "./service";
 import { jwtSecret, tokenExpiry } from "../utils/global";
 import { CustomRequest } from "../utils/interface";
 import { userService } from "../user/service";
+import { IUserUpdate } from "../user/interface";
 
 dotenv.config();
 
@@ -112,6 +113,32 @@ class AdminController {
         data: null,
       });
 
+  }
+
+  public async updateUser(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const body: IUserUpdate = req.body;
+
+    const { userId } = req as CustomRequest;
+
+    const userExist = await userService.findUserByIdWithoutPassword(userId);
+
+    if (!userExist) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "User does not exist!",
+        data: null,
+      });
+    }
+
+    const user = await userService.updateUser(body, id);
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "User details updated successfully!",
+      data: user,
+    });
   }
 }
 

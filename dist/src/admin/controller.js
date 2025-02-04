@@ -105,5 +105,26 @@ class AdminController {
             });
         });
     }
+    updateUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const body = req.body;
+            const { userId } = req;
+            const userExist = yield service_2.userService.findUserByIdWithoutPassword(userId);
+            if (!userExist) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "User does not exist!",
+                    data: null,
+                });
+            }
+            const user = yield service_2.userService.updateUser(body, id);
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "User details updated successfully!",
+                data: user,
+            });
+        });
+    }
 }
 exports.adminController = new AdminController();

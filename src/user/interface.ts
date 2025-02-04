@@ -55,3 +55,22 @@ export interface IUser {
   updatedAt: Date;
   createdAt: Date;
 }
+
+
+export interface IUserUpdate {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  countryOfResidence: string;
+  state: string;
+  phoneNumber: string;
+  address: string;
+  dateOfBirth: string;
+  accountType: string;
+  ssn: string;
+  occupation: string;
+  gender: string;
+  maritalStatus: string;
+ 
+}

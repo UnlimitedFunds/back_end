@@ -7,10 +7,12 @@ import { userController } from "./controller";
 
 export const UserRouter = Router();
 
+//Get user information
 UserRouter.get(
   "/user",
   [isAuth],
   wrapAsync(userController.fetchUserDetails)
 );
+
 
 
