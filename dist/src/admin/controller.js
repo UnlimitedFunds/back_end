@@ -109,8 +109,7 @@ class AdminController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const body = req.body;
-            const { userId } = req;
-            const userExist = yield service_2.userService.findUserByIdWithoutPassword(userId);
+            const userExist = yield service_2.userService.findUserByIdWithoutPassword(id);
             if (!userExist) {
                 return res.status(404).json({
                     message: enum_1.MessageResponse.Error,

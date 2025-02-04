@@ -120,9 +120,7 @@ class AdminController {
 
     const body: IUserUpdate = req.body;
 
-    const { userId } = req as CustomRequest;
-
-    const userExist = await userService.findUserByIdWithoutPassword(userId);
+    const userExist = await userService.findUserByIdWithoutPassword(id);
 
     if (!userExist) {
       return res.status(404).json({
