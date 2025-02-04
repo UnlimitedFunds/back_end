@@ -45,6 +45,14 @@ class UserService {
             return user;
         });
     }
+    findUserBySSN(ssn) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findOne({
+                ssn,
+            });
+            return user;
+        });
+    }
     findUserByUserNameAndPassword(userName, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield entity_1.default.findOne({

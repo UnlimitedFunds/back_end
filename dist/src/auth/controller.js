@@ -44,6 +44,14 @@ class AuthController {
                     data: null,
                 });
             }
+            const snnExist = yield service_1.userService.findUserBySSN(body.ssn);
+            if (snnExist) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "SSN already exist!",
+                    data: null,
+                });
+            }
             // Upload cover image
             const coverImageBuffer = files["proofOfAddress"][0].buffer;
             const coverImageTempFile = `${(0, uuid_1.v4)()}.jpg`;

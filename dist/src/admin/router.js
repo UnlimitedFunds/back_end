@@ -16,10 +16,8 @@ exports.AdminRouter.patch("/approve/user/:id", [isAuth_1.isAuth], (0, utils_1.wr
 //Delete user acc
 exports.AdminRouter.delete("/delete/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.deleteUserAccount));
 //Create an admin
-// AdminRouter.post(
-//     "/admin/signup",
-//     // [
-//       // upload.none(),  // For FormData
-//       // adminValidator.signUp],
-//     wrapAsync(adminController.adminSignUp)
-//   );
+exports.AdminRouter.post("/admin/signup", 
+// [
+// upload.none(),  // For FormData
+// adminValidator.signUp],
+(0, utils_1.wrapAsync)(controller_1.adminController.adminSignUp));

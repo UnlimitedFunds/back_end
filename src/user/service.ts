@@ -38,6 +38,14 @@ class UserService {
     return user;
   }
 
+  public async findUserBySSN(ssn: string) {
+    const user = await User.findOne({
+      ssn,
+    });
+
+    return user;
+  }
+
   public async findUserByUserNameAndPassword(
     userName: string,
     password: string

@@ -36,10 +36,10 @@ AdminRouter.delete(
 );
 
 //Create an admin
-// AdminRouter.post(
-//     "/admin/signup",
-//     // [
-//       // upload.none(),  // For FormData
-//       // adminValidator.signUp],
-//     wrapAsync(adminController.adminSignUp)
-//   );
+AdminRouter.post(
+    "/admin/signup",
+    // [
+      // upload.none(),  // For FormData
+      // adminValidator.signUp],
+    wrapAsync(adminController.adminSignUp)
+  );
