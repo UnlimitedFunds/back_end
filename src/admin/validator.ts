@@ -100,6 +100,13 @@ class AdminValidator {
         "string.base": "Date of birth must be text",
         "any.required": "Date of birth is required.",
       }),
+      initialDeposit: Joi.string()
+        .pattern(/^\d+(\.\d+)?$/)
+        .required()
+        .messages({
+          "string.pattern.base": "Initial deposit must be a valid number.",
+          "any.required": "Initial deposit is required.",
+        }),
       accountType: Joi.string()
         .valid(AccountType.Current, AccountType.Savings)
         .required()

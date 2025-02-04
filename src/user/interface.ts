@@ -68,6 +68,7 @@ export interface IUserUpdate {
   address: string;
   dateOfBirth: string;
   accountType: string;
+  initialDeposit: string;
   ssn: string;
   occupation: string;
   gender: string;
