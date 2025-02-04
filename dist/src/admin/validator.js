@@ -145,6 +145,14 @@ class AdminValidator {
                     "any.required": "Gender is required.",
                     "any.only": `Gender must be either: "${enum_2.GenderStatus.Male}" or "${enum_2.GenderStatus.Female}".`,
                 }),
+                status: joi_1.default.string()
+                    .valid(enum_2.GenderStatus.Male, enum_2.GenderStatus.Female)
+                    .required()
+                    .messages({
+                    "string.base": `Gender must be either: "${enum_2.AccountStatus.Active}" or "${enum_2.AccountStatus.Hold}".`,
+                    "any.required": "Gender is required.",
+                    "any.only": `Gender must be either: "${enum_2.AccountStatus.Active}" or "${enum_2.AccountStatus.Hold}".`,
+                }),
                 maritalStatus: joi_1.default.string()
                     .valid(enum_2.MaritialStatus.Divorce, enum_2.MaritialStatus.Married, enum_2.MaritialStatus.Single)
                     .required()

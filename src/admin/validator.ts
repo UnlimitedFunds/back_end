@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 
 import { AccountType, MessageResponse } from "../utils/enum";
-import { GenderStatus, MaritialStatus } from "../user/enum";
+import { AccountStatus, GenderStatus, MaritialStatus } from "../user/enum";
 
 class AdminValidator {
   public async adminLogin(req: Request, res: Response, next: NextFunction) {
@@ -136,6 +136,17 @@ class AdminValidator {
           "string.base": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
           "any.required": "Gender is required.",
           "any.only": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
+        }),
+        status: Joi.string()
+        .valid(
+          GenderStatus.Male,
+          GenderStatus.Female,
+        )
+        .required()
+        .messages({
+          "string.base": `Gender must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
+          "any.required": "Gender is required.",
+          "any.only": `Gender must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
         }),
         maritalStatus: Joi.string()
         .valid(

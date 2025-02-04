@@ -73,5 +73,5 @@ export interface IUserUpdate {
   occupation: string;
   gender: string;
   maritalStatus: string;
- 
+  status: string;
 }
