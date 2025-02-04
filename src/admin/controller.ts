@@ -120,7 +120,7 @@ class AdminController {
 
     const body: IUserUpdate = req.body;
 
-    const userExist = await userService.findUserByIdWithoutPassword(id);
+    const userExist = await userService.findUserById(id);
 
     if (!userExist) {
       return res.status(404).json({
@@ -135,7 +135,7 @@ class AdminController {
     return res.status(200).json({
       message: MessageResponse.Success,
       description: "User details updated successfully!",
-      data: user,
+      data: null,
     });
   }
 }

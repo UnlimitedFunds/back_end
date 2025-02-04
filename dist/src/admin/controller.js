@@ -109,7 +109,7 @@ class AdminController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const body = req.body;
-            const userExist = yield service_2.userService.findUserByIdWithoutPassword(id);
+            const userExist = yield service_2.userService.findUserById(id);
             if (!userExist) {
                 return res.status(404).json({
                     message: enum_1.MessageResponse.Error,
@@ -121,7 +121,7 @@ class AdminController {
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User details updated successfully!",
-                data: user,
+                data: null,
             });
         });
     }
