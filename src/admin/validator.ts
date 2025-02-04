@@ -144,9 +144,9 @@ class AdminValidator {
         )
         .required()
         .messages({
-          "string.base": `Gender must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
-          "any.required": "Gender is required.",
-          "any.only": `Gender must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
+          "string.base": `Status must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
+          "any.required": "Status is required.",
+          "any.only": `Status must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
         }),
         maritalStatus: Joi.string()
         .valid(
