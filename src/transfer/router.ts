@@ -3,13 +3,14 @@ import { Router } from "express";
 import { wrapAsync } from "../utils";
 import { isAuth } from "../middleware/isAuth";
 import { transferController } from "./controller";
+import { authValidator } from "./validator";
 
 export const TransferRouter = Router();
    //a
 //Create transfer
 TransferRouter.post(
   "/user/transfer",
-  [isAuth],
+  [isAuth, authValidator.transfer],
   wrapAsync(transferController.createTransfer)
 );
 
