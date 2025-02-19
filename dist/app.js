@@ -12,6 +12,7 @@ const enum_1 = require("./src/utils/enum");
 const router_1 = require("./src/auth/router");
 const router_2 = require("./src/user/router");
 const router_3 = require("./src/admin/router");
+const router_4 = require("./src/transfer/router");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 const port = process.env.PORT || 8080;
@@ -35,7 +36,7 @@ const StartServer = () => {
         credentials: true,
     }));
     // Routes
-    app.use("/api/v1", router_1.AuthRouter, router_2.UserRouter, router_3.AdminRouter);
+    app.use("/api/v1", router_1.AuthRouter, router_2.UserRouter, router_3.AdminRouter, router_4.TransferRouter);
     // Health check
     app.get("/api/v1/healthcheck", (_req, res) => {
         res.status(200).json({ status: "UP 🔥🔧🎂" });
