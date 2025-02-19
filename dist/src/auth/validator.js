@@ -95,18 +95,12 @@ class AuthValidator {
                     "any.required": "Account ownership is required.",
                     "any.only": `Account ownership must be one of: "${enum_1.AccountOwnership.Company}", "${enum_1.AccountOwnership.Joint}", "${enum_1.AccountOwnership.Personal}", or "${enum_1.AccountOwnership.Others}".`,
                 }),
-                initialDeposit: joi_1.default.string()
-                    .pattern(/^\d+(\.\d+)?$/)
-                    .required()
-                    .messages({
-                    "string.pattern.base": "Initial deposit must be a valid number.",
+                initialDeposit: joi_1.default.alternatives().try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/)).required().messages({
+                    "alternatives.match": "Initial deposit must be a valid number.",
                     "any.required": "Initial deposit is required.",
                 }),
-                monthlyIncome: joi_1.default.string()
-                    .pattern(/^\d+(\.\d+)?$/)
-                    .required()
-                    .messages({
-                    "string.pattern.base": "Monthly income must be a valid number.",
+                monthlyIncome: joi_1.default.alternatives().try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/)).required().messages({
+                    "alternatives.match": "Monthly income must be a valid number.",
                     "any.required": "Monthly income is required.",
                 }),
                 agreeToTerms: joi_1.default.boolean().valid(true).required().messages({

@@ -35,11 +35,11 @@ class AuthValidator {
                     "string.base": "Beneficiary country must be text",
                     "any.required": "Beneficiary country is required.",
                 }),
-                amount: joi_1.default.string()
-                    .pattern(/^\d+(\.\d+)?$/)
+                amount: joi_1.default.alternatives()
+                    .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
                     .required()
                     .messages({
-                    "string.pattern.base": "Amount must be a valid number.",
+                    "alternatives.match": "Amount must be a valid number.",
                     "any.required": "Amount is required.",
                 }),
                 narration: joi_1.default.string().required().messages({

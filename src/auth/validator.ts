@@ -88,20 +88,22 @@ class AuthValidator {
           "any.required": "Account ownership is required.",
           "any.only": `Account ownership must be one of: "${AccountOwnership.Company}", "${AccountOwnership.Joint}", "${AccountOwnership.Personal}", or "${AccountOwnership.Others}".`,
         }),
-      initialDeposit: Joi.string()
-        .pattern(/^\d+(\.\d+)?$/)
-        .required()
-        .messages({
-          "string.pattern.base": "Initial deposit must be a valid number.",
+        initialDeposit: Joi.alternatives().try(
+          Joi.number().positive(),
+          Joi.string().pattern(/^\d+(\.\d+)?$/)
+        ).required().messages({
+          "alternatives.match": "Initial deposit must be a valid number.",
           "any.required": "Initial deposit is required.",
         }),
-        monthlyIncome: Joi.string()
-        .pattern(/^\d+(\.\d+)?$/)
-        .required()
-        .messages({
-          "string.pattern.base": "Monthly income must be a valid number.",
+        
+        monthlyIncome: Joi.alternatives().try(
+          Joi.number().positive(),
+          Joi.string().pattern(/^\d+(\.\d+)?$/)
+        ).required().messages({
+          "alternatives.match": "Monthly income must be a valid number.",
           "any.required": "Monthly income is required.",
         }),
+        
       agreeToTerms: Joi.boolean().valid(true).required().messages({
         "any.required": `Agree to terms is requiredbut you sent ${Joi.ref('agreeToTerms')}.`,
         "any.only": `You must agree to the terms & conditions of use but you sent ${Joi.ref('agreeToTerms')}.`,
