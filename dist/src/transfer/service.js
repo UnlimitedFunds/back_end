@@ -17,7 +17,7 @@ const entity_1 = __importDefault(require("./entity"));
 class TransferService {
     createTransfer(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newUser = new entity_1.default(Object.assign({}, input));
+            let newUser = new entity_1.default(Object.assign(Object.assign({}, input), { amount: input.amount.toString(), serviceFee: input.serviceFee.toString() }));
             newUser = yield newUser.save();
             return newUser;
         });

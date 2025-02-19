@@ -66,6 +66,10 @@ const transferSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    serviceFee: {
+        type: String,
+        required: true,
+    },
     routingNumber: {
         type: String,
         required: true,

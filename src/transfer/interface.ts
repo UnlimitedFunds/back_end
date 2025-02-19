@@ -11,6 +11,7 @@ export interface ITransferInput {
   swiftcode: string;
   routingNumber: string;
   accountType: string;
+  serviceFee: string;
 }
 
 export interface ITransfer {
@@ -26,4 +27,5 @@ export interface ITransfer {
   accountType: string;
   updatedAt: string;
   createdAt: string;
+  serviceFee: string;
 }

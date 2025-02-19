@@ -5,6 +5,8 @@ class TransferService {
   public async createTransfer(input: ITransferInput) {
     let newUser = new Transfer({
       ...input,
+      amount: input.amount.toString(),
+      serviceFee: input.serviceFee.toString()
     });
 
     newUser = await newUser.save();

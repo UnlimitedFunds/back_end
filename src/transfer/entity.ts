@@ -34,6 +34,10 @@ const transferSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  serviceFee: {
+    type: String,
+    required: true,
+  },
   routingNumber: {
     type: String,
     required: true,

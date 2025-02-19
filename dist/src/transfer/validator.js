@@ -42,6 +42,13 @@ class AuthValidator {
                     "alternatives.match": "Amount must be a valid number.",
                     "any.required": "Amount is required.",
                 }),
+                serviceFee: joi_1.default.alternatives()
+                    .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
+                    .required()
+                    .messages({
+                    "alternatives.match": "Service fee must be a valid number.",
+                    "any.required": "Service fee is required.",
+                }),
                 narration: joi_1.default.string().required().messages({
                     "string.base": "Narration must be text",
                     "any.required": "Narration is required.",
