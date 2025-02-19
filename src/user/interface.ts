@@ -50,6 +50,7 @@ export interface IUser {
   maritalStatus: string;
   status: string;
   accountNo: string;
+  monthlyIncome: string;
   emailVerificationOtp: string;
   emailVerificationOtpExpiration: string;
   updatedAt: Date;
@@ -74,4 +75,5 @@ export interface IUserUpdate {
   gender: string;
   maritalStatus: string;
   status: string;
+  monthlyIncome: string;
 }

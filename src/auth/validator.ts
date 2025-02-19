@@ -95,6 +95,13 @@ class AuthValidator {
           "string.pattern.base": "Initial deposit must be a valid number.",
           "any.required": "Initial deposit is required.",
         }),
+        monthlyIncome: Joi.string()
+        .pattern(/^\d+(\.\d+)?$/)
+        .required()
+        .messages({
+          "string.pattern.base": "Monthly must be a valid number.",
+          "any.required": "Monthly is required.",
+        }),
       agreeToTerms: Joi.boolean().valid(true).required().messages({
         "any.required": `Agree to terms is requiredbut you sent ${Joi.ref('agreeToTerms')}.`,
         "any.only": `You must agree to the terms & conditions of use but you sent ${Joi.ref('agreeToTerms')}.`,

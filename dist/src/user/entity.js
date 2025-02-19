@@ -98,6 +98,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    monthlyIncome: {
+        type: String,
+        required: true
+    },
     transferPin: {
         type: String,
         required: true

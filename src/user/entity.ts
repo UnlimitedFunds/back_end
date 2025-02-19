@@ -66,6 +66,10 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true
   },
+  monthlyIncome: {
+    type: String,
+    required: true
+  },
   transferPin: {
     type: String, 
     required: true
