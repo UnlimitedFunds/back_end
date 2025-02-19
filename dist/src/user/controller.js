@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const enum_1 = require("../utils/enum");
 const service_1 = require("./service");
+const enum_2 = require("./enum");
 class UserController {
     fetchUserDetails(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -24,10 +25,17 @@ class UserController {
                     data: null,
                 });
             }
+            if (userExist.status != enum_2.AccountStatus.Active) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Your account is not active!",
+                    data: null,
+                });
+            }
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User details fetched successfully!",
-                data: userExist
+                data: userExist,
             });
         });
     }

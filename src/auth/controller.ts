@@ -109,7 +109,7 @@ class AuthController {
 
       return res.status(400).json({
         message: MessageResponse.Error,
-        description: "Your account has not been approved!",
+        description: "Your account is not active!",
         data: null,
       });
     }

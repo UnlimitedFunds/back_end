@@ -99,8 +99,8 @@ class AuthValidator {
         .pattern(/^\d+(\.\d+)?$/)
         .required()
         .messages({
-          "string.pattern.base": "Monthly must be a valid number.",
-          "any.required": "Monthly is required.",
+          "string.pattern.base": "Monthly income must be a valid number.",
+          "any.required": "Monthly income is required.",
         }),
       agreeToTerms: Joi.boolean().valid(true).required().messages({
         "any.required": `Agree to terms is requiredbut you sent ${Joi.ref('agreeToTerms')}.`,

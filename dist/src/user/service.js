@@ -121,5 +121,17 @@ class UserService {
             return users;
         });
     }
+    debitUser(amount, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findById(userId);
+            if (user) {
+                const accBal = parseFloat(user.initialDeposit);
+                const result = (accBal - amount).toFixed(2);
+                user.initialDeposit = result.toString();
+                yield user.save();
+            }
+            return;
+        });
+    }
 }
 exports.userService = new UserService();

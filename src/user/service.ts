@@ -8,7 +8,7 @@ class UserService {
   public async createUser(input: IUserInput) {
     let newUser = new User({
       ...input,
-      accountNo: generateAccNo()
+      accountNo: generateAccNo(),
     });
 
     newUser = await newUser.save();
@@ -17,12 +17,10 @@ class UserService {
   }
 
   public async updateUser(input: IUserUpdate, _id: string) {
-   
-
     const user = await User.findOneAndUpdate(
       { _id }, // Query to find the user by ID
       {
-        ...input
+        ...input,
       }, // Update the values
       { new: true } // Return the updated document
     );
@@ -126,6 +124,22 @@ class UserService {
     const users = await User.find().select("-password");
 
     return users;
+  }
+
+  public async debitUser(amount: number, userId: string) {
+    const user = await User.findById(userId);
+
+    if (user) {
+      const accBal = parseFloat(user.initialDeposit);
+
+      const result = (accBal - amount).toFixed(2);
+
+      user.initialDeposit = result.toString();
+
+      await user.save();
+    }
+    
+    return;
   }
 }
 
