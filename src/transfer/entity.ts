@@ -24,7 +24,6 @@ const transferSchema: Schema = new Schema({
   amount: {
     type: String,
     required: true,
-    unique: true,
   },
   narration: {
     type: String,

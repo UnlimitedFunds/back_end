@@ -56,7 +56,6 @@ const transferSchema = new mongoose_1.Schema({
     amount: {
         type: String,
         required: true,
-        unique: true,
     },
     narration: {
         type: String,
