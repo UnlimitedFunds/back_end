@@ -3,15 +3,15 @@ import Transfer from "./entity";
 
 class TransferService {
   public async createTransfer(input: ITransferInput) {
-    let newUser = new Transfer({
+    let newTransfer = new Transfer({
       ...input,
       amount: input.amount.toString(),
       serviceFee: input.serviceFee.toString()
     });
 
-    newUser = await newUser.save();
+    newTransfer = await newTransfer.save();
 
-    return newUser;
+    return newTransfer;
   }
 
   public async fetchUserTransferById(id: string) {
