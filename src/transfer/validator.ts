@@ -18,6 +18,9 @@ class AuthValidator {
         "string.base": "Beneficiary account number must be text",
         "any.required": "Beneficiary account number is required.",
       }),
+      transferPin: Joi.string().required().messages({
+        "any.required": "Transfer pin is required!",
+      }),
       beneficiaryCountry: Joi.string().required().messages({
         "string.base": "Beneficiary country must be text",
         "any.required": "Beneficiary country is required.",
