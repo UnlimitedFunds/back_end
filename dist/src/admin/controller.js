@@ -146,8 +146,7 @@ class AdminController {
                     data: null,
                 });
             }
-            const transfer = Object.assign({}, body);
-            yield service_3.transferService.createTransfer(transfer);
+            yield service_3.transferService.createTransfer(body);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Transfer created successfully",

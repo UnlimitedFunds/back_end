@@ -12,6 +12,7 @@ export interface ITransferInput {
   routingNumber: string;
   accountType: string;
   serviceFee: string;
+  transferPin?: string;
 }
 
 export interface ITransfer {

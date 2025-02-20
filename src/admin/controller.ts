@@ -144,7 +144,7 @@ class AdminController {
 
     public async createTransferWithAdmin(req: Request, res: Response) {
       const { userId } = req as CustomRequest;
-      const body: ITransfer = req.body;
+      const body: ITransferInput = req.body;
   
       const userExist = await userService.findUserByIdWithoutPassword(body.userId);
   
@@ -164,11 +164,7 @@ class AdminController {
         });
       }
   
-      const transfer: ITransferInput = {
-        ...body
-      };
-  
-      await transferService.createTransfer(transfer);
+      await transferService.createTransfer(body);
   
       return res.status(201).json({
         message: MessageResponse.Success,

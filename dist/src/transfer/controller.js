@@ -34,6 +34,13 @@ class TransferController {
                     data: null,
                 });
             }
+            if (body.transferPin != userExist.transferPin) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Incorrect transfer pin!",
+                    data: null,
+                });
+            }
             const userBalance = parseFloat(userExist.initialDeposit);
             const transferAmount = parseFloat(body.amount);
             // if (isNaN(userBalance) || isNaN(transferAmount)) {

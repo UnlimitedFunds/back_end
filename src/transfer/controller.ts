@@ -10,7 +10,7 @@ import { AccountStatus } from "../user/enum";
 class TransferController {
   public async createTransfer(req: Request, res: Response) {
     const { userId } = req as CustomRequest;
-    const body: ITransfer = req.body;
+    const body: ITransferInput = req.body;
 
     const userExist = await userService.findUserByIdWithoutPassword(userId);
 
@@ -26,6 +26,14 @@ class TransferController {
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Your account is not active!",
+        data: null,
+      });
+    }
+
+    if (body.transferPin != userExist.transferPin) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Incorrect transfer pin!",
         data: null,
       });
     }
@@ -50,10 +58,10 @@ class TransferController {
       });
     }
 
-    await userService.debitUser(transferAmount, userExist._id.toString())
+    await userService.debitUser(transferAmount, userExist._id.toString());
 
     const transfer: ITransferInput = {
-      ...body,
+     ...body,
       userId: userExist._id.toString(),
     };
 
@@ -80,7 +88,6 @@ class TransferController {
     }
 
     if (userExist.status != AccountStatus.Active) {
-        
       return res.status(400).json({
         message: MessageResponse.Error,
         description: "Your account is not active!",
@@ -88,7 +95,9 @@ class TransferController {
       });
     }
 
-    const userTransferHistory = await transferService.fetchUserTransferById(userExist._id.toString());
+    const userTransferHistory = await transferService.fetchUserTransferById(
+      userExist._id.toString()
+    );
 
     return res.status(200).json({
       message: MessageResponse.Success,
