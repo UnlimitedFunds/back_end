@@ -19,6 +19,8 @@ const enum_1 = require("../utils/enum");
 const service_1 = require("./service");
 const global_1 = require("../utils/global");
 const service_2 = require("../user/service");
+const enum_2 = require("../user/enum");
+const service_3 = require("../transfer/service");
 dotenv_1.default.config();
 class AdminController {
     adminSignUp(req, res) {
@@ -121,6 +123,34 @@ class AdminController {
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User details updated successfully!",
+                data: null,
+            });
+        });
+    }
+    createTransferWithAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { userId } = req;
+            const body = req.body;
+            const userExist = yield service_2.userService.findUserByIdWithoutPassword(body.userId);
+            if (!userExist) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "This user does not exist!",
+                    data: null,
+                });
+            }
+            if (userExist.status != enum_2.AccountStatus.Active) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "This user is not active!",
+                    data: null,
+                });
+            }
+            const transfer = Object.assign({}, body);
+            yield service_3.transferService.createTransfer(transfer);
+            return res.status(201).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Transfer created successfully",
                 data: null,
             });
         });

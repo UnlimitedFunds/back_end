@@ -28,7 +28,7 @@ class AdminValidator {
                 password: joi_1.default.string().required().messages({
                     "string.base": "Password must be text",
                     "any.required": "Password is required.",
-                })
+                }),
             });
             const { error } = schema.validate(req.body);
             if (!error) {
@@ -45,16 +45,19 @@ class AdminValidator {
     }
     validateParams(req, res, next) {
         const schema = joi_1.default.object({
-            id: joi_1.default.string().custom((value, helpers) => {
+            id: joi_1.default.string()
+                .custom((value, helpers) => {
                 if (!mongoose_1.default.Types.ObjectId.isValid(value)) {
                     return helpers.message({
                         custom: "ID must be a valid ObjectId",
                     });
                 }
                 return value;
-            }).required().messages({
-                'string.base': 'ID must be a string',
-                'any.required': 'ID is required',
+            })
+                .required()
+                .messages({
+                "string.base": "ID must be a string",
+                "any.required": "ID is required",
             }),
         });
         const { error } = schema.validate(req.params);
@@ -160,6 +163,91 @@ class AdminValidator {
                     "string.base": `Marital Status must be one of: "${enum_2.MaritialStatus.Divorce}", "${enum_2.MaritialStatus.Married}" or "${enum_2.MaritialStatus.Single}".`,
                     "any.required": "Marital Status is required.",
                     "any.only": `Marital Status must be one of: "${enum_2.MaritialStatus.Divorce}", "${enum_2.MaritialStatus.Married}" or "${enum_2.MaritialStatus.Single}".`,
+                }),
+            });
+            const { error } = schema.validate(req.body);
+            if (error) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: error.details[0].message,
+                    data: null,
+                });
+            }
+            return next();
+        });
+    }
+    createTransferWithAdmin(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const schema = joi_1.default.object({
+                bankName: joi_1.default.string().required().messages({
+                    "string.base": "Bank name must be text",
+                    "any.required": "Bank name is required.",
+                }),
+                beneficiaryName: joi_1.default.string().required().messages({
+                    "string.base": "Beneficiary name must be text",
+                    "any.required": "Beneficiary name is required.",
+                }),
+                beneficiaryAccountNumber: joi_1.default.string().required().messages({
+                    "string.base": "Beneficiary account number must be text",
+                    "any.required": "Beneficiary account number is required.",
+                }),
+                beneficiaryCountry: joi_1.default.string().required().messages({
+                    "string.base": "Beneficiary country must be text",
+                    "any.required": "Beneficiary country is required.",
+                }),
+                amount: joi_1.default.alternatives()
+                    .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
+                    .required()
+                    .messages({
+                    "alternatives.match": "Amount must be a valid number.",
+                    "any.required": "Amount is required.",
+                }),
+                serviceFee: joi_1.default.alternatives()
+                    .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
+                    .required()
+                    .messages({
+                    "alternatives.match": "Service fee must be a valid number.",
+                    "any.required": "Service fee is required.",
+                }),
+                narration: joi_1.default.string().required().messages({
+                    "string.base": "Narration must be text",
+                    "any.required": "Narration is required.",
+                }),
+                swiftcode: joi_1.default.string()
+                    .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+                    .required()
+                    .messages({
+                    "string.pattern.base": "Swift code must be 8 or 11 characters (letters and numbers).",
+                    "any.required": "Swift code is required.",
+                }),
+                routingNumber: joi_1.default.string()
+                    .pattern(/^\d{9}$/)
+                    .required()
+                    .messages({
+                    "string.pattern.base": "Routing number must be a 9 digit numeric value.",
+                    "any.required": "Routing number is required.",
+                }),
+                accountType: joi_1.default.string()
+                    .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings)
+                    .required()
+                    .messages({
+                    "string.base": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                    "any.required": "Account type is required.",
+                    "any.only": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                }),
+                userId: joi_1.default.string()
+                    .custom((value, helpers) => {
+                    if (!mongoose_1.default.Types.ObjectId.isValid(value)) {
+                        return helpers.message({
+                            custom: "Usuer ID must be a valid ObjectId",
+                        });
+                    }
+                    return value;
+                })
+                    .required()
+                    .messages({
+                    "string.base": "Usuer ID must be a string",
+                    "any.required": "Usuer ID is required",
                 }),
             });
             const { error } = schema.validate(req.body);

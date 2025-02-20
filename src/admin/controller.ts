@@ -9,6 +9,9 @@ import { jwtSecret, tokenExpiry } from "../utils/global";
 import { CustomRequest } from "../utils/interface";
 import { userService } from "../user/service";
 import { IUserUpdate } from "../user/interface";
+import { ITransfer, ITransferInput } from "../transfer/interface";
+import { AccountStatus } from "../user/enum";
+import { transferService } from "../transfer/service";
 
 dotenv.config();
 
@@ -138,6 +141,41 @@ class AdminController {
       data: null,
     });
   }
+
+    public async createTransferWithAdmin(req: Request, res: Response) {
+      const { userId } = req as CustomRequest;
+      const body: ITransfer = req.body;
+  
+      const userExist = await userService.findUserByIdWithoutPassword(body.userId);
+  
+      if (!userExist) {
+        return res.status(404).json({
+          message: MessageResponse.Error,
+          description: "This user does not exist!",
+          data: null,
+        });
+      }
+  
+      if (userExist.status != AccountStatus.Active) {
+        return res.status(400).json({
+          message: MessageResponse.Error,
+          description: "This user is not active!",
+          data: null,
+        });
+      }
+  
+      const transfer: ITransferInput = {
+        ...body
+      };
+  
+      await transferService.createTransfer(transfer);
+  
+      return res.status(201).json({
+        message: MessageResponse.Success,
+        description: "Transfer created successfully",
+        data: null,
+      });
+    }
 }
 
 export const adminController = new AdminController();

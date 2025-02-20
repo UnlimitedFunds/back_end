@@ -42,6 +42,13 @@ AdminRouter.patch(
   wrapAsync(adminController.updateUser)
 );
 
+//create transfer with admin
+AdminRouter.post(
+  "/admin/create/transfer",
+  [adminValidator.createTransferWithAdmin],
+  wrapAsync(adminController.createTransferWithAdmin)
+);
+
 //Create an admin
 // AdminRouter.post(
 //     "/admin/signup",

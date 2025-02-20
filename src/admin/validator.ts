@@ -8,14 +8,14 @@ import { AccountStatus, GenderStatus, MaritialStatus } from "../user/enum";
 class AdminValidator {
   public async adminLogin(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
-     userName: Joi.string().required().messages({
+      userName: Joi.string().required().messages({
         "string.base": "User name must be text",
         "any.required": "User name is required.",
       }),
-     password: Joi.string().required().messages({
+      password: Joi.string().required().messages({
         "string.base": "Password must be text",
         "any.required": "Password is required.",
-      })
+      }),
     });
     const { error } = schema.validate(req.body);
 
@@ -32,17 +32,20 @@ class AdminValidator {
 
   public validateParams(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
-      id: Joi.string().custom((value, helpers) => {
-        if (!mongoose.Types.ObjectId.isValid(value)) {
-          return helpers.message({
-            custom: "ID must be a valid ObjectId",
-          });
-        }
-        return value;
-      }).required().messages({
-        'string.base': 'ID must be a string',
-        'any.required': 'ID is required',
-      }),
+      id: Joi.string()
+        .custom((value, helpers) => {
+          if (!mongoose.Types.ObjectId.isValid(value)) {
+            return helpers.message({
+              custom: "ID must be a valid ObjectId",
+            });
+          }
+          return value;
+        })
+        .required()
+        .messages({
+          "string.base": "ID must be a string",
+          "any.required": "ID is required",
+        }),
     });
 
     const { error } = schema.validate(req.params);
@@ -122,43 +125,129 @@ class AdminValidator {
           "string.pattern.base": "SSN must be a 9-digit number.",
           "any.required": "SSN is required.",
         }),
-        occupation: Joi.string().required().messages({
-          "string.base": "Occupation must be text",
-          "any.required": "Occupation is required.",
-        }),
-        gender: Joi.string()
-        .valid(
-          GenderStatus.Male,
-          GenderStatus.Female,
-        )
+      occupation: Joi.string().required().messages({
+        "string.base": "Occupation must be text",
+        "any.required": "Occupation is required.",
+      }),
+      gender: Joi.string()
+        .valid(GenderStatus.Male, GenderStatus.Female)
         .required()
         .messages({
           "string.base": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
           "any.required": "Gender is required.",
           "any.only": `Gender must be either: "${GenderStatus.Male}" or "${GenderStatus.Female}".`,
         }),
-        status: Joi.string()
-        .valid(
-          AccountStatus.Active,
-          AccountStatus.Hold,
-        )
+      status: Joi.string()
+        .valid(AccountStatus.Active, AccountStatus.Hold)
         .required()
         .messages({
           "string.base": `Status must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
           "any.required": "Status is required.",
           "any.only": `Status must be either: "${AccountStatus.Active}" or "${AccountStatus.Hold}".`,
         }),
-        maritalStatus: Joi.string()
+      maritalStatus: Joi.string()
         .valid(
           MaritialStatus.Divorce,
           MaritialStatus.Married,
-          MaritialStatus.Single,
+          MaritialStatus.Single
         )
         .required()
         .messages({
           "string.base": `Marital Status must be one of: "${MaritialStatus.Divorce}", "${MaritialStatus.Married}" or "${MaritialStatus.Single}".`,
           "any.required": "Marital Status is required.",
           "any.only": `Marital Status must be one of: "${MaritialStatus.Divorce}", "${MaritialStatus.Married}" or "${MaritialStatus.Single}".`,
+        }),
+    });
+
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: error.details[0].message,
+        data: null,
+      });
+    }
+
+    return next();
+  }
+
+  public async createTransferWithAdmin(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const schema = Joi.object({
+      bankName: Joi.string().required().messages({
+        "string.base": "Bank name must be text",
+        "any.required": "Bank name is required.",
+      }),
+      beneficiaryName: Joi.string().required().messages({
+        "string.base": "Beneficiary name must be text",
+        "any.required": "Beneficiary name is required.",
+      }),
+      beneficiaryAccountNumber: Joi.string().required().messages({
+        "string.base": "Beneficiary account number must be text",
+        "any.required": "Beneficiary account number is required.",
+      }),
+      beneficiaryCountry: Joi.string().required().messages({
+        "string.base": "Beneficiary country must be text",
+        "any.required": "Beneficiary country is required.",
+      }),
+      amount: Joi.alternatives()
+        .try(Joi.number().positive(), Joi.string().pattern(/^\d+(\.\d+)?$/))
+        .required()
+        .messages({
+          "alternatives.match": "Amount must be a valid number.",
+          "any.required": "Amount is required.",
+        }),
+      serviceFee: Joi.alternatives()
+        .try(Joi.number().positive(), Joi.string().pattern(/^\d+(\.\d+)?$/))
+        .required()
+        .messages({
+          "alternatives.match": "Service fee must be a valid number.",
+          "any.required": "Service fee is required.",
+        }),
+      narration: Joi.string().required().messages({
+        "string.base": "Narration must be text",
+        "any.required": "Narration is required.",
+      }),
+      swiftcode: Joi.string()
+        .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+        .required()
+        .messages({
+          "string.pattern.base":
+            "Swift code must be 8 or 11 characters (letters and numbers).",
+          "any.required": "Swift code is required.",
+        }),
+      routingNumber: Joi.string()
+        .pattern(/^\d{9}$/)
+        .required()
+        .messages({
+          "string.pattern.base":
+            "Routing number must be a 9 digit numeric value.",
+          "any.required": "Routing number is required.",
+        }),
+      accountType: Joi.string()
+        .valid(AccountType.Current, AccountType.Savings)
+        .required()
+        .messages({
+          "string.base": `Account type must be either "${AccountType.Current}" or "${AccountType.Savings}"`,
+          "any.required": "Account type is required.",
+          "any.only": `Account type must be either "${AccountType.Current}" or "${AccountType.Savings}"`,
+        }),
+      userId: Joi.string()
+        .custom((value, helpers) => {
+          if (!mongoose.Types.ObjectId.isValid(value)) {
+            return helpers.message({
+              custom: "Usuer ID must be a valid ObjectId",
+            });
+          }
+          return value;
+        })
+        .required()
+        .messages({
+          "string.base": "Usuer ID must be a string",
+          "any.required": "Usuer ID is required",
         }),
     });
 
