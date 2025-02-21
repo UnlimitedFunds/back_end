@@ -10,20 +10,15 @@ const validator_2 = require("../transfer/validator");
 exports.AdminRouter = (0, express_1.Router)();
 //Sign in as admin
 exports.AdminRouter.post("/admin/signin", [validator_1.adminValidator.adminLogin], (0, utils_1.wrapAsync)(controller_1.adminController.adminSignIn));
+//Fetch Users
+exports.AdminRouter.get("/admin/users", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.fetchUsers));
 //Approve user acc
 exports.AdminRouter.patch("/admin/approve/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.approveUserAccount));
 //Delete user acc
 exports.AdminRouter.delete("/admin/delete/user/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.deleteUserAccount));
-//Update user details
 exports.AdminRouter.patch("/admin/update/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.userUpdate], (0, utils_1.wrapAsync)(controller_1.adminController.updateUser));
 //create transfer with admin
-// AdminRouter.post(
-//   "/admin/create/transfer",
-//   [adminValidator.createTransferWithAdmin],
-//   wrapAsync(adminController.createTransferWithAdmin)
-// );
-//Get all transaction histort
-exports.AdminRouter.post("/admin/create/transfer", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.createTransferWithAdmin));
+exports.AdminRouter.post("/admin/create/transfer", [validator_1.adminValidator.createTransferWithAdmin], (0, utils_1.wrapAsync)(controller_1.adminController.createTransferWithAdmin));
 //Fetch Transfer history
 exports.AdminRouter.get("/admin/transfers", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.fetchAllTransferHistory));
 //Delete transfer history

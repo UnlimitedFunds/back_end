@@ -15,6 +15,13 @@ AdminRouter.post(
   wrapAsync(adminController.adminSignIn)
 );
 
+//Fetch Users
+AdminRouter.get(
+  "/admin/users",
+  [isAuth],
+  wrapAsync(adminController.fetchUsers)
+);
+
 //Approve user acc
 AdminRouter.patch(
   "/admin/approve/user/:id",
@@ -29,7 +36,7 @@ AdminRouter.delete(
   wrapAsync(adminController.deleteUserAccount)
 );
 
-//Update user details
+
 AdminRouter.patch(
   "/admin/update/user/:id",
   [isAuth, adminValidator.userUpdate],
@@ -37,16 +44,9 @@ AdminRouter.patch(
 );
 
 //create transfer with admin
-// AdminRouter.post(
-//   "/admin/create/transfer",
-//   [adminValidator.createTransferWithAdmin],
-//   wrapAsync(adminController.createTransferWithAdmin)
-// );
-
-//Get all transaction histort
 AdminRouter.post(
   "/admin/create/transfer",
-  [isAuth],
+  [adminValidator.createTransferWithAdmin],
   wrapAsync(adminController.createTransferWithAdmin)
 );
 
