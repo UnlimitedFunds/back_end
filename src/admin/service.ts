@@ -2,6 +2,7 @@ import { IAdminUserInput } from "./interface";
 import Admin from "./entity";
 import User from "../user/entity";
 import { AccountStatus } from "../user/enum";
+import Transfer from "../transfer/entity";
 
 class AdminService {
   public async createAdmin(input: IAdminUserInput) {
@@ -30,6 +31,12 @@ class AdminService {
     const users = User.find().select("-password");
 
     return users;
+  }
+
+  public async fetchAllTransfer() {
+    const transfers = Transfer.find();
+
+    return transfers;
   }
 
   public async approveUser(userId: string) {

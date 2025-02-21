@@ -16,6 +16,7 @@ exports.adminService = void 0;
 const entity_1 = __importDefault(require("./entity"));
 const entity_2 = __importDefault(require("../user/entity"));
 const enum_1 = require("../user/enum");
+const entity_3 = __importDefault(require("../transfer/entity"));
 class AdminService {
     createAdmin(input) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,6 +40,12 @@ class AdminService {
         return __awaiter(this, void 0, void 0, function* () {
             const users = entity_2.default.find().select("-password");
             return users;
+        });
+    }
+    fetchAllTransfer() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const transfers = entity_3.default.find();
+            return transfers;
         });
     }
     approveUser(userId) {

@@ -39,7 +39,10 @@ class AdminController {
             const body = req.body;
             const userName = body.userName;
             const password = body.password;
-            const userExist = yield service_1.adminService.findAdminByUserNameAndPassword({ userName, password });
+            const userExist = yield service_1.adminService.findAdminByUserNameAndPassword({
+                userName,
+                password,
+            });
             if (!userExist) {
                 return res.status(400).json({
                     message: enum_1.MessageResponse.Error,
@@ -66,6 +69,16 @@ class AdminController {
                 message: enum_1.MessageResponse.Success,
                 description: "Users fetched successfully!",
                 data: users,
+            });
+        });
+    }
+    fetchAllTransferHistory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const transfers = yield service_1.adminService.fetchAllTransfer();
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Transfer history fetched successfully!",
+                data: transfers,
             });
         });
     }
@@ -107,6 +120,25 @@ class AdminController {
             });
         });
     }
+    deleteATransferHistory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const transfer = yield service_3.transferService.findTransferById(id);
+            if (!transfer) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Success,
+                    description: "Transfer not found!",
+                    data: null,
+                });
+            }
+            yield service_3.transferService.deleteTransfer(id);
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Transfer has been deleted!",
+                data: null,
+            });
+        });
+    }
     updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -123,6 +155,26 @@ class AdminController {
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User details updated successfully!",
+                data: null,
+            });
+        });
+    }
+    updateUserTransfer(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const body = req.body;
+            const transfer = yield service_3.transferService.findTransferById(id);
+            if (!transfer) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Success,
+                    description: "Transfer not found!",
+                    data: null,
+                });
+            }
+            yield service_3.transferService.updateTransfer(body, id);
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Transfer details updated successfully!",
                 data: null,
             });
         });

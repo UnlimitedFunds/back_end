@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { AccountOwnership, AccountType, MessageResponse } from "../utils/enum";
 import { GenderStatus, MaritialStatus } from "../user/enum";
 
-class AuthValidator {
+class TransferValidator {
   public async transfer(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
       bankName: Joi.string().required().messages({
@@ -83,4 +83,4 @@ class AuthValidator {
   }
 }
 
-export const authValidator = new AuthValidator();
+export const transferValidator = new TransferValidator();

@@ -28,5 +28,25 @@ class TransferService {
             return transfer;
         });
     }
+    findTransferById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findById(id);
+            return user;
+        });
+    }
+    deleteTransfer(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findOneAndDelete({ _id: id });
+            return user;
+        });
+    }
+    updateTransfer(input, _id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findOneAndUpdate({ _id }, Object.assign({}, input), // Update the values
+            { new: true } // Return the updated document
+            );
+            return user;
+        });
+    }
 }
 exports.transferService = new TransferService();

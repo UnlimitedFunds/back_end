@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authValidator = void 0;
+exports.transferValidator = void 0;
 const joi_1 = __importDefault(require("joi"));
 const enum_1 = require("../utils/enum");
-class AuthValidator {
+class TransferValidator {
     transfer(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = joi_1.default.object({
@@ -91,4 +91,4 @@ class AuthValidator {
         });
     }
 }
-exports.authValidator = new AuthValidator();
+exports.transferValidator = new TransferValidator();

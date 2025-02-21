@@ -16,17 +16,17 @@ import { transferService } from "../transfer/service";
 dotenv.config();
 
 class AdminController {
-    public async adminSignUp(req: Request, res: Response) {
-        const body: IAdminUserInput = req.body;
-    
-        await adminService.createAdmin(body);
-    
-        return res.status(201).json({
-          message: MessageResponse.Success,
-          description: "Admin created successfully!",
-          data: null,
-        });
-      }
+  public async adminSignUp(req: Request, res: Response) {
+    const body: IAdminUserInput = req.body;
+
+    await adminService.createAdmin(body);
+
+    return res.status(201).json({
+      message: MessageResponse.Success,
+      description: "Admin created successfully!",
+      data: null,
+    });
+  }
 
   public async adminSignIn(req: Request, res: Response) {
     const body: IAdminUserInput = req.body;
@@ -34,7 +34,10 @@ class AdminController {
     const userName = body.userName;
     const password = body.password;
 
-    const userExist = await adminService.findAdminByUserNameAndPassword({userName, password});
+    const userExist = await adminService.findAdminByUserNameAndPassword({
+      userName,
+      password,
+    });
 
     if (!userExist) {
       return res.status(400).json({
@@ -44,13 +47,9 @@ class AdminController {
       });
     }
 
-    const token = jwt.sign(
-      { userId: userExist._id },
-      jwtSecret,
-      {
-        expiresIn: tokenExpiry,
-      }
-    );
+    const token = jwt.sign({ userId: userExist._id }, jwtSecret, {
+      expiresIn: tokenExpiry,
+    });
 
     return res.status(200).json({
       message: MessageResponse.Success,
@@ -64,12 +63,21 @@ class AdminController {
   public async fetchUsers(req: Request, res: Response) {
     const users = await adminService.fetchAllUsers();
 
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Users fetched successfully!",
+      data: users,
+    });
+  }
+
+  public async fetchAllTransferHistory(req: Request, res: Response) {
+    const transfers = await adminService.fetchAllTransfer();
 
     return res.status(200).json({
-        message: MessageResponse.Success,
-        description: "Users fetched successfully!",
-        data: users,
-      });
+      message: MessageResponse.Success,
+      description: "Transfer history fetched successfully!",
+      data: transfers,
+    });
   }
 
   public async approveUserAccount(req: Request, res: Response) {
@@ -88,11 +96,10 @@ class AdminController {
     await adminService.approveUser(id);
 
     return res.status(200).json({
-        message: MessageResponse.Success,
-        description: "User has been approved!",
-        data: null,
-      });
-
+      message: MessageResponse.Success,
+      description: "User has been approved!",
+      data: null,
+    });
   }
 
   public async deleteUserAccount(req: Request, res: Response) {
@@ -111,11 +118,32 @@ class AdminController {
     await adminService.deleteUser(id);
 
     return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "User has been deleted!",
+      data: null,
+    });
+  }
+
+  public async deleteATransferHistory(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const transfer = await transferService.findTransferById(id);
+
+    if (!transfer) {
+      return res.status(404).json({
         message: MessageResponse.Success,
-        description: "User has been deleted!",
+        description: "Transfer not found!",
         data: null,
       });
+    }
 
+    await transferService.deleteTransfer(id);
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Transfer has been deleted!",
+      data: null,
+    });
   }
 
   public async updateUser(req: Request, res: Response) {
@@ -142,36 +170,62 @@ class AdminController {
     });
   }
 
-    public async createTransferWithAdmin(req: Request, res: Response) {
-      const { userId } = req as CustomRequest;
-      const body: ITransferInput = req.body;
-  
-      const userExist = await userService.findUserByIdWithoutPassword(body.userId);
-  
-      if (!userExist) {
-        return res.status(404).json({
-          message: MessageResponse.Error,
-          description: "This user does not exist!",
-          data: null,
-        });
-      }
-  
-      if (userExist.status != AccountStatus.Active) {
-        return res.status(400).json({
-          message: MessageResponse.Error,
-          description: "This user is not active!",
-          data: null,
-        });
-      }
-  
-      await transferService.createTransfer(body);
-  
-      return res.status(201).json({
+  public async updateUserTransfer(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const body: ITransferInput = req.body;
+
+    const transfer = await transferService.findTransferById(id);
+
+    if (!transfer) {
+      return res.status(404).json({
         message: MessageResponse.Success,
-        description: "Transfer created successfully",
+        description: "Transfer not found!",
         data: null,
       });
     }
+
+    await transferService.updateTransfer(body, id);
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Transfer details updated successfully!",
+      data: null,
+    });
+  }
+
+  public async createTransferWithAdmin(req: Request, res: Response) {
+    const { userId } = req as CustomRequest;
+    const body: ITransferInput = req.body;
+
+    const userExist = await userService.findUserByIdWithoutPassword(
+      body.userId
+    );
+
+    if (!userExist) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "This user does not exist!",
+        data: null,
+      });
+    }
+
+    if (userExist.status != AccountStatus.Active) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "This user is not active!",
+        data: null,
+      });
+    }
+
+    await transferService.createTransfer(body);
+
+    return res.status(201).json({
+      message: MessageResponse.Success,
+      description: "Transfer created successfully",
+      data: null,
+    });
+  }
 }
 
 export const adminController = new AdminController();

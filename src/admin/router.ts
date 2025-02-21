@@ -4,6 +4,7 @@ import { wrapAsync } from "../utils";
 import { adminValidator } from "./validator";
 import { adminController } from "./controller";
 import { isAuth } from "../middleware/isAuth";
+import { transferValidator } from "../transfer/validator";
 
 export const AdminRouter = Router();
 
@@ -12,13 +13,6 @@ AdminRouter.post(
   "/admin/signin",
   [adminValidator.adminLogin],
   wrapAsync(adminController.adminSignIn)
-);
-
-//Fetch Users
-AdminRouter.get(
-  "/admin/users",
-  [isAuth],
-  wrapAsync(adminController.fetchUsers)
 );
 
 //Approve user acc
@@ -35,7 +29,7 @@ AdminRouter.delete(
   wrapAsync(adminController.deleteUserAccount)
 );
 
-
+//Update user details
 AdminRouter.patch(
   "/admin/update/user/:id",
   [isAuth, adminValidator.userUpdate],
@@ -43,10 +37,39 @@ AdminRouter.patch(
 );
 
 //create transfer with admin
+// AdminRouter.post(
+//   "/admin/create/transfer",
+//   [adminValidator.createTransferWithAdmin],
+//   wrapAsync(adminController.createTransferWithAdmin)
+// );
+
+//Get all transaction histort
 AdminRouter.post(
   "/admin/create/transfer",
-  [adminValidator.createTransferWithAdmin],
+  [isAuth],
   wrapAsync(adminController.createTransferWithAdmin)
+);
+
+
+//Fetch Transfer history
+AdminRouter.get(
+  "/admin/transfers",
+  [isAuth],
+  wrapAsync(adminController.fetchAllTransferHistory)
+);
+
+//Delete transfer history
+AdminRouter.delete(
+  "/admin/delete/transfer/:id",
+  [isAuth],
+  wrapAsync(adminController.deleteATransferHistory)
+);
+
+//Update transfer details
+AdminRouter.patch(
+  "/admin/update/transfer/:id",
+  [isAuth, transferValidator.transfer],
+  wrapAsync(adminController.updateUser)
 );
 
 //Create an admin

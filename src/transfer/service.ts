@@ -19,6 +19,30 @@ class TransferService {
 
     return transfer;
   }
+
+  public async findTransferById(id: string) {
+    const user = await Transfer.findById(id);
+
+    return user;
+  }
+
+  public async deleteTransfer(id: string) {
+    const user = await Transfer.findOneAndDelete({ _id: id });
+
+    return user;
+}
+
+public async updateTransfer(input: ITransferInput, _id: string) {
+  const user = await Transfer.findOneAndUpdate(
+    { _id }, // Query to find the user by ID
+    {
+      ...input,
+    }, // Update the values
+    { new: true } // Return the updated document
+  );
+
+  return user;
+}
 }
 
 export const transferService = new TransferService();
