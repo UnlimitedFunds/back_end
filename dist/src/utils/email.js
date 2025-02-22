@@ -229,7 +229,7 @@ const sendAccountApprovedEmailToUser = (input) => __awaiter(void 0, void 0, void
           <p>Dear <strong>${input.fullName}</strong>,</p>
           <p>Your account has been approved.</p>
           <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
-          <a href="${clientUrl}/login.html" class="btn">Login/a>
+          <a href="${clientUrl}/login.html" class="btn">Login</a>
         </div>
         <div class="enquiries">
           <p>
