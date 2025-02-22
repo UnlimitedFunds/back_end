@@ -14,6 +14,7 @@ export interface ITransferInput {
   serviceFee: string;
   transactionType?: string;
   transferPin?: string;
+  transferDate: Date;
 }
 
 export interface ITransfer {
@@ -30,5 +31,5 @@ export interface ITransfer {
   updatedAt: string;
   createdAt: string;
   serviceFee: string;
-  transactionType: string,
+  transactionType: string;
 }

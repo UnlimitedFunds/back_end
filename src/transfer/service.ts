@@ -37,6 +37,7 @@ public async updateTransfer(input: ITransferInput, _id: string) {
     { _id }, // Query to find the user by ID
     {
       ...input,
+      createdAt: input.transferDate,
     }, // Update the values
     { new: true } // Return the updated document
   );

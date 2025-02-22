@@ -42,7 +42,7 @@ class TransferService {
     }
     updateTransfer(input, _id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield entity_1.default.findOneAndUpdate({ _id }, Object.assign({}, input), // Update the values
+            const user = yield entity_1.default.findOneAndUpdate({ _id }, Object.assign(Object.assign({}, input), { createdAt: input.transferDate }), // Update the values
             { new: true } // Return the updated document
             );
             return user;

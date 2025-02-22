@@ -257,6 +257,10 @@ class AdminValidator {
                     "any.required": "Transaction type is required.",
                     "any.only": `Transaction type must be either "${enum_1.TransactionType.Debit}" or "${enum_1.TransactionType.Credit}"`,
                 }),
+                transferDate: joi_1.default.date().iso().messages({
+                    "date.base": "Transfer date must be a valid date.",
+                    "date.format": "Transfer date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).",
+                }),
             });
             const { error } = schema.validate(req.body);
             if (error) {
