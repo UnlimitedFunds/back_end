@@ -19,3 +19,8 @@ interface MulterFiles {
   [fieldname: string]: Express.Multer.File[];
 }
 
+export enum TransactionType {
+  Debit = "debit",
+  Credit = "credit",
+}
+

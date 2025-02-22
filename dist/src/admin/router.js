@@ -6,7 +6,6 @@ const utils_1 = require("../utils");
 const validator_1 = require("./validator");
 const controller_1 = require("./controller");
 const isAuth_1 = require("../middleware/isAuth");
-const validator_2 = require("../transfer/validator");
 exports.AdminRouter = (0, express_1.Router)();
 //Sign in as admin
 exports.AdminRouter.post("/admin/signin", [validator_1.adminValidator.adminLogin], (0, utils_1.wrapAsync)(controller_1.adminController.adminSignIn));
@@ -24,7 +23,7 @@ exports.AdminRouter.get("/admin/transfers", [isAuth_1.isAuth], (0, utils_1.wrapA
 //Delete transfer history
 exports.AdminRouter.delete("/admin/delete/transfer/:id", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.deleteATransferHistory));
 //Update transfer details
-exports.AdminRouter.patch("/admin/update/transfer/:id", [isAuth_1.isAuth, validator_2.transferValidator.transfer], (0, utils_1.wrapAsync)(controller_1.adminController.updateUser));
+exports.AdminRouter.patch("/admin/update/transfer/:id", [isAuth_1.isAuth, validator_1.adminValidator.createTransferWithAdmin], (0, utils_1.wrapAsync)(controller_1.adminController.updateUserTransfer));
 //Create an admin
 // AdminRouter.post(
 //     "/admin/signup",

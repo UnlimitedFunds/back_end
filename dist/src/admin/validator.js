@@ -249,6 +249,14 @@ class AdminValidator {
                     "string.base": "Usuer ID must be a string",
                     "any.required": "Usuer ID is required",
                 }),
+                transactionType: joi_1.default.string()
+                    .valid(enum_1.TransactionType.Debit, enum_1.TransactionType.Credit)
+                    .required()
+                    .messages({
+                    "string.base": `Transaction type must be either "${enum_1.TransactionType.Debit}" or "${enum_1.TransactionType.Credit}"`,
+                    "any.required": "Transaction type is required.",
+                    "any.only": `Transaction type must be either "${enum_1.TransactionType.Debit}" or "${enum_1.TransactionType.Credit}"`,
+                }),
             });
             const { error } = schema.validate(req.body);
             if (error) {

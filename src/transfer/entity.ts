@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
-import { AccountType } from "../utils/enum";
+import { AccountType, TransactionType } from "../utils/enum";
 import { ITransfer } from "./interface";
+import { required } from "joi";
 
 const transferSchema: Schema = new Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, require, ref: "User" },
@@ -45,6 +46,11 @@ const transferSchema: Schema = new Schema({
     type: String,
     required: true,
     enum: Object.values(AccountType),
+  },
+  transactionType: {
+    type: String,
+    default: TransactionType.Debit,
+    enum: Object.values(TransactionType),
   },
   updatedAt: {
     type: Date,

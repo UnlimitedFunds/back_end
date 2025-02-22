@@ -68,8 +68,8 @@ AdminRouter.delete(
 //Update transfer details
 AdminRouter.patch(
   "/admin/update/transfer/:id",
-  [isAuth, transferValidator.transfer],
-  wrapAsync(adminController.updateUser)
+  [isAuth, adminValidator.createTransferWithAdmin],
+  wrapAsync(adminController.updateUserTransfer)
 );
 
 //Create an admin

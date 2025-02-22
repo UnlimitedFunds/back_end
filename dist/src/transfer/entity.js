@@ -78,6 +78,11 @@ const transferSchema = new mongoose_1.Schema({
         required: true,
         enum: Object.values(enum_1.AccountType),
     },
+    transactionType: {
+        type: String,
+        default: enum_1.TransactionType.Debit,
+        enum: Object.values(enum_1.TransactionType),
+    },
     updatedAt: {
         type: Date,
         default: Date.now,

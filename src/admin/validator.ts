@@ -2,7 +2,7 @@ import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 
-import { AccountType, MessageResponse } from "../utils/enum";
+import { AccountType, MessageResponse, TransactionType } from "../utils/enum";
 import { AccountStatus, GenderStatus, MaritialStatus } from "../user/enum";
 
 class AdminValidator {
@@ -248,6 +248,14 @@ class AdminValidator {
         .messages({
           "string.base": "Usuer ID must be a string",
           "any.required": "Usuer ID is required",
+        }),
+        transactionType: Joi.string()
+        .valid(TransactionType.Debit, TransactionType.Credit)
+        .required()
+        .messages({
+          "string.base": `Transaction type must be either "${TransactionType.Debit}" or "${TransactionType.Credit}"`,
+          "any.required": "Transaction type is required.",
+          "any.only": `Transaction type must be either "${TransactionType.Debit}" or "${TransactionType.Credit}"`,
         }),
     });
 
