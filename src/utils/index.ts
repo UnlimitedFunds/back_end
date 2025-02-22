@@ -16,13 +16,28 @@ export const generateAccNo= (): string => {
   return Array.from({ length: 10 }, () => crypto.randomInt(0, 10)).join('');
 };
 
-export const generateOrderId = (): string  => {
-  const prefix = "KY"; 
-  const suffix = "US";
+// Generate Transaction ID
+export const generateTransactionId = (): string => {
+  const prefix = "TXN";  
+  const randomPart = crypto.randomBytes(4).toString("hex").toUpperCase(); 
+  const timestamp = Date.now().toString().slice(-8); 
 
-  const randomPart = crypto.randomBytes(3).toString("hex").toUpperCase(); // 3 bytes -> 6 hex characters
+  return `${prefix}${timestamp}${randomPart}`;
+};
 
-  const timestamp = Date.now().toString();
+export const formatDate = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  return new Intl.DateTimeFormat("en-GB").format(date);
+};
 
-  return `${prefix}${timestamp}${randomPart}${suffix}`;
-}
+
+export const formatAmount = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+};
+
+export const maskNumber = (number: string): string => {
+  return number.slice(0, -4).replace(/\d/g, "x") + number.slice(-4);
+};

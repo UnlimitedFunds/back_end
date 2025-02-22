@@ -14,6 +14,7 @@ const enum_1 = require("../utils/enum");
 const service_1 = require("../user/service");
 const service_2 = require("./service");
 const enum_2 = require("../user/enum");
+const email_1 = require("../utils/email");
 class TransferController {
     createTransfer(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -59,7 +60,18 @@ class TransferController {
             }
             yield service_1.userService.debitUser(transferAmount, userExist._id.toString());
             const transfer = Object.assign(Object.assign({}, body), { userId: userExist._id.toString() });
-            yield service_2.transferService.createTransfer(transfer);
+            const createdTransfer = yield service_2.transferService.createTransfer(transfer);
+            const debitAlert = {
+                accountNumber: userExist.accountNo,
+                amount: transferAmount,
+                date: createdTransfer.createdAt,
+                senderEmail: userExist.email,
+                receiverFullName: body.beneficiaryName,
+                senderFullName: `${userExist.firstName} ${userExist.lastName}`,
+                transactionNumber: createdTransfer.transactionId,
+                transactionDate: createdTransfer.createdAt,
+            };
+            (0, email_1.sendDebitAlert)(debitAlert);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Transfer successful",

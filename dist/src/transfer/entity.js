@@ -36,7 +36,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const enum_1 = require("../utils/enum");
 const transferSchema = new mongoose_1.Schema({
-    userId: { type: mongoose_1.default.Schema.Types.ObjectId, require, ref: "User" },
+    userId: { type: mongoose_1.default.Schema.Types.ObjectId, require, ref: "User", },
+    transactionId: {
+        type: String,
+        required: true,
+    },
     bankName: {
         type: String,
         required: true,

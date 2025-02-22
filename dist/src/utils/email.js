@@ -1,547 +1,1145 @@
 "use strict";
-// import dotenv from "dotenv";
-// import nodemailer from "nodemailer";
-// import { ISendEmail } from "./interface";
-// import { IContactUsUserInput } from "../contact_us/interface";
-// import { IParcelSendEmail } from "../parcel/interface";
-// import { IReachOutUserInput } from "../reach_out/interface";
-// dotenv.config();
-// const smtpSender = process.env.EMAILSENDER;
-// const smtpPassword = process.env.EMAILSENDERPASSWORD;
-// const smtpEmailFrom = process.env.EMAILFROM;
-// const clientUrl = process.env.CLIENT_URL;
-// const adminEmail = process.env.ADMIN_EMAIL ?? "";
-// dotenv.config();
-// export const sendEmail = async (input: ISendEmail) => {
-//   var transport = nodemailer.createTransport({
-//     host: "smtp.zeptomail.com",
-//     port: 587,
-//     auth: {
-//       user: smtpSender,
-//       pass: smtpPassword,
-//     },
-//   });
-//   var mailOptions = {
-//     from: `"Kingsway Team" <${smtpEmailFrom}>`,
-//     to: input.receiverEmail,
-//     replyTo: smtpEmailFrom,
-//     subject: input.subject,
-//     html: input.emailTemplate,
-//   };
-//   transport.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       return console.log(error);
-//     }
-//     console.log("Successfully sent");
-//   });
-//   // try {
-//   //   // const transporter = nodemailer.createTransport({
-//   //   //   host: 'smtp-relay.sendinblue.com',
-//   //   //   port: 587,
-//   //   //   secure: false,
-//   //   //   auth: {
-//   //   //     user: smtpSender,
-//   //   //     pass: smtpPassword,
-//   //   //   },
-//   //   // });
-//   //   // const mailOptions = {
-//   //   //   from: `Kingsway <${smtpEmailFrom}>`,
-//   //   //   to: input.receiverEmail,
-//   //   //   subject: input.subject,
-//   //   //   html: input.emailTemplate,
-//   //   // };
-//   //   const transporter = nodemailer.createTransport({
-//   //     service: "gmail",
-//   //     auth: {
-//   //       user: smtpSender,
-//   //       pass: smtpPassword,
-//   //     },
-//   //   });
-//   //   const mailOptions = {
-//   //     from: `Kingsway <${smtpEmailFrom}>`,
-//   //     to: input.receiverEmail,
-//   //     subject: input.subject,
-//   //     html: input.emailTemplate,
-//   //   };
-//   //   const info = await transporter.sendMail(mailOptions);
-//   //   return info.response;
-//   // } catch (error) {
-//   //   console.error("Email sending error:", error);
-//   //   // throw error;
-//   // }
-// };
-// export const sendContactUsEmailToAdmin = async (input: IContactUsUserInput) => {
-//   return sendEmail({
-//     receiverEmail: adminEmail,
-//     subject: "Customer Support",
-//     emailTemplate: `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Delivery Update | Kingsway Logistics</title>
-//     <style>
-//         /* Global Reset */
-//         * {
-//             margin: 0;
-//             padding: 0;
-//             box-sizing: border-box;
-//         }
-//         body {
-//             font-family: Arial, sans-serif;
-//             background-color: #f2f2f2;
-//             color: #333;
-//             line-height: 1.6;
-//         }
-//         .container {
-//             max-width: 600px;
-//             margin: 40px auto;
-//             background-color: #fff;
-//             padding: 20px;
-//             border-radius: 10px;
-//             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//             height: auto;
-//             box-sizing: border-box;
-//         }
-//         .header {
-//             text-align: center;
-//             background-color: #FE6C16;
-//             padding: 20px;
-//             border-radius: 10px 10px 0 0;
-//             color: #fff;
-//         }
-//         .header img {
-//             width: 150px;
-//             margin-bottom: 10px;
-//         }
-//         .content {
-//             padding: 20px;
-//             color: #333;
-//         }
-//         .footer {
-//             text-align: center;
-//             background-color: #FE6C16;
-//             padding: 10px;
-//             border-radius: 0 0 10px 10px;
-//             color: #fff;
-//         }
-//         h1, h2, h3 {
-//             color: #333;
-//         }
-//         p {
-//             font-size: 16px;
-//             margin-bottom: 15px;
-//         }
-//         .highlight {
-//             font-weight: bold;
-//             color: #FE6C16;
-//         }
-//         ul {
-//             list-style: none;
-//             margin: 20px 0;
-//             padding: 0;
-//             border: 1px solid #FE6C16;
-//             border-radius: 8px;
-//         }
-//         li {
-//             font-size: 16px;
-//             padding: 12px 20px;
-//             border-bottom: 1px solid #ddd;
-//         }
-//         li:last-child {
-//             border-bottom: none;
-//         }
-//         .button {
-//             display: inline-block;
-//             background-color: #FE6C16;
-//             color: white;
-//             padding: 12px 25px;
-//             border-radius: 5px;
-//             text-decoration: none;
-//             font-weight: bold;
-//             text-align: center;
-//             margin-top: 20px;
-//         }
-//         .button:hover {
-//             background-color: #e0561a;
-//         }
-//         /* Responsive Styles */
-//         @media (max-width: 600px) {
-//             .container {
-//                 padding: 15px;
-//             }
-//             .header img {
-//                 width: 120px;
-//             }
-//             .footer {
-//                 font-size: 14px;
-//             }
-//             .button {
-//                 font-size: 14px;
-//                 padding: 10px 20px;
-//             }
-//         }
-//     </style>
-// </head>
-// <body>
-//     <div class="container">
-//         <div class="header">
-//             <img src="${clientUrl}/images/kingsway.png" alt="Kingsway Logistics Logo">
-//             <h1>Delivery Update</h1>
-//         </div>
-//         <div class="content">
-//             <p style="font-size: 24px; font-weight: bold;">${input.name}</p>
-//             <p><strong>Date:</strong> 11-12-2024 10:00:04</p>
-//             <p style="font-size: 16px; line-height: 1.5"><span class="highlight">Description:</span> ${
-//               input.description
-//             }</p>
-//             <div style="background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-//                 <ul>
-//                     <li><span class="highlight">Name:</span> ${input.name}</li>
-//                     <li><span class="highlight">Issue Type:</span> ${
-//                       input.issueType
-//                     }</li>
-//                     <li><span class="highlight">Email:</span> ${
-//                       input.email
-//                     }</li>
-//                 </ul>
-//             </div>
-//         </div>
-//         <div class="footer">
-//             <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
-//         </div>
-//     </div>
-// </body>
-// </html>
-// 	`,
-//   });
-// };
-// export const sendReachOutEmailToAdmin = async (input: IReachOutUserInput) => {
-//   const now = new Date();
-//   const humanReadableDate = now.toLocaleString("en-US", {
-//     weekday: "long", // e.g., Monday
-//     year: "numeric", // e.g., 2023
-//     month: "long", // e.g., December
-//     day: "numeric", // e.g., 25
-//   });
-//   return sendEmail({
-//     receiverEmail: adminEmail,
-//     subject: "Customer Support",
-//     emailTemplate: `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Delivery Update | Kingsway Logistics</title>
-//     <style>
-//         /* Global Reset */
-//         * {
-//             margin: 0;
-//             padding: 0;
-//             box-sizing: border-box;
-//         }
-//         body {
-//             font-family: Arial, sans-serif;
-//             background-color: #f2f2f2;
-//             color: #333;
-//             line-height: 1.6;
-//         }
-//         .container {
-//             max-width: 600px;
-//             margin: 40px auto;
-//             background-color: #fff;
-//             padding: 20px;
-//             border-radius: 10px;
-//             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//             height: auto;
-//             box-sizing: border-box;
-//         }
-//         .header {
-//             text-align: center;
-//             background-color: #FE6C16;
-//             padding: 20px;
-//             border-radius: 10px 10px 0 0;
-//             color: #fff;
-//         }
-//         .header img {
-//             width: 150px;
-//             margin-bottom: 10px;
-//         }
-//         .content {
-//             padding: 20px;
-//             color: #333;
-//         }
-//         .footer {
-//             text-align: center;
-//             background-color: #FE6C16;
-//             padding: 10px;
-//             border-radius: 0 0 10px 10px;
-//             color: #fff;
-//         }
-//         h1, h2, h3 {
-//             color: #333;
-//         }
-//         p {
-//             font-size: 16px;
-//             margin-bottom: 15px;
-//         }
-//         .highlight {
-//             font-weight: bold;
-//             color: #FE6C16;
-//         }
-//         ul {
-//             list-style: none;
-//             margin: 20px 0;
-//             padding: 0;
-//             border: 1px solid #FE6C16;
-//             border-radius: 8px;
-//         }
-//         li {
-//             font-size: 16px;
-//             padding: 12px 20px;
-//             border-bottom: 1px solid #ddd;
-//         }
-//         li:last-child {
-//             border-bottom: none;
-//         }
-//         .button {
-//             display: inline-block;
-//             background-color: #FE6C16;
-//             color: white;
-//             padding: 12px 25px;
-//             border-radius: 5px;
-//             text-decoration: none;
-//             font-weight: bold;
-//             text-align: center;
-//             margin-top: 20px;
-//         }
-//         .button:hover {
-//             background-color: #e0561a;
-//         }
-//         /* Responsive Styles */
-//         @media (max-width: 600px) {
-//             .container {
-//                 padding: 15px;
-//             }
-//             .header img {
-//                 width: 120px;
-//             }
-//             .footer {
-//                 font-size: 14px;
-//             }
-//             .button {
-//                 font-size: 14px;
-//                 padding: 10px 20px;
-//             }
-//         }
-//     </style>
-// </head>
-// <body>
-//     <div class="container">
-//         <div class="header">
-//             <img src="${clientUrl}/images/kingsway.png">
-//             <h1>Need a hand</h1>
-//         </div>
-//         <div class="content">
-//             <p style="font-size: 24px; font-weight: bold;">${input.name}</p>
-//             <p><strong>Date:</strong> ${humanReadableDate}</p>
-//             <p style="font-size: 16px; line-height: 1.5"><span class="highlight">Description:</span> ${
-//               input.description
-//             }</p>
-//             <div style="background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-//                 <ul>
-//                     <li><span class="highlight">Name:</span> ${input.name}</li>
-//                     <li><span class="highlight">Department:</span> ${
-//                       input.departmentToEmail
-//                     }</li>
-//                     <li><span class="highlight">Email:</span> ${
-//                       input.email
-//                     }</li>
-//                 </ul>
-//             </div>
-//         </div>
-//         <div class="footer">
-//             <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
-//         </div>
-//     </div>
-// </body>
-// </html>`,
-//   });
-// };
-// export const sendMessageToParcelReceiverOrSender = async (input: IParcelSendEmail) => {
-//   const now = new Date();
-//   const humanReadableDate = now.toLocaleString("en-US", {
-//     weekday: "long", // e.g., Monday
-//     year: "numeric", // e.g., 2023
-//     month: "long", // e.g., December
-//     day: "numeric", // e.g., 25
-//   });
-//   return sendEmail({
-//     receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
-//     subject: "Customer Support",
-//     emailTemplate: `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//   <meta charset="UTF-8">
-//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//   <title>Delivery Update | Kingsway Logistics</title>
-//   <style>
-//     /* Global Reset */
-//     * {
-//       margin: 0;
-//       padding: 0;
-//       box-sizing: border-box;
-//     }
-//     body {
-//       font-family: Arial, sans-serif;
-//       background-color: #f2f2f2;
-//       color: #333;
-//       line-height: 1.6;
-//     }
-//     .container {
-//       max-width: 600px;
-//       margin: 0 auto;
-//       background-color: #ffffff;
-//       padding: 20px;
-//       border-radius: 10px;
-//       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//     }
-//     .header {
-//       text-align: center;
-//       background-color: #FE6C16;
-//       padding: 20px;
-//       border-radius: 10px 10px 0 0;
-//       color: #fff;
-//     }
-//     .header img {
-//       width: 150px;
-//       margin-bottom: 10px;
-//     }
-//     .content {
-//       padding: 20px;
-//     }
-//     .footer {
-//       text-align: center;
-//       background-color: #FE6C16;
-//       padding: 10px;
-//       border-radius: 0 0 10px 10px;
-//       color: #fff;
-//     }
-//     h1, h2, h3 {
-//       color: #333;
-//     }
-//     p {
-//       font-size: 14px;
-//       margin-bottom: 15px;
-//     }
-//     ul {
-//       list-style: none;
-//       margin: 20px 0;
-//       padding: 0;
-//     }
-//     li {
-//       font-size: 14px;
-//       padding-bottom: 8px;
-//     }
-//     .highlight {
-//       font-weight: bold;
-//       color: #FE6C16;
-//     }
-//     .tracking-link {
-//       color: #FE6C16;
-//       text-decoration: none;
-//     }
-//     .tracking-link:hover {
-//       text-decoration: underline;
-//     }
-//     .details-list {
-//       border: 1px solid #FE6C16;
-//       border-radius: 8px;
-//       padding: 15px;
-//     }
-//     .details-list li {
-//       padding: 8px 0;
-//     }
-//     .details-list span {
-//       font-weight: bold;
-//       color: #FE6C16;
-//     }
-//     .identity-card-info {
-//       background-color: #f9f9f9;
-//       border: 1px solid #ddd;
-//       padding: 20px;
-//       border-radius: 8px;
-//     }
-//     .identity-card-info p {
-//       font-size: 16px;
-//       color: #333;
-//     }
-//     .button {
-//       display: inline-block;
-//       background-color: #FE6C16;
-//       color: white;
-//       padding: 12px 25px;
-//       border-radius: 5px;
-//       text-decoration: none;
-//       font-weight: bold;
-//       text-align: center;
-//       margin-top: 20px;
-//     }
-//     .button:hover {
-//       background-color: #e0561a;
-//     }
-//     /* Responsive Styles */
-//     @media (max-width: 600px) {
-//       .container {
-//         padding: 10px;
-//       }
-//       .header img {
-//         width: 120px;
-//       }
-//       .footer {
-//         font-size: 12px;
-//       }
-//       .tracking-link, .button {
-//         font-size: 14px;
-//       }
-//     }
-//   </style>
-// </head>
-// <body>
-//   <div class="container">
-//     <div class="header">
-//       <img src="${clientUrl}/images/kingsway.png" alt="Kingsway Logistics Logo">
-//       <h1>Delivery Update</h1>
-//     </div>
-//     <div class="content">
-//       <p>Dear ${input.receiverName},</p>
-//       <p><strong>Date:</strong> ${humanReadableDate}</p>
-//       <p><strong>Deposit Delivery Information:</strong> From ${input.senderLocation} to ${input.parcelsDesignation}.</p>
-//       <p>Click on the link or copy the tracking ID below to track your parcel:</p>
-//       <ul>
-//         <li><a href="${clientUrl}/trackingdetail.html#${input.trackingId}" class="tracking-link">Track Your Parcel</a></li>
-//         <li><span class="highlight">Tracking ID:</span> ${input.trackingId}</li>
-//       </ul>
-//       <div class="identity-card-info">
-//         <p>we received a freight deposit in your name. To proceed with the delivery of your package, we kindly request that you reconfirm your delivery details:</p>
-//         <p><strong>Below are your details to reconfirm:</strong></p>
-//         <ul class="details-list">
-//           <li><span>Name:</span> ${input.receiverName}</li>
-//           <li><span>Address:</span> ${input.parcelsDesignation}</li>
-//           <li><span>Email:</span> ${input.receiverEmail}</li>
-//           <li><span>Phone Number:</span> ${input.phoneNumber}</li>
-//         </ul>
-//         <p>Please send us a clear picture of a valid government-issued identity card to verify your identity and ensure a smooth delivery process.</p>
-//         <p>Thank you for your cooperation. We look forward to your prompt response.</p>
-//         <a href="#" class="button">Reconfirm Details</a>
-//         <p><strong>Best regards,</strong><br> Kingsway Logistics</p>
-//       </div>
-//     </div>
-//     <div class="footer">
-//       <p>&copy; 2024 Kingsway Logistics. All rights reserved.</p>
-//     </div>
-//   </div>
-// </body>
-// </html>`,
-//   });
-// }
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountDeactivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const _1 = require(".");
+dotenv_1.default.config();
+const smtpSender = process.env.EMAILSENDER;
+const smtpPassword = process.env.EMAILSENDERPASSWORD;
+const smtpEmailFrom = process.env.EMAILFROM;
+const clientUrl = process.env.CLIENT_URL;
+const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
+const contactUsEmail = process.env.CONTACTUS_EMAIL;
+dotenv_1.default.config();
+const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    //   var transport = nodemailer.createTransport({
+    //     host: "smtp.zeptomail.com",
+    //     port: 587,
+    //     auth: {
+    //       user: smtpSender,
+    //       pass: smtpPassword,
+    //     },
+    //   });
+    //   var mailOptions = {
+    //     from: `"Kingsway Team" <${smtpEmailFrom}>`,
+    //     to: input.receiverEmail,
+    //     replyTo: smtpEmailFrom,
+    //     subject: input.subject,
+    //     html: input.emailTemplate,
+    //   };
+    //   transport.sendMail(mailOptions, (error, info) => {
+    //     if (error) {
+    //       return console.log(error);
+    //     }
+    //     console.log("Successfully sent");
+    //   });
+    try {
+        // const transporter = nodemailer.createTransport({
+        //   host: 'smtp-relay.sendinblue.com',
+        //   port: 587,
+        //   secure: false,
+        //   auth: {
+        //     user: smtpSender,
+        //     pass: smtpPassword,
+        //   },
+        // });
+        // const mailOptions = {
+        //   from: `Kingsway <${smtpEmailFrom}>`,
+        //   to: input.receiverEmail,
+        //   subject: input.subject,
+        //   html: input.emailTemplate,
+        // };
+        const transporter = nodemailer_1.default.createTransport({
+            service: "gmail",
+            auth: {
+                user: smtpSender,
+                pass: smtpPassword,
+            },
+        });
+        const mailOptions = {
+            from: `Unlimted funds <${smtpEmailFrom}>`,
+            to: input.receiverEmail,
+            subject: input.subject,
+            html: input.emailTemplate,
+        };
+        const info = yield transporter.sendMail(mailOptions);
+        return info.response;
+    }
+    catch (error) {
+        console.error("Email sending error:", error);
+        // throw error;
+    }
+});
+exports.sendEmail = sendEmail;
+const sendAccountApprovedEmailToUser = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: input.receiverEmail,
+        subject: "ACCOUNT APPROVED",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Approved</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+      }
+
+      .header {
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 20px;
+      }
+
+      .email-title {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .email-title h2 {
+        font-size: 22px;
+        font-weight: bold;
+      }
+
+      .email-content {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .email-content p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .enquiries {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 15px;
+        color: #555;
+      }
+
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 0 0 8px 8px;
+        margin-top: 10px;
+      }
+
+      .footer p {
+        margin-bottom: 10px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer h4 {
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .email-container {
+          width: 95%;
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .email-container {
+          width: 100%;
+          padding: 15px;
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="header">
+          <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
+        </div>
+        <div class="email-title">
+          <h2>Account Approved</h2>
+        </div>
+        <div class="email-content">
+          <p>Dear <strong>${input.fullName}</strong>,</p>
+          <p>Your account has been approved.</p>
+          <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
+          <a href="${clientUrl}/login.html" class="btn">Login/a>
+        </div>
+        <div class="enquiries">
+          <p>
+            For more enquiries, please contact our customer service at
+            <strong>${contactUsEmail}</strong>
+          </p>
+        </div>
+        <footer class="footer">
+          <div class="footer-flex">
+            <h4>UnlimitedSfunds Bank Ltd.</h4>
+            <p>
+              Making the world a better place through constructive financial
+              solutions. Our innovative banking services empower individuals and
+              businesses worldwide.
+            </p>
+            <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
+	`,
+    });
+});
+exports.sendAccountApprovedEmailToUser = sendAccountApprovedEmailToUser;
+const sendAccountSuspendedmailToUser = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: input.receiverEmail,
+        subject: "ACCOUNT SUSPENDED",
+        emailTemplate: `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Account Suspended</title>
+      <style>
+        body {
+          border: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          background-color: #f4f4f4;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+  
+        * {
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+        }
+  
+        main {
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+  
+        .email-container {
+          width: 90%;
+          max-width: 595px;
+          background: #fff;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          padding: 30px;
+        }
+  
+        .header {
+          text-align: center;
+          border-bottom: 1px solid #000;
+          padding-bottom: 20px;
+        }
+  
+        .email-title {
+          text-align: center;
+          margin: 20px 0;
+        }
+  
+        .email-title h2 {
+          font-size: 22px;
+          font-weight: bold;
+        }
+  
+        .email-content {
+          padding: 20px 0;
+          text-align: center;
+        }
+  
+        .email-content p {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+  
+        .btn {
+          display: inline-block;
+          padding: 12px 20px;
+          background-color: #007bff;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 5px;
+          font-size: 16px;
+          margin-top: 20px;
+        }
+  
+        .btn:hover {
+          background-color: #0056b3;
+        }
+  
+        .enquiries {
+          text-align: center;
+          padding-top: 20px;
+          font-size: 15px;
+          color: #555;
+        }
+  
+        .footer {
+          background-color: #000;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+          font-size: 14px;
+          border-radius: 0 0 8px 8px;
+          margin-top: 10px;
+        }
+  
+        .footer p {
+          margin-bottom: 10px;
+        }
+  
+        .footer-flex {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+  
+        .footer h4 {
+          margin-bottom: 8px;
+        }
+  
+        @media (max-width: 768px) {
+          .email-container {
+            width: 95%;
+            padding: 20px;
+          }
+        }
+  
+        @media (max-width: 480px) {
+          .email-container {
+            width: 100%;
+            padding: 15px;
+            border-radius: 0;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <main>
+        <div class="email-container">
+          <div class="header">
+            <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
+          </div>
+          <div class="email-title">
+            <h2>Account Suspended</h2>
+          </div>
+          <div class="email-content">
+            <p>Dear <strong>${input.fullName}</strong>,</p>
+            <p>Your account has been suspended.</p>
+      
+          </div>
+          <div class="enquiries">
+            <p>
+              For more enquiries, please contact our customer service at
+              <strong>${contactUsEmail}</strong>
+            </p>
+          </div>
+          <footer class="footer">
+            <div class="footer-flex">
+              <h4>UnlimitedSfunds Bank Ltd.</h4>
+              <p>
+                Making the world a better place through constructive financial
+                solutions. Our innovative banking services empower individuals and
+                businesses worldwide.
+              </p>
+              <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </main>
+    </body>
+  </html>
+      `,
+    });
+});
+exports.sendAccountSuspendedmailToUser = sendAccountSuspendedmailToUser;
+const sendAccountDeactivatedEmailToUser = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: input.receiverEmail,
+        subject: "ACCOUNT DEACTIVATED",
+        emailTemplate: `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Account Deactivated</title>
+      <style>
+        body {
+          border: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          background-color: #f4f4f4;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+  
+        * {
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+        }
+  
+        main {
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+  
+        .email-container {
+          width: 90%;
+          max-width: 595px;
+          background: #fff;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          padding: 30px;
+        }
+  
+        .header {
+          text-align: center;
+          border-bottom: 1px solid #000;
+          padding-bottom: 20px;
+        }
+  
+        .email-title {
+          text-align: center;
+          margin: 20px 0;
+        }
+  
+        .email-title h2 {
+          font-size: 22px;
+          font-weight: bold;
+        }
+  
+        .email-content {
+          padding: 20px 0;
+          text-align: center;
+        }
+  
+        .email-content p {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+  
+        .btn {
+          display: inline-block;
+          padding: 12px 20px;
+          background-color: #007bff;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 5px;
+          font-size: 16px;
+          margin-top: 20px;
+        }
+  
+        .btn:hover {
+          background-color: #0056b3;
+        }
+  
+        .enquiries {
+          text-align: center;
+          padding-top: 20px;
+          font-size: 15px;
+          color: #555;
+        }
+  
+        .footer {
+          background-color: #000;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+          font-size: 14px;
+          border-radius: 0 0 8px 8px;
+          margin-top: 10px;
+        }
+  
+        .footer p {
+          margin-bottom: 10px;
+        }
+  
+        .footer-flex {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+  
+        .footer h4 {
+          margin-bottom: 8px;
+        }
+  
+        @media (max-width: 768px) {
+          .email-container {
+            width: 95%;
+            padding: 20px;
+          }
+        }
+  
+        @media (max-width: 480px) {
+          .email-container {
+            width: 100%;
+            padding: 15px;
+            border-radius: 0;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <main>
+        <div class="email-container">
+          <div class="header">
+            <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
+          </div>
+          <div class="email-title">
+            <h2>Account Approved</h2>
+          </div>
+          <div class="email-content">
+            <p>Dear <strong>${input.fullName}</strong>,</p>
+            <p>Your account has been deactivated.</p>
+            <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
+            <a href="${clientUrl}/login.html" class="btn">Login/a>
+          </div>
+          <div class="enquiries">
+            <p>
+              For more enquiries, please contact our customer service at
+              <strong>${contactUsEmail}</strong>
+            </p>
+          </div>
+          <footer class="footer">
+            <div class="footer-flex">
+              <h4>UnlimitedSfunds Bank Ltd.</h4>
+              <p>
+                Making the world a better place through constructive financial
+                solutions. Our innovative banking services empower individuals and
+                businesses worldwide.
+              </p>
+              <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </main>
+    </body>
+  </html>
+      `,
+    });
+});
+exports.sendAccountDeactivatedEmailToUser = sendAccountDeactivatedEmailToUser;
+const sendDebitAlert = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: input.senderEmail,
+        subject: "ACCOUNT APPROVED",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Alert</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        height: auto;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .main-content {
+        padding: 40px;
+      }
+
+      .headear {
+        width: 100%;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #000;
+      }
+
+      .headear img {
+        max-width: 150px;
+      }
+
+      .email-title {
+        padding: 30px 0 20px;
+      }
+
+      .discription {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .username {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .email-content h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 30px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      .enquiries {
+        padding-bottom: 15px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      footer {
+        background-color: #000;
+        color: #fff;
+        padding: 15px 20px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .flex1 h1 {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .flex1 p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #ddd;
+      }
+
+      footer h4 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      footer p {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 25px;
+        }
+
+        .email-title {
+          padding: 20px 0;
+        }
+
+        .email-content h3 {
+          font-size: 18px;
+        }
+
+        .details {
+          font-size: 14px;
+        }
+
+        .footer-flex {
+          gap: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .email-container {
+          width: 100%;
+          border-radius: 0;
+        }
+
+        .main-content {
+          padding: 20px;
+        }
+
+        .email-title {
+          padding: 15px 0;
+        }
+
+        .discription {
+          font-size: 14px;
+        }
+
+        .username {
+          font-size: 16px;
+        }
+
+        .email-content h3 {
+          font-size: 16px;
+        }
+
+        .details {
+          font-size: 13px;
+        }
+
+        .enquiries {
+          font-size: 13px;
+        }
+
+        footer {
+          padding: 12px 15px;
+        }
+
+        footer h4 {
+          font-size: 14px;
+        }
+
+        footer p {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="main-content">
+          <div class="headear">
+            <img src="${clientUrl}/image/logo.png" alt="logo" />
+          </div>
+          <div class="email-title">
+            <p class="discription">Debit Transaction Alert on ${(0, _1.maskNumber)(input.accountNumber)}</p>
+            <p class="username">
+              <span>Dear ${input.senderFullName},</span>
+              your transfer of $${(0, _1.formatAmount)(input.amount)} successful.
+            </p>
+          </div>
+          <div class="email-content">
+            <h3>Debit Transaction Details</h3>
+            <div class="details-container">
+              <div class="details">
+                <p>Transaction Number</p>
+                <p>${input.transactionNumber}</p>
+              </div>
+              <div class="details">
+                <p>Transaction Date</p>
+                <p>${(0, _1.formatDate)(input.date)}</p>
+              </div>
+              <div class="details">
+                <p>Beneficiary</p>
+                <p>${input.receiverFullName}</p>
+              </div>
+              <div class="details">
+                <p>Total Amount</p>
+                <p>${input.amount}</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="enquiries">
+              For more enquiries, please contact our customer service at ${contactUsEmail}
+            </p>
+            <p>Thanks for choosing UnlimitedSfunds.</p>
+          </div>
+        </div>
+        <footer>
+          <div class="footer-flex">
+            <div class="flex1">
+              <h1>UnlimitedSfunds Bank Ltd.</h1>
+              <p>
+                Making the world a better place through constructive elegant
+                hierarchies. Innovations enabled by UnlimitedSfunds Bank result
+                in products that assist workers.
+              </p>
+            </div>
+            <h4>Contact Us</h4>
+            <p>Email: ${contactUsEmail}</p>
+            <div>
+              <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>`,
+    });
+});
+exports.sendDebitAlert = sendDebitAlert;
+const sendCreditAlert = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: input.senderEmail,
+        subject: "ACCOUNT APPROVED",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Alert</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        height: auto;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .main-content {
+        padding: 40px;
+      }
+
+      .headear {
+        width: 100%;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #000;
+      }
+
+      .headear img {
+        max-width: 150px;
+      }
+
+      .email-title {
+        padding: 30px 0 20px;
+      }
+
+      .discription {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .username {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .email-content h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 30px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      .enquiries {
+        padding-bottom: 15px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      footer {
+        background-color: #000;
+        color: #fff;
+        padding: 15px 20px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .flex1 h1 {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .flex1 p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #ddd;
+      }
+
+      footer h4 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      footer p {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 25px;
+        }
+
+        .email-title {
+          padding: 20px 0;
+        }
+
+        .email-content h3 {
+          font-size: 18px;
+        }
+
+        .details {
+          font-size: 14px;
+        }
+
+        .footer-flex {
+          gap: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .email-container {
+          width: 100%;
+          border-radius: 0;
+        }
+
+        .main-content {
+          padding: 20px;
+        }
+
+        .email-title {
+          padding: 15px 0;
+        }
+
+        .discription {
+          font-size: 14px;
+        }
+
+        .username {
+          font-size: 16px;
+        }
+
+        .email-content h3 {
+          font-size: 16px;
+        }
+
+        .details {
+          font-size: 13px;
+        }
+
+        .enquiries {
+          font-size: 13px;
+        }
+
+        footer {
+          padding: 12px 15px;
+        }
+
+        footer h4 {
+          font-size: 14px;
+        }
+
+        footer p {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="main-content">
+          <div class="headear">
+            <img src="${clientUrl}/image/logo.png" alt="logo" />
+          </div>
+           <div class="email-title">
+            <p class="discription">Credit Transaction Alert on ${(0, _1.maskNumber)(input.accountNumber)}</p>
+            <p class="username">
+              <span>Dear ${input.senderFullName},</span>
+              your transfer of $${(0, _1.formatAmount)(input.amount)} successful.
+            </p>
+          </div>
+          <div class="email-content">
+            <h3>Credit Transaction Details</h3>
+            <div class="details-container">
+               <div class="details">
+                <p>Transaction Number</p>
+                <p>${input.transactionNumber}</p>
+              </div>
+              <div class="details">
+                <p>Transaction Date</p>
+                <p>${(0, _1.formatDate)(input.date)}</p>
+              </div>
+              <div class="details">
+                <p>Beneficiary</p>
+                <p>${input.receiverFullName}</p>
+              </div>
+              <div class="details">
+                <p>Total Amount</p>
+                <p>${input.amount}</p>
+              </div>
+            
+            </div>
+          </div>
+          <div>
+            <p class="enquiries">
+              For more enquiries, please contact our customer service at
+              ${contactUsEmail}
+            </p>
+            <p>Thanks for choosing UnlimitedSfunds.</p>
+          </div>
+        </div>
+        <footer>
+          <div class="footer-flex">
+            <div class="flex1">
+              <h1>UnlimitedSfunds Bank Ltd.</h1>
+              <p>
+                Making the world a better place through constructive elegant
+                hierarchies. Innovations enabled by UnlimitedSfunds Bank result
+                in products that assist workers.
+              </p>
+            </div>
+            <h4>Contact Us</h4>
+            <p>Email: ${contactUsEmail}</p>
+            <div>
+              <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>`,
+    });
+});
+exports.sendCreditAlert = sendCreditAlert;

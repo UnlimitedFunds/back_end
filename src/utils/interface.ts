@@ -14,3 +14,19 @@ export interface CustomRequest extends Request {
 export interface DecodedToken extends JwtPayload {
   userId: string;
 }
+
+export interface AccountApproved {
+  receiverEmail: string;
+  fullName: string;
+}
+
+export interface TransactionAlert {
+  senderEmail: string;
+  date: string;
+  accountNumber: string;
+  receiverFullName: string;
+  senderFullName: string;
+  transactionNumber: string;
+  transactionDate: string;
+  amount: number;
+}

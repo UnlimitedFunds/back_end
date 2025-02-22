@@ -5,7 +5,11 @@ import { ITransfer } from "./interface";
 import { required } from "joi";
 
 const transferSchema: Schema = new Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, require, ref: "User" },
+  userId: { type: mongoose.Schema.Types.ObjectId, require, ref: "User", },
+  transactionId: {
+    type: String,
+    required: true,
+  },
   bankName: {
     type: String,
     required: true,

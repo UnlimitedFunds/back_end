@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 
 import { MessageResponse } from "../utils/enum";
-import { CustomRequest } from "../utils/interface";
+import { CustomRequest, TransactionAlert } from "../utils/interface";
 import { ITransfer, ITransferInput } from "./interface";
 import { userService } from "../user/service";
 import { transferService } from "./service";
 import { AccountStatus } from "../user/enum";
+import { sendDebitAlert } from "../utils/email";
 
 class TransferController {
   public async createTransfer(req: Request, res: Response) {
@@ -61,11 +62,24 @@ class TransferController {
     await userService.debitUser(transferAmount, userExist._id.toString());
 
     const transfer: ITransferInput = {
-     ...body,
+      ...body,
       userId: userExist._id.toString(),
     };
 
-    await transferService.createTransfer(transfer);
+    const createdTransfer = await transferService.createTransfer(transfer);
+
+    const debitAlert: TransactionAlert = {
+      accountNumber: userExist.accountNo,
+      amount: transferAmount,
+      date: createdTransfer.createdAt,
+      senderEmail: userExist.email,
+      receiverFullName: body.beneficiaryName,
+      senderFullName: `${userExist.firstName} ${userExist.lastName}`,
+      transactionNumber: createdTransfer.transactionId,
+      transactionDate: createdTransfer.createdAt,
+    };
+
+    sendDebitAlert(debitAlert);
 
     return res.status(201).json({
       message: MessageResponse.Success,

@@ -15,6 +15,7 @@ export interface ITransferInput {
   transactionType?: string;
   transferPin?: string;
   transferDate: Date;
+  transactionId: string;
 }
 
 export interface ITransfer {
@@ -32,4 +33,5 @@ export interface ITransfer {
   createdAt: string;
   serviceFee: string;
   transactionType: string;
+  transactionId: string;
 }

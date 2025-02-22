@@ -1,17 +1,29 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { isSameDay, parseISO } from "date-fns";
 
-import { MessageResponse } from "../utils/enum";
+import { MessageResponse, TransactionType } from "../utils/enum";
 import { IAdminUserInput } from "./interface";
 import { adminService } from "./service";
 import { jwtSecret, tokenExpiry } from "../utils/global";
-import { CustomRequest } from "../utils/interface";
+import {
+  AccountApproved,
+  CustomRequest,
+  TransactionAlert,
+} from "../utils/interface";
 import { userService } from "../user/service";
 import { IUserUpdate } from "../user/interface";
 import { ITransfer, ITransferInput } from "../transfer/interface";
 import { AccountStatus } from "../user/enum";
 import { transferService } from "../transfer/service";
+import {
+  sendAccountApprovedEmailToUser,
+  sendAccountDeactivatedEmailToUser,
+  sendAccountSuspendedmailToUser,
+  sendCreditAlert,
+  sendDebitAlert,
+} from "../utils/email";
 
 dotenv.config();
 
@@ -95,6 +107,13 @@ class AdminController {
 
     await adminService.approveUser(id);
 
+    const acctApproved: AccountApproved = {
+      receiverEmail: user.email,
+      fullName: `${user.firstName} ${user.lastName}`,
+    };
+
+    sendAccountApprovedEmailToUser(acctApproved);
+
     return res.status(200).json({
       message: MessageResponse.Success,
       description: "User has been approved!",
@@ -163,6 +182,18 @@ class AdminController {
 
     const user = await userService.updateUser(body, id);
 
+    if (userExist.status != user?.status) {
+      const approvalStatus: AccountApproved = {
+        receiverEmail: userExist.email,
+        fullName: `${userExist.firstName} ${userExist.lastName}`,
+      };
+      if (user?.status == AccountStatus.Active) {
+        sendAccountDeactivatedEmailToUser(approvalStatus);
+      } else {
+        sendAccountSuspendedmailToUser(approvalStatus);
+      }
+    }
+
     return res.status(200).json({
       message: MessageResponse.Success,
       description: "User details updated successfully!",
@@ -218,7 +249,40 @@ class AdminController {
       });
     }
 
-    await transferService.createTransfer(body);
+    const createdTransfer = await transferService.createTransfer(body);
+
+    const transferAmount = parseFloat(body.amount);
+
+    body.transferDate;
+
+    const txAlert: TransactionAlert = {
+      accountNumber: userExist.accountNo,
+      amount: transferAmount,
+      date: createdTransfer.createdAt,
+      senderEmail: userExist.email,
+      receiverFullName: body.beneficiaryName,
+      senderFullName: `${userExist.firstName} ${userExist.lastName}`,
+      transactionNumber: createdTransfer.transactionId,
+      transactionDate: createdTransfer.createdAt,
+    };
+
+    const isTodayTransfer = (transferDate: string): boolean => {
+      return isSameDay(parseISO(transferDate), new Date());
+    };
+
+    if (
+      isTodayTransfer(createdTransfer.createdAt) &&
+      body.transactionType == TransactionType.Debit
+    ) {
+      sendDebitAlert(txAlert);
+    }
+
+    if (
+      isTodayTransfer(createdTransfer.createdAt) &&
+      body.transactionType == TransactionType.Credit
+    ) {
+      sendCreditAlert(txAlert);
+    }
 
     return res.status(201).json({
       message: MessageResponse.Success,

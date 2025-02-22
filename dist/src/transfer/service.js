@@ -14,10 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transferService = void 0;
 const entity_1 = __importDefault(require("./entity"));
+const utils_1 = require("../utils");
 class TransferService {
     createTransfer(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newTransfer = new entity_1.default(Object.assign(Object.assign({}, input), { amount: input.amount.toString(), serviceFee: input.serviceFee.toString() }));
+            let newTransfer = new entity_1.default(Object.assign(Object.assign({}, input), { amount: input.amount.toString(), serviceFee: input.serviceFee.toString(), transactionId: (0, utils_1.generateTransactionId)() }));
             newTransfer = yield newTransfer.save();
             return newTransfer;
         });

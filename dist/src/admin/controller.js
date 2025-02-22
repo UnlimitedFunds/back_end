@@ -15,12 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminController = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const date_fns_1 = require("date-fns");
 const enum_1 = require("../utils/enum");
 const service_1 = require("./service");
 const global_1 = require("../utils/global");
 const service_2 = require("../user/service");
 const enum_2 = require("../user/enum");
 const service_3 = require("../transfer/service");
+const email_1 = require("../utils/email");
 dotenv_1.default.config();
 class AdminController {
     adminSignUp(req, res) {
@@ -94,6 +96,11 @@ class AdminController {
                 });
             }
             yield service_1.adminService.approveUser(id);
+            const acctApproved = {
+                receiverEmail: user.email,
+                fullName: `${user.firstName} ${user.lastName}`,
+            };
+            (0, email_1.sendAccountApprovedEmailToUser)(acctApproved);
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User has been approved!",
@@ -152,6 +159,18 @@ class AdminController {
                 });
             }
             const user = yield service_2.userService.updateUser(body, id);
+            if (userExist.status != (user === null || user === void 0 ? void 0 : user.status)) {
+                const approvalStatus = {
+                    receiverEmail: userExist.email,
+                    fullName: `${userExist.firstName} ${userExist.lastName}`,
+                };
+                if ((user === null || user === void 0 ? void 0 : user.status) == enum_2.AccountStatus.Active) {
+                    (0, email_1.sendAccountDeactivatedEmailToUser)(approvalStatus);
+                }
+                else {
+                    (0, email_1.sendAccountSuspendedmailToUser)(approvalStatus);
+                }
+            }
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "User details updated successfully!",
@@ -198,7 +217,30 @@ class AdminController {
                     data: null,
                 });
             }
-            yield service_3.transferService.createTransfer(body);
+            const createdTransfer = yield service_3.transferService.createTransfer(body);
+            const transferAmount = parseFloat(body.amount);
+            body.transferDate;
+            const txAlert = {
+                accountNumber: userExist.accountNo,
+                amount: transferAmount,
+                date: createdTransfer.createdAt,
+                senderEmail: userExist.email,
+                receiverFullName: body.beneficiaryName,
+                senderFullName: `${userExist.firstName} ${userExist.lastName}`,
+                transactionNumber: createdTransfer.transactionId,
+                transactionDate: createdTransfer.createdAt,
+            };
+            const isTodayTransfer = (transferDate) => {
+                return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
+            };
+            if (isTodayTransfer(createdTransfer.createdAt) &&
+                body.transactionType == enum_1.TransactionType.Debit) {
+                (0, email_1.sendDebitAlert)(txAlert);
+            }
+            if (isTodayTransfer(createdTransfer.createdAt) &&
+                body.transactionType == enum_1.TransactionType.Credit) {
+                (0, email_1.sendCreditAlert)(txAlert);
+            }
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Transfer created successfully",
