@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountDeactivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
+exports.sendContactUsEmail = exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountDeactivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const _1 = require(".");
@@ -1143,3 +1143,170 @@ const sendCreditAlert = (input) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.sendCreditAlert = sendCreditAlert;
+const sendContactUsEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: adminEmail,
+        subject: "A USER HAS A MESSGE FOR YOU",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Form Submission</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+      }
+
+      .header {
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 20px;
+      }
+
+      .email-title {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .email-title h2 {
+        font-size: 22px;
+        font-weight: bold;
+      }
+
+      .email-content {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .email-content p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .message-box {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-size: 16px;
+        text-align: left;
+        white-space: pre-line;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 0 0 8px 8px;
+        margin-top: 10px;
+      }
+
+      .footer p {
+        margin-bottom: 10px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer h4 {
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .email-container {
+          width: 95%;
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .email-container {
+          width: 100%;
+          padding: 15px;
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="header">
+          <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
+        </div>
+        <div class="email-title">
+          <h2>New Contact Form Submission</h2>
+        </div>
+        <div class="email-content">
+          <p><strong>First Name:</strong> ${input.firstName}</p>
+          <p><strong>Last Name:</strong> ${input.lastName}</p>
+          <p><strong>Email:</strong> ${input.senderEmail}</p>
+          <div class="message-box">
+            <p><strong>Message:</strong></p>
+            <p>${input.message}</p>
+          </div>
+          <a href="mailto:${contactUsEmail}" class="btn">Reply to Email</a>
+        </div>
+        <footer class="footer">
+          <div class="footer-flex">
+            <h4> UnlimitedSfunds Bank</h4>
+            <p>Thank you for reaching out to us. We will get back to you soon.</p>
+             <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>`,
+    });
+});
+exports.sendContactUsEmail = sendContactUsEmail;
