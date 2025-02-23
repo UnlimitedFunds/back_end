@@ -25,21 +25,21 @@ AdminRouter.get(
 //Approve user acc
 AdminRouter.patch(
   "/admin/approve/user/:id",
-  [isAuth],
+  [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.approveUserAccount)
 );
 
 //Delete user acc
 AdminRouter.delete(
   "/admin/delete/user/:id",
-  [isAuth],
+  [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.deleteUserAccount)
 );
 
 
 AdminRouter.patch(
   "/admin/update/user/:id",
-  [isAuth, adminValidator.userUpdate],
+  [isAuth, adminValidator.validateParams, adminValidator.userUpdate],
   wrapAsync(adminController.updateUser)
 );
 
@@ -61,21 +61,21 @@ AdminRouter.get(
 
 AdminRouter.get(
   "/admin/transfer/:id",
-  [isAuth],
+  [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.fetchTransferById)
 );
 
 //Delete transfer history
 AdminRouter.delete(
   "/admin/delete/transfer/:id",
-  [isAuth],
+  [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.deleteATransferHistory)
 );
 
 //Update transfer details
 AdminRouter.patch(
   "/admin/update/transfer/:id",
-  [isAuth, adminValidator.createTransferWithAdmin],
+  [isAuth, adminValidator.validateParams, adminValidator.createTransferWithAdmin],
   wrapAsync(adminController.updateUserTransfer)
 );
 
