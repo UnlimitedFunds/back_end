@@ -61,7 +61,7 @@ AdminRouter.get(
 
 //Fetch Transfer for transction id
 AdminRouter.get(
-  "/admin/transfer/user/:id",
+  "/admin/transfer/:id",
   [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.fetchTransferById)
 );

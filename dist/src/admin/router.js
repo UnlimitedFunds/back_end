@@ -21,7 +21,7 @@ exports.AdminRouter.post("/admin/create/transfer", [validator_1.adminValidator.c
 //Fetch Transfer history
 exports.AdminRouter.get("/admin/transfers", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.fetchAllTransferHistory));
 //Fetch Transfer for transction id
-exports.AdminRouter.get("/admin/transfer/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferById));
+exports.AdminRouter.get("/admin/transfer/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferById));
 //Fetch Transfer for transction userid
 exports.AdminRouter.get("/admin/transfer/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferByUserId));
 //Delete transfer history
