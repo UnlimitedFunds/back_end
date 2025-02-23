@@ -58,6 +58,13 @@ AdminRouter.get(
   wrapAsync(adminController.fetchAllTransferHistory)
 );
 
+
+AdminRouter.get(
+  "/admin/transfer/:id",
+  [isAuth],
+  wrapAsync(adminController.fetchTransferById)
+);
+
 //Delete transfer history
 AdminRouter.delete(
   "/admin/delete/transfer/:id",

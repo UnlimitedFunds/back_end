@@ -146,6 +146,24 @@ class AdminController {
             });
         });
     }
+    fetchTransferById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const transfer = yield service_3.transferService.findTransferById(id);
+            if (!transfer) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Success,
+                    description: "Transfer not found!",
+                    data: null,
+                });
+            }
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Transfer fetched duccessfully!",
+                data: transfer,
+            });
+        });
+    }
     updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
