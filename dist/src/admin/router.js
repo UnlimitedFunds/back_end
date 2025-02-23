@@ -20,7 +20,10 @@ exports.AdminRouter.patch("/admin/update/user/:id", [isAuth_1.isAuth, validator_
 exports.AdminRouter.post("/admin/create/transfer", [validator_1.adminValidator.createTransferWithAdmin], (0, utils_1.wrapAsync)(controller_1.adminController.createTransferWithAdmin));
 //Fetch Transfer history
 exports.AdminRouter.get("/admin/transfers", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.adminController.fetchAllTransferHistory));
-exports.AdminRouter.get("/admin/transfer/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferById));
+//Fetch Transfer for transction id
+exports.AdminRouter.get("/admin/transfer/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferById));
+//Fetch Transfer for transction userid
+exports.AdminRouter.get("/admin/transfer/user/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.fetchTransferByUserId));
 //Delete transfer history
 exports.AdminRouter.delete("/admin/delete/transfer/:id", [isAuth_1.isAuth, validator_1.adminValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.adminController.deleteATransferHistory));
 //Update transfer details

@@ -59,10 +59,18 @@ AdminRouter.get(
 );
 
 
+//Fetch Transfer for transction id
 AdminRouter.get(
-  "/admin/transfer/:id",
+  "/admin/transfer/user/:id",
   [isAuth, adminValidator.validateParams],
   wrapAsync(adminController.fetchTransferById)
+);
+
+//Fetch Transfer for transction userid
+AdminRouter.get(
+  "/admin/transfer/user/:id",
+  [isAuth, adminValidator.validateParams],
+  wrapAsync(adminController.fetchTransferByUserId)
 );
 
 //Delete transfer history

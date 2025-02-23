@@ -186,6 +186,26 @@ class AdminController {
     });
   }
 
+  public async fetchTransferByUserId(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const transfer = await transferService.fetchUserTransferByUserId(id);
+
+    if (!transfer) {
+      return res.status(404).json({
+        message: MessageResponse.Success,
+        description: "Transfer not found!",
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "User transfer fetched duccessfully!",
+      data: transfer,
+    });
+  }
+
   public async updateUser(req: Request, res: Response) {
     const { id } = req.params;
 
