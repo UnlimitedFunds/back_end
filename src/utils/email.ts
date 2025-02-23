@@ -78,7 +78,7 @@ export const sendEmail = async (input: ISendEmail) => {
 
     const info = await transporter.sendMail(mailOptions);
 
-    console.log(`email response ==> ${info.response}`);
+    console.log(`email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`);
     return info.response;
   } catch (error) {
     console.error("Email sending error:", error);
