@@ -109,7 +109,7 @@ class TransferController {
       });
     }
 
-    const userTransferHistory = await transferService.fetchUserTransferById(
+    const userTransferHistory = await transferService.fetchUserTransferByUserId(
       userExist._id.toString()
     );
 

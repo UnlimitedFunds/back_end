@@ -97,7 +97,7 @@ class TransferController {
                     data: null,
                 });
             }
-            const userTransferHistory = yield service_2.transferService.fetchUserTransferById(userExist._id.toString());
+            const userTransferHistory = yield service_2.transferService.fetchUserTransferByUserId(userExist._id.toString());
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Transfer history fetched sucessfully!",

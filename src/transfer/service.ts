@@ -16,7 +16,7 @@ class TransferService {
     return newTransfer;
   }
 
-  public async fetchUserTransferById(id: string) {
+  public async fetchUserTransferByUserId(id: string) {
     const transfer = Transfer.find({ userId: id });
 
     return transfer;
