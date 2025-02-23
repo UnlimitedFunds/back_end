@@ -77,6 +77,7 @@ const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
             html: input.emailTemplate,
         };
         const info = yield transporter.sendMail(mailOptions);
+        console.log(`email response ==> ${info.response}`);
         return info.response;
     }
     catch (error) {

@@ -263,7 +263,8 @@ class AdminController {
       receiverFullName: body.beneficiaryName,
       senderFullName: `${userExist.firstName} ${userExist.lastName}`,
       transactionNumber: createdTransfer.transactionId,
-      transactionDate: createdTransfer.createdAt,
+      transactionDate: createdTransfer.createdAt.toString(),
+      
     };
 
     const isTodayTransfer = (transferDate: string): boolean => {
@@ -271,14 +272,14 @@ class AdminController {
     };
 
     if (
-      isTodayTransfer(createdTransfer.createdAt) &&
+      isTodayTransfer(createdTransfer.createdAt.toString()) &&
       body.transactionType == TransactionType.Debit
     ) {
       sendDebitAlert(txAlert);
     }
 
     if (
-      isTodayTransfer(createdTransfer.createdAt) &&
+      isTodayTransfer(createdTransfer.createdAt.toString()) &&
       body.transactionType == TransactionType.Credit
     ) {
       sendCreditAlert(txAlert);

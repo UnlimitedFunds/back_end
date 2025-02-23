@@ -228,16 +228,16 @@ class AdminController {
                 receiverFullName: body.beneficiaryName,
                 senderFullName: `${userExist.firstName} ${userExist.lastName}`,
                 transactionNumber: createdTransfer.transactionId,
-                transactionDate: createdTransfer.createdAt,
+                transactionDate: createdTransfer.createdAt.toString(),
             };
             const isTodayTransfer = (transferDate) => {
                 return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
             };
-            if (isTodayTransfer(createdTransfer.createdAt) &&
+            if (isTodayTransfer(createdTransfer.createdAt.toString()) &&
                 body.transactionType == enum_1.TransactionType.Debit) {
                 (0, email_1.sendDebitAlert)(txAlert);
             }
-            if (isTodayTransfer(createdTransfer.createdAt) &&
+            if (isTodayTransfer(createdTransfer.createdAt.toString()) &&
                 body.transactionType == enum_1.TransactionType.Credit) {
                 (0, email_1.sendCreditAlert)(txAlert);
             }
