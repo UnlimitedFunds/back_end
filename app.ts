@@ -10,6 +10,7 @@ import { AuthRouter } from "./src/auth/router";
 import { UserRouter } from "./src/user/router";
 import { AdminRouter } from "./src/admin/router";
 import { TransferRouter } from "./src/transfer/router";
+import { ContactUsRouter } from "./src/contact_us/router";
 
 const app: Express = express();
 
@@ -54,7 +55,8 @@ const StartServer = () => {
    AuthRouter,
    UserRouter,
    AdminRouter,
-   TransferRouter
+   TransferRouter,
+   ContactUsRouter
   );
 
   // Health check
