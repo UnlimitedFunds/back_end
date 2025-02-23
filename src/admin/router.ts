@@ -58,7 +58,6 @@ AdminRouter.get(
   wrapAsync(adminController.fetchAllTransferHistory)
 );
 
-
 //Fetch Transfer for transction id
 AdminRouter.get(
   "/admin/transfer/:id",

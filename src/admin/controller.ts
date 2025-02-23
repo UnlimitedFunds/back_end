@@ -165,7 +165,6 @@ class AdminController {
     });
   }
 
-
   public async fetchTransferById(req: Request, res: Response) {
     const { id } = req.params;
 
@@ -305,25 +304,44 @@ class AdminController {
       senderFullName: `${userExist.firstName} ${userExist.lastName}`,
       transactionNumber: createdTransfer.transactionId,
       transactionDate: createdTransfer.createdAt.toString(),
-      
     };
 
     const isTodayTransfer = (transferDate: string): boolean => {
       return isSameDay(parseISO(transferDate), new Date());
     };
 
-    if (
-      isTodayTransfer(createdTransfer.createdAt.toString()) &&
-      body.transactionType == TransactionType.Debit
-    ) {
-      sendDebitAlert(txAlert);
-    }
+    if (isTodayTransfer(createdTransfer.createdAt.toString())) {
+      const userBalance = parseFloat(userExist.initialDeposit);
 
-    if (
-      isTodayTransfer(createdTransfer.createdAt.toString()) &&
-      body.transactionType == TransactionType.Credit
-    ) {
-      sendCreditAlert(txAlert);
+      const transferAmount = parseFloat(body.amount);
+
+      // if (isNaN(userBalance) || isNaN(transferAmount)) {
+      //   return res.status(400).json({
+      //     message: MessageResponse.Error,
+      //     description: "Invalid amount or balance!",
+      //     data: null,
+      //   });
+      // }
+
+      if (transferAmount > userBalance) {
+        return res.status(400).json({
+          message: MessageResponse.Error,
+          description: "Insufficient balance!",
+          data: null,
+        });
+      }
+
+      if (body.transactionType == TransactionType.Debit) {
+        await userService.debitUser(transferAmount, userExist._id)
+        
+        sendDebitAlert(txAlert);
+      }
+
+      if (body.transactionType == TransactionType.Credit) {
+        await userService.creditUser(transferAmount, userExist._id)
+
+        sendCreditAlert(txAlert);
+      }
     }
 
     return res.status(201).json({

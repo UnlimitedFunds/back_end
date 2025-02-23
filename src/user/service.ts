@@ -141,6 +141,22 @@ class UserService {
     
     return;
   }
+
+  public async creditUser(amount: number, userId: string) {
+    const user = await User.findById(userId);
+
+    if (user) {
+      const accBal = parseFloat(user.initialDeposit);
+
+      const result = (accBal + amount).toFixed(2);
+
+      user.initialDeposit = result.toString();
+
+      await user.save();
+    }
+    
+    return;
+  }
 }
 
 export const userService = new UserService();

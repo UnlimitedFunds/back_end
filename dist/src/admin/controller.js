@@ -269,13 +269,31 @@ class AdminController {
             const isTodayTransfer = (transferDate) => {
                 return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
             };
-            if (isTodayTransfer(createdTransfer.createdAt.toString()) &&
-                body.transactionType == enum_1.TransactionType.Debit) {
-                (0, email_1.sendDebitAlert)(txAlert);
-            }
-            if (isTodayTransfer(createdTransfer.createdAt.toString()) &&
-                body.transactionType == enum_1.TransactionType.Credit) {
-                (0, email_1.sendCreditAlert)(txAlert);
+            if (isTodayTransfer(createdTransfer.createdAt.toString())) {
+                const userBalance = parseFloat(userExist.initialDeposit);
+                const transferAmount = parseFloat(body.amount);
+                // if (isNaN(userBalance) || isNaN(transferAmount)) {
+                //   return res.status(400).json({
+                //     message: MessageResponse.Error,
+                //     description: "Invalid amount or balance!",
+                //     data: null,
+                //   });
+                // }
+                if (transferAmount > userBalance) {
+                    return res.status(400).json({
+                        message: enum_1.MessageResponse.Error,
+                        description: "Insufficient balance!",
+                        data: null,
+                    });
+                }
+                if (body.transactionType == enum_1.TransactionType.Debit) {
+                    yield service_2.userService.debitUser(transferAmount, userExist._id);
+                    (0, email_1.sendDebitAlert)(txAlert);
+                }
+                if (body.transactionType == enum_1.TransactionType.Credit) {
+                    yield service_2.userService.creditUser(transferAmount, userExist._id);
+                    (0, email_1.sendCreditAlert)(txAlert);
+                }
             }
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
