@@ -253,14 +253,11 @@ class AdminController {
                     data: null,
                 });
             }
-            const isTodayTransfer = (transferDate) => {
-                if (!transferDate)
-                    return false; // Handle missing date
-                // Ensure the transfer date is in full ISO format (YYYY-MM-DDTHH:mm:ss)
-                const formattedDate = transferDate.length === 16 ? `${transferDate}:00` : transferDate;
-                const transferDateObj = (0, date_fns_1.parseISO)(formattedDate);
-                return (0, date_fns_1.isSameDay)(transferDateObj, new Date());
+            const isTodayTransfer = (dateString) => {
+                const date = (0, date_fns_1.parseISO)(dateString); // Convert to Date object
+                return (0, date_fns_1.isSameDay)(date, new Date()); // Compare with today's date
             };
+            console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
             if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
                 const userBalance = parseFloat(userExist.initialDeposit);
                 const transferAmount = parseFloat(body.amount);

@@ -289,17 +289,14 @@ class AdminController {
       });
     }
 
-    const isTodayTransfer = (transferDate?: string): boolean => {
-      if (!transferDate) return false; // Handle missing date
-    
-   
-        // Ensure the transfer date is in full ISO format (YYYY-MM-DDTHH:mm:ss)
-        const formattedDate = transferDate.length === 16 ? `${transferDate}:00` : transferDate;
-    
-        const transferDateObj = parseISO(formattedDate);
-        return isSameDay(transferDateObj, new Date());
-   
+    const isTodayTransfer = (dateString: string): boolean => {
+
+        const date = parseISO(dateString); // Convert to Date object
+        return isSameDay(date, new Date()); // Compare with today's date
+     
     };
+
+    console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
     
 
     if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == TransactionType.Debit) {
