@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminController = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const date_fns_1 = require("date-fns");
 const enum_1 = require("../utils/enum");
 const service_1 = require("./service");
 const global_1 = require("../utils/global");
@@ -254,15 +253,12 @@ class AdminController {
                 });
             }
             const isTodayTransfer = (dateString) => {
-                const date = (0, date_fns_1.parseISO)(dateString);
-                // Normalize to UTC to avoid time zone issues
+                const transferDate = new Date(dateString);
                 const today = new Date();
-                today.setUTCHours(0, 0, 0, 0); // Reset today's time to 00:00 UTC
-                date.setUTCHours(0, 0, 0, 0); // Reset transfer date's time to 00:00 UTC
-                return (0, date_fns_1.isSameDay)(date, today);
+                return (transferDate.getFullYear() === today.getFullYear() &&
+                    transferDate.getMonth() === today.getMonth() &&
+                    transferDate.getDate() === today.getDate());
             };
-            // Example Usage
-            //  console.log(isToday("2025-02-25T00:46")); // ✅ Now should return true if today is Feb 25
             console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
             if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
                 const userBalance = parseFloat(userExist.initialDeposit);
