@@ -18,8 +18,8 @@ import { ITransfer, ITransferInput } from "../transfer/interface";
 import { AccountStatus } from "../user/enum";
 import { transferService } from "../transfer/service";
 import {
+  sendAccountActivatedEmailToUser,
   sendAccountApprovedEmailToUser,
-  sendAccountDeactivatedEmailToUser,
   sendAccountSuspendedmailToUser,
   sendCreditAlert,
   sendDebitAlert,
@@ -228,7 +228,7 @@ class AdminController {
         fullName: `${userExist.firstName} ${userExist.lastName}`,
       };
       if (user?.status == AccountStatus.Active) {
-        sendAccountDeactivatedEmailToUser(approvalStatus);
+        sendAccountActivatedEmailToUser(approvalStatus)
       } else {
         sendAccountSuspendedmailToUser(approvalStatus);
       }

@@ -1,11 +1,7 @@
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 
-import {
-  AccountApproved,
-  ISendEmail,
-  TransactionAlert,
-} from "./interface";
+import { AccountApproved, ISendEmail, TransactionAlert } from "./interface";
 import { formatAmount, formatDate, maskNumber } from ".";
 import { IContactUs } from "../contact_us/interface";
 dotenv.config();
@@ -78,7 +74,9 @@ export const sendEmail = async (input: ISendEmail) => {
 
     const info = await transporter.sendMail(mailOptions);
 
-    console.log(`email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`);
+    console.log(
+      `email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`
+    );
     return info.response;
   } catch (error) {
     console.error("Email sending error:", error);
@@ -91,7 +89,7 @@ export const sendAccountApprovedEmailToUser = async (
 ) => {
   return sendEmail({
     receiverEmail: input.receiverEmail,
-    subject: "ACCOUNT APPROVED",
+    subject: "Account Approved",
     emailTemplate: `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -116,10 +114,11 @@ export const sendAccountApprovedEmailToUser = async (
 
       main {
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 20px; /* Add padding for smaller screens */
       }
 
       .email-container {
@@ -137,13 +136,18 @@ export const sendAccountApprovedEmailToUser = async (
         padding-bottom: 20px;
       }
 
+      .header img {
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
+      }
+
       .email-title {
         text-align: center;
         margin: 20px 0;
       }
 
       .email-title h2 {
-        font-size: 22px;
+        font-size: 1.5rem; /* Use relative units */
         font-weight: bold;
       }
 
@@ -153,8 +157,9 @@ export const sendAccountApprovedEmailToUser = async (
       }
 
       .email-content p {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         line-height: 1.5;
+        margin: 10px 0; /* Add spacing between paragraphs */
       }
 
       .btn {
@@ -164,8 +169,10 @@ export const sendAccountApprovedEmailToUser = async (
         color: #fff;
         text-decoration: none;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         margin-top: 20px;
+        width: 100%; /* Make button full width on small screens */
+        max-width: 200px; /* Limit button width on larger screens */
       }
 
       .btn:hover {
@@ -175,7 +182,7 @@ export const sendAccountApprovedEmailToUser = async (
       .enquiries {
         text-align: center;
         padding-top: 20px;
-        font-size: 15px;
+        font-size: 0.875rem; /* Use relative units */
         color: #555;
       }
 
@@ -184,7 +191,7 @@ export const sendAccountApprovedEmailToUser = async (
         color: #fff;
         padding: 20px;
         text-align: center;
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         border-radius: 0 0 8px 8px;
         margin-top: 10px;
       }
@@ -201,21 +208,7 @@ export const sendAccountApprovedEmailToUser = async (
 
       .footer h4 {
         margin-bottom: 8px;
-      }
-
-      @media (max-width: 768px) {
-        .email-container {
-          width: 95%;
-          padding: 20px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .email-container {
-          width: 100%;
-          padding: 15px;
-          border-radius: 0;
-        }
+        font-size: 1rem; /* Use relative units */
       }
     </style>
   </head>
@@ -223,7 +216,7 @@ export const sendAccountApprovedEmailToUser = async (
     <main>
       <div class="email-container">
         <div class="header">
-          <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
+          <img src="image/logo.png" alt="logo" width="150" />
         </div>
         <div class="email-title">
           <h2>Account Approved</h2>
@@ -232,7 +225,7 @@ export const sendAccountApprovedEmailToUser = async (
           <p>Dear <strong>${input.fullName}</strong>,</p>
           <p>Your account has been approved.</p>
           <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
-          <a href="${clientUrl}/login.html" class="btn">Login</a>
+          <a href="${clientUrl}/login.html" class="btn">Go to Dashboard</a>
         </div>
         <div class="enquiries">
           <p>
@@ -254,8 +247,7 @@ export const sendAccountApprovedEmailToUser = async (
       </div>
     </main>
   </body>
-</html>
-	`,
+</html>`,
   });
 };
 
@@ -266,341 +258,330 @@ export const sendAccountSuspendedmailToUser = async (
     receiverEmail: input.receiverEmail,
     subject: "ACCOUNT SUSPENDED",
     emailTemplate: `<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Account Suspended</title>
-      <style>
-        body {
-          border: none;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          background-color: #f4f4f4;
-          font-family: Arial, Helvetica, sans-serif;
-        }
-  
-        * {
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-        }
-  
-        main {
-          width: 100%;
-          height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-  
-        .email-container {
-          width: 90%;
-          max-width: 595px;
-          background: #fff;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          border-radius: 8px;
-          padding: 30px;
-        }
-  
-        .header {
-          text-align: center;
-          border-bottom: 1px solid #000;
-          padding-bottom: 20px;
-        }
-  
-        .email-title {
-          text-align: center;
-          margin: 20px 0;
-        }
-  
-        .email-title h2 {
-          font-size: 22px;
-          font-weight: bold;
-        }
-  
-        .email-content {
-          padding: 20px 0;
-          text-align: center;
-        }
-  
-        .email-content p {
-          font-size: 16px;
-          line-height: 1.5;
-        }
-  
-        .btn {
-          display: inline-block;
-          padding: 12px 20px;
-          background-color: #007bff;
-          color: #fff;
-          text-decoration: none;
-          border-radius: 5px;
-          font-size: 16px;
-          margin-top: 20px;
-        }
-  
-        .btn:hover {
-          background-color: #0056b3;
-        }
-  
-        .enquiries {
-          text-align: center;
-          padding-top: 20px;
-          font-size: 15px;
-          color: #555;
-        }
-  
-        .footer {
-          background-color: #000;
-          color: #fff;
-          padding: 20px;
-          text-align: center;
-          font-size: 14px;
-          border-radius: 0 0 8px 8px;
-          margin-top: 10px;
-        }
-  
-        .footer p {
-          margin-bottom: 10px;
-        }
-  
-        .footer-flex {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-  
-        .footer h4 {
-          margin-bottom: 8px;
-        }
-  
-        @media (max-width: 768px) {
-          .email-container {
-            width: 95%;
-            padding: 20px;
-          }
-        }
-  
-        @media (max-width: 480px) {
-          .email-container {
-            width: 100%;
-            padding: 15px;
-            border-radius: 0;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <main>
-        <div class="email-container">
-          <div class="header">
-            <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
-          </div>
-          <div class="email-title">
-            <h2>Account Suspended</h2>
-          </div>
-          <div class="email-content">
-            <p>Dear <strong>${input.fullName}</strong>,</p>
-            <p>Your account has been suspended.</p>
-      
-          </div>
-          <div class="enquiries">
-            <p>
-              For more enquiries, please contact our customer service at
-              <strong>${contactUsEmail}</strong>
-            </p>
-          </div>
-          <footer class="footer">
-            <div class="footer-flex">
-              <h4>UnlimitedSfunds Bank Ltd.</h4>
-              <p>
-                Making the world a better place through constructive financial
-                solutions. Our innovative banking services empower individuals and
-                businesses worldwide.
-              </p>
-              <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
-            </div>
-          </footer>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Approved</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px; /* Add padding for smaller screens */
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+      }
+
+      .header {
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 20px;
+      }
+
+      .header img {
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
+      }
+
+      .email-title {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .email-title h2 {
+        font-size: 1.5rem; /* Use relative units */
+        font-weight: bold;
+      }
+
+      .email-content {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .email-content p {
+        font-size: 1rem; /* Use relative units */
+        line-height: 1.5;
+        margin: 10px 0; /* Add spacing between paragraphs */
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem; /* Use relative units */
+        margin-top: 20px;
+        width: 100%; /* Make button full width on small screens */
+        max-width: 200px; /* Limit button width on larger screens */
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .enquiries {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 0.875rem; /* Use relative units */
+        color: #555;
+      }
+
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.875rem; /* Use relative units */
+        border-radius: 0 0 8px 8px;
+        margin-top: 10px;
+      }
+
+      .footer p {
+        margin-bottom: 10px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer h4 {
+        margin-bottom: 8px;
+        font-size: 1rem; /* Use relative units */
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="header">
+          <img src="image/logo.png" alt="logo" width="150" />
         </div>
-      </main>
-    </body>
-  </html>
-      `,
+        <div class="email-title">
+          <h2>Account Approved</h2>
+        </div>
+        <div class="email-content">
+          <p>Dear <strong>${input.fullName}</strong>,</p>
+          <p>Your account has been suspended.</p>
+          <p>Contact customer care.</p>
+
+        </div>
+        <div class="enquiries">
+          <p>
+            For more enquiries, please contact our customer service at
+            <strong>${contactUsEmail}</strong>
+          </p>
+        </div>
+        <footer class="footer">
+          <div class="footer-flex">
+            <h4>UnlimitedSfunds Bank Ltd.</h4>
+            <p>
+              Making the world a better place through constructive financial
+              solutions. Our innovative banking services empower individuals and
+              businesses worldwide.
+            </p>
+            <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>`,
   });
 };
 
-export const sendAccountDeactivatedEmailToUser = async (
+export const sendAccountActivatedEmailToUser = async (
   input: AccountApproved
 ) => {
   return sendEmail({
     receiverEmail: input.receiverEmail,
     subject: "ACCOUNT DEACTIVATED",
     emailTemplate: `<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Account Deactivated</title>
-      <style>
-        body {
-          border: none;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          background-color: #f4f4f4;
-          font-family: Arial, Helvetica, sans-serif;
-        }
-  
-        * {
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-        }
-  
-        main {
-          width: 100%;
-          height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-  
-        .email-container {
-          width: 90%;
-          max-width: 595px;
-          background: #fff;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          border-radius: 8px;
-          padding: 30px;
-        }
-  
-        .header {
-          text-align: center;
-          border-bottom: 1px solid #000;
-          padding-bottom: 20px;
-        }
-  
-        .email-title {
-          text-align: center;
-          margin: 20px 0;
-        }
-  
-        .email-title h2 {
-          font-size: 22px;
-          font-weight: bold;
-        }
-  
-        .email-content {
-          padding: 20px 0;
-          text-align: center;
-        }
-  
-        .email-content p {
-          font-size: 16px;
-          line-height: 1.5;
-        }
-  
-        .btn {
-          display: inline-block;
-          padding: 12px 20px;
-          background-color: #007bff;
-          color: #fff;
-          text-decoration: none;
-          border-radius: 5px;
-          font-size: 16px;
-          margin-top: 20px;
-        }
-  
-        .btn:hover {
-          background-color: #0056b3;
-        }
-  
-        .enquiries {
-          text-align: center;
-          padding-top: 20px;
-          font-size: 15px;
-          color: #555;
-        }
-  
-        .footer {
-          background-color: #000;
-          color: #fff;
-          padding: 20px;
-          text-align: center;
-          font-size: 14px;
-          border-radius: 0 0 8px 8px;
-          margin-top: 10px;
-        }
-  
-        .footer p {
-          margin-bottom: 10px;
-        }
-  
-        .footer-flex {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-  
-        .footer h4 {
-          margin-bottom: 8px;
-        }
-  
-        @media (max-width: 768px) {
-          .email-container {
-            width: 95%;
-            padding: 20px;
-          }
-        }
-  
-        @media (max-width: 480px) {
-          .email-container {
-            width: 100%;
-            padding: 15px;
-            border-radius: 0;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <main>
-        <div class="email-container">
-          <div class="header">
-            <img src="${clientUrl}/image/logo.png" alt="logo" width="150" />
-          </div>
-          <div class="email-title">
-            <h2>Account Approved</h2>
-          </div>
-          <div class="email-content">
-            <p>Dear <strong>${input.fullName}</strong>,</p>
-            <p>Your account has been deactivated.</p>
-            <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
-            <a href="${clientUrl}/login.html" class="btn">Login/a>
-          </div>
-          <div class="enquiries">
-            <p>
-              For more enquiries, please contact our customer service at
-              <strong>${contactUsEmail}</strong>
-            </p>
-          </div>
-          <footer class="footer">
-            <div class="footer-flex">
-              <h4>UnlimitedSfunds Bank Ltd.</h4>
-              <p>
-                Making the world a better place through constructive financial
-                solutions. Our innovative banking services empower individuals and
-                businesses worldwide.
-              </p>
-              <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
-            </div>
-          </footer>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Approved</title>
+    <style>
+      body {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background-color: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px; /* Add padding for smaller screens */
+      }
+
+      .email-container {
+        width: 90%;
+        max-width: 595px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+      }
+
+      .header {
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 20px;
+      }
+
+      .header img {
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
+      }
+
+      .email-title {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .email-title h2 {
+        font-size: 1.5rem; /* Use relative units */
+        font-weight: bold;
+      }
+
+      .email-content {
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      .email-content p {
+        font-size: 1rem; /* Use relative units */
+        line-height: 1.5;
+        margin: 10px 0; /* Add spacing between paragraphs */
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem; /* Use relative units */
+        margin-top: 20px;
+        width: 100%; /* Make button full width on small screens */
+        max-width: 200px; /* Limit button width on larger screens */
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .enquiries {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 0.875rem; /* Use relative units */
+        color: #555;
+      }
+
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.875rem; /* Use relative units */
+        border-radius: 0 0 8px 8px;
+        margin-top: 10px;
+      }
+
+      .footer p {
+        margin-bottom: 10px;
+      }
+
+      .footer-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer h4 {
+        margin-bottom: 8px;
+        font-size: 1rem; /* Use relative units */
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="email-container">
+        <div class="header">
+          <img src="image/logo.png" alt="logo" width="150" />
         </div>
-      </main>
-    </body>
-  </html>
-      `,
+        <div class="email-title">
+          <h2>Account Approved</h2>
+        </div>
+        <div class="email-content">
+          <p>Dear <strong>${input.fullName}</strong>,</p>
+          <p>Congratulations your account has been reactivated.</p>
+          <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
+          <a href="${clientUrl}/login.html" class="btn">Go to Dashboard</a>
+        </div>
+        <div class="enquiries">
+          <p>
+            For more enquiries, please contact our customer service at
+            <strong>${contactUsEmail}</strong>
+          </p>
+        </div>
+        <footer class="footer">
+          <div class="footer-flex">
+            <h4>UnlimitedSfunds Bank Ltd.</h4>
+            <p>
+              Making the world a better place through constructive financial
+              solutions. Our innovative banking services empower individuals and
+              businesses worldwide.
+            </p>
+            <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>`,
   });
 };
 
@@ -608,7 +589,7 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
   console.log("sending debit");
   return sendEmail({
     receiverEmail: input.senderEmail,
-    subject: "ACCOUNT APPROVED",
+    subject: "Transaction Alert",
     emailTemplate: `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -633,17 +614,16 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
 
       main {
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 20px; /* Add padding for smaller screens */
       }
 
       .email-container {
         width: 90%;
         max-width: 595px;
-        height: auto;
         background: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -660,7 +640,8 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
       }
 
       .headear img {
-        max-width: 150px;
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
       }
 
       .email-title {
@@ -668,19 +649,19 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
       }
 
       .discription {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 500;
         color: #333;
       }
 
       .username {
-        font-size: 18px;
+        font-size: 1.125rem; /* Use relative units */
         font-weight: 600;
         margin-top: 10px;
       }
 
       .email-content h3 {
-        font-size: 20px;
+        font-size: 1.25rem; /* Use relative units */
         font-weight: 600;
         margin-bottom: 15px;
       }
@@ -696,14 +677,14 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 500;
         color: #555;
       }
 
       .enquiries {
         padding-bottom: 15px;
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         color: #666;
       }
 
@@ -720,94 +701,24 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
       }
 
       .flex1 h1 {
-        font-size: 18px;
+        font-size: 1.125rem; /* Use relative units */
         font-weight: 700;
       }
 
       .flex1 p {
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         font-weight: 400;
         color: #ddd;
       }
 
       footer h4 {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 600;
       }
 
       footer p {
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         font-weight: 400;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        .main-content {
-          padding: 25px;
-        }
-
-        .email-title {
-          padding: 20px 0;
-        }
-
-        .email-content h3 {
-          font-size: 18px;
-        }
-
-        .details {
-          font-size: 14px;
-        }
-
-        .footer-flex {
-          gap: 10px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .email-container {
-          width: 100%;
-          border-radius: 0;
-        }
-
-        .main-content {
-          padding: 20px;
-        }
-
-        .email-title {
-          padding: 15px 0;
-        }
-
-        .discription {
-          font-size: 14px;
-        }
-
-        .username {
-          font-size: 16px;
-        }
-
-        .email-content h3 {
-          font-size: 16px;
-        }
-
-        .details {
-          font-size: 13px;
-        }
-
-        .enquiries {
-          font-size: 13px;
-        }
-
-        footer {
-          padding: 12px 15px;
-        }
-
-        footer h4 {
-          font-size: 14px;
-        }
-
-        footer p {
-          font-size: 12px;
-        }
       }
     </style>
   </head>
@@ -819,12 +730,12 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
             <img src="${clientUrl}/image/logo.png" alt="logo" />
           </div>
           <div class="email-title">
-            <p class="discription">Debit Transaction Alert on ${maskNumber(
+            <p class="discription">Debit Transaction Alert On${maskNumber(
               input.accountNumber
             )}</p>
             <p class="username">
               <span>Dear ${input.senderFullName},</span>
-              your transfer of $${formatAmount(input.amount)} successful.
+              your transfer of $${formatAmount(input.amount)} is successful.
             </p>
           </div>
           <div class="email-content">
@@ -850,7 +761,8 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
           </div>
           <div>
             <p class="enquiries">
-              For more enquiries, please contact our customer service at ${contactUsEmail}
+              For more enquiries, please contact our customer service at
+              ${contactUsEmail}
             </p>
             <p>Thanks for choosing UnlimitedSfunds.</p>
           </div>
@@ -866,9 +778,9 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
               </p>
             </div>
             <h4>Contact Us</h4>
-            <p>Email: ${contactUsEmail}</p>
+ <p>Email: ${contactUsEmail}</p>
             <div>
-              <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+             <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
             </div>
           </div>
         </footer>
@@ -880,12 +792,11 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
 };
 
 export const sendCreditAlert = async (input: TransactionAlert) => {
-
   console.log("sending credit");
-  
+
   return sendEmail({
     receiverEmail: input.senderEmail,
-    subject: "ACCOUNT APPROVED",
+    subject: "Transaction Alert",
     emailTemplate: `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -910,17 +821,16 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
 
       main {
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 20px; /* Add padding for smaller screens */
       }
 
       .email-container {
         width: 90%;
         max-width: 595px;
-        height: auto;
         background: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -937,7 +847,8 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
       }
 
       .headear img {
-        max-width: 150px;
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
       }
 
       .email-title {
@@ -945,19 +856,19 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
       }
 
       .discription {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 500;
         color: #333;
       }
 
       .username {
-        font-size: 18px;
+        font-size: 1.125rem; /* Use relative units */
         font-weight: 600;
         margin-top: 10px;
       }
 
       .email-content h3 {
-        font-size: 20px;
+        font-size: 1.25rem; /* Use relative units */
         font-weight: 600;
         margin-bottom: 15px;
       }
@@ -973,14 +884,14 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 500;
         color: #555;
       }
 
       .enquiries {
         padding-bottom: 15px;
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         color: #666;
       }
 
@@ -997,94 +908,24 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
       }
 
       .flex1 h1 {
-        font-size: 18px;
+        font-size: 1.125rem; /* Use relative units */
         font-weight: 700;
       }
 
       .flex1 p {
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         font-weight: 400;
         color: #ddd;
       }
 
       footer h4 {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         font-weight: 600;
       }
 
       footer p {
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         font-weight: 400;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        .main-content {
-          padding: 25px;
-        }
-
-        .email-title {
-          padding: 20px 0;
-        }
-
-        .email-content h3 {
-          font-size: 18px;
-        }
-
-        .details {
-          font-size: 14px;
-        }
-
-        .footer-flex {
-          gap: 10px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .email-container {
-          width: 100%;
-          border-radius: 0;
-        }
-
-        .main-content {
-          padding: 20px;
-        }
-
-        .email-title {
-          padding: 15px 0;
-        }
-
-        .discription {
-          font-size: 14px;
-        }
-
-        .username {
-          font-size: 16px;
-        }
-
-        .email-content h3 {
-          font-size: 16px;
-        }
-
-        .details {
-          font-size: 13px;
-        }
-
-        .enquiries {
-          font-size: 13px;
-        }
-
-        footer {
-          padding: 12px 15px;
-        }
-
-        footer h4 {
-          font-size: 14px;
-        }
-
-        footer p {
-          font-size: 12px;
-        }
       }
     </style>
   </head>
@@ -1095,19 +936,21 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
           <div class="headear">
             <img src="${clientUrl}/image/logo.png" alt="logo" />
           </div>
-           <div class="email-title">
-            <p class="discription">Credit Transaction Alert on ${maskNumber(
+          <div class="email-title">
+            <p class="discription">Credit Transaction Alert On${maskNumber(
               input.accountNumber
             )}</p>
             <p class="username">
-              <span>Dear ${input.senderFullName},</span>
-              your transfer of $${formatAmount(input.amount)} successful.
+              <span>Dear ${
+                input.senderFullName
+              }</span>, <br />Your account has been
+              credited with  $${formatAmount(input.amount)}
             </p>
           </div>
           <div class="email-content">
             <h3>Credit Transaction Details</h3>
             <div class="details-container">
-               <div class="details">
+              <div class="details">
                 <p>Transaction Number</p>
                 <p>${input.transactionNumber}</p>
               </div>
@@ -1116,14 +959,13 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
                 <p>${formatDate(input.date)}</p>
               </div>
               <div class="details">
-                <p>Beneficiary</p>
+                <p>From</p>
                 <p>${input.receiverFullName}</p>
               </div>
               <div class="details">
                 <p>Total Amount</p>
-                <p>${input.amount}</p>
+                <p>$${input.amount}</p>
               </div>
-            
             </div>
           </div>
           <div>
@@ -1147,7 +989,7 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
             <h4>Contact Us</h4>
             <p>Email: ${contactUsEmail}</p>
             <div>
-              <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+              <p>>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
             </div>
           </div>
         </footer>
@@ -1161,8 +1003,9 @@ export const sendCreditAlert = async (input: TransactionAlert) => {
 export const sendContactUsEmail = async (input: IContactUs) => {
   return sendEmail({
     receiverEmail: adminEmail,
-    subject: "A USER HAS A MESSGE FOR YOU",
-    emailTemplate: `<!DOCTYPE html>
+    subject: "Contact Form Submission",
+    emailTemplate: `
+    <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -1186,10 +1029,11 @@ export const sendContactUsEmail = async (input: IContactUs) => {
 
       main {
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 20px; /* Add padding for smaller screens */
       }
 
       .email-container {
@@ -1207,13 +1051,18 @@ export const sendContactUsEmail = async (input: IContactUs) => {
         padding-bottom: 20px;
       }
 
+      .header img {
+        max-width: 100%; /* Make logo responsive */
+        height: auto;
+      }
+
       .email-title {
         text-align: center;
         margin: 20px 0;
       }
 
       .email-title h2 {
-        font-size: 22px;
+        font-size: 1.5rem; /* Use relative units */
         font-weight: bold;
       }
 
@@ -1223,8 +1072,9 @@ export const sendContactUsEmail = async (input: IContactUs) => {
       }
 
       .email-content p {
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         line-height: 1.5;
+        margin: 10px 0; /* Add spacing between paragraphs */
       }
 
       .message-box {
@@ -1232,7 +1082,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
         padding: 15px;
         border-radius: 6px;
         margin-top: 15px;
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         text-align: left;
         white-space: pre-line;
       }
@@ -1244,8 +1094,10 @@ export const sendContactUsEmail = async (input: IContactUs) => {
         color: #fff;
         text-decoration: none;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 1rem; /* Use relative units */
         margin-top: 20px;
+        width: 100%; /* Make button full width on small screens */
+        max-width: 200px; /* Limit button width on larger screens */
       }
 
       .btn:hover {
@@ -1257,7 +1109,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
         color: #fff;
         padding: 20px;
         text-align: center;
-        font-size: 14px;
+        font-size: 0.875rem; /* Use relative units */
         border-radius: 0 0 8px 8px;
         margin-top: 10px;
       }
@@ -1274,21 +1126,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
 
       .footer h4 {
         margin-bottom: 8px;
-      }
-
-      @media (max-width: 768px) {
-        .email-container {
-          width: 95%;
-          padding: 20px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .email-container {
-          width: 100%;
-          padding: 15px;
-          border-radius: 0;
-        }
+        font-size: 1rem; /* Use relative units */
       }
     </style>
   </head>
@@ -1315,7 +1153,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
           <div class="footer-flex">
             <h4> UnlimitedSfunds Bank</h4>
             <p>Thank you for reaching out to us. We will get back to you soon.</p>
-             <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+            <p>>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
           </div>
         </footer>
       </div>

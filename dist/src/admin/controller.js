@@ -201,7 +201,7 @@ class AdminController {
                     fullName: `${userExist.firstName} ${userExist.lastName}`,
                 };
                 if ((user === null || user === void 0 ? void 0 : user.status) == enum_2.AccountStatus.Active) {
-                    (0, email_1.sendAccountDeactivatedEmailToUser)(approvalStatus);
+                    (0, email_1.sendAccountActivatedEmailToUser)(approvalStatus);
                 }
                 else {
                     (0, email_1.sendAccountSuspendedmailToUser)(approvalStatus);
