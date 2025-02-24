@@ -419,7 +419,7 @@ exports.sendAccountSuspendedmailToUser = sendAccountSuspendedmailToUser;
 const sendAccountActivatedEmailToUser = (input) => __awaiter(void 0, void 0, void 0, function* () {
     return (0, exports.sendEmail)({
         receiverEmail: input.receiverEmail,
-        subject: "ACCOUNT DEACTIVATED",
+        subject: "ACCOUNT ACTIVATED",
         emailTemplate: `<!DOCTYPE html>
 <html lang="en">
   <head>

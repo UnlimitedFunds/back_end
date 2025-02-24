@@ -423,7 +423,7 @@ export const sendAccountActivatedEmailToUser = async (
 ) => {
   return sendEmail({
     receiverEmail: input.receiverEmail,
-    subject: "ACCOUNT DEACTIVATED",
+    subject: "ACCOUNT ACTIVATED",
     emailTemplate: `<!DOCTYPE html>
 <html lang="en">
   <head>
