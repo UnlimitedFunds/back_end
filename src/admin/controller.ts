@@ -289,12 +289,23 @@ class AdminController {
       });
     }
 
-    const isTodayTransfer = (dateString: string): boolean => {
 
-        const date = parseISO(dateString); // Convert to Date object
-        return isSameDay(date, new Date()); // Compare with today's date
-     
+    const isTodayTransfer = (dateString: string): boolean => {
+ 
+        const date = parseISO(dateString);
+        
+        // Normalize to UTC to avoid time zone issues
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0); // Reset today's time to 00:00 UTC
+        date.setUTCHours(0, 0, 0, 0);  // Reset transfer date's time to 00:00 UTC
+    
+        return isSameDay(date, today);
+    
     };
+    
+    // Example Usage
+  //  console.log(isToday("2025-02-25T00:46")); // ✅ Now should return true if today is Feb 25
+    
 
     console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
     

@@ -254,9 +254,15 @@ class AdminController {
                 });
             }
             const isTodayTransfer = (dateString) => {
-                const date = (0, date_fns_1.parseISO)(dateString); // Convert to Date object
-                return (0, date_fns_1.isSameDay)(date, new Date()); // Compare with today's date
+                const date = (0, date_fns_1.parseISO)(dateString);
+                // Normalize to UTC to avoid time zone issues
+                const today = new Date();
+                today.setUTCHours(0, 0, 0, 0); // Reset today's time to 00:00 UTC
+                date.setUTCHours(0, 0, 0, 0); // Reset transfer date's time to 00:00 UTC
+                return (0, date_fns_1.isSameDay)(date, today);
             };
+            // Example Usage
+            //  console.log(isToday("2025-02-25T00:46")); // ✅ Now should return true if today is Feb 25
             console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
             if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
                 const userBalance = parseFloat(userExist.initialDeposit);
