@@ -265,11 +265,11 @@ class AdminController {
                 transactionNumber: createdTransfer.transactionId,
                 transactionDate: createdTransfer.createdAt.toString(),
             };
-            console.log(`transferDate ${body.transferDate} created At date ${createdTransfer.createdAt.toString()}`);
+            console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
             const isTodayTransfer = (transferDate) => {
                 return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
             };
-            if (isTodayTransfer(createdTransfer.createdAt.toString())) {
+            if (isTodayTransfer(body.transferDate.toString())) {
                 const userBalance = parseFloat(userExist.initialDeposit);
                 const transferAmount = parseFloat(body.amount);
                 // if (isNaN(userBalance) || isNaN(transferAmount)) {

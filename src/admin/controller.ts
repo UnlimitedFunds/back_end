@@ -306,13 +306,13 @@ class AdminController {
       transactionDate: createdTransfer.createdAt.toString(),
     };
 
-    console.log(`transferDate ${body.transferDate} created At date ${createdTransfer.createdAt.toString()}`);
+    console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
 
     const isTodayTransfer = (transferDate: string): boolean => {
       return isSameDay(parseISO(transferDate), new Date());
     };
 
-    if (isTodayTransfer(createdTransfer.createdAt.toString())) {
+    if (isTodayTransfer(body.transferDate.toString())) {
       const userBalance = parseFloat(userExist.initialDeposit);
 
       const transferAmount = parseFloat(body.amount);
