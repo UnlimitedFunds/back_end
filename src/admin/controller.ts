@@ -289,9 +289,18 @@ class AdminController {
       });
     }
 
-    const isTodayTransfer = (transferDate: string): boolean => {
-      return isSameDay(parseISO(transferDate), new Date());
+    const isTodayTransfer = (transferDate?: string): boolean => {
+      if (!transferDate) return false; // Handle missing date
+    
+   
+        // Ensure the transfer date is in full ISO format (YYYY-MM-DDTHH:mm:ss)
+        const formattedDate = transferDate.length === 16 ? `${transferDate}:00` : transferDate;
+    
+        const transferDateObj = parseISO(formattedDate);
+        return isSameDay(transferDateObj, new Date());
+   
     };
+    
 
     if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == TransactionType.Debit) {
       const userBalance = parseFloat(userExist.initialDeposit);
