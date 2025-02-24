@@ -308,9 +308,15 @@ class AdminController {
 
     console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
 
-    const isTodayTransfer = (transferDate: string): boolean => {
-      return isSameDay(parseISO(transferDate), new Date());
+    const isTodayTransfer = (transferDate?: string): boolean => {
+  
+        const formattedDate = transferDate!.length === 16 ? `${transferDate}:00` : transferDate;
+    
+        const transferDateObj = parseISO(formattedDate!);
+        return isSameDay(transferDateObj, new Date());
+ 
     };
+    
 
     if (isTodayTransfer(body.transferDate.toString())) {
       const userBalance = parseFloat(userExist.initialDeposit);
