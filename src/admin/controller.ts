@@ -289,11 +289,27 @@ class AdminController {
       });
     }
 
+    const isTodayTransfer = (transferDate: string): boolean => {
+      return isSameDay(parseISO(transferDate), new Date());
+    };
+
+    if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == TransactionType.Debit) {
+      const userBalance = parseFloat(userExist.initialDeposit);
+
+      const transferAmount = parseFloat(body.amount);
+
+      if (transferAmount > userBalance) {
+        return res.status(400).json({
+          message: MessageResponse.Error,
+          description: "Insufficient balance!",
+          data: null,
+        });
+      } 
+    }
+
     const createdTransfer = await transferService.createTransfer(body);
 
     const transferAmount = parseFloat(body.amount);
-
-    
 
     const txAlert: TransactionAlert = {
       accountNumber: userExist.accountNo,
@@ -308,22 +324,12 @@ class AdminController {
 
     console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
 
-    const isTodayTransfer = (transferDate: string): boolean => {
-      return isSameDay(parseISO(transferDate), new Date());
-    };
+  
 
     if (isTodayTransfer(body.transferDate.toString())) {
       const userBalance = parseFloat(userExist.initialDeposit);
 
       const transferAmount = parseFloat(body.amount);
-
-      // if (isNaN(userBalance) || isNaN(transferAmount)) {
-      //   return res.status(400).json({
-      //     message: MessageResponse.Error,
-      //     description: "Invalid amount or balance!",
-      //     data: null,
-      //   });
-      // }
 
       if (transferAmount > userBalance) {
         return res.status(400).json({

@@ -253,6 +253,20 @@ class AdminController {
                     data: null,
                 });
             }
+            const isTodayTransfer = (transferDate) => {
+                return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
+            };
+            if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
+                const userBalance = parseFloat(userExist.initialDeposit);
+                const transferAmount = parseFloat(body.amount);
+                if (transferAmount > userBalance) {
+                    return res.status(400).json({
+                        message: enum_1.MessageResponse.Error,
+                        description: "Insufficient balance!",
+                        data: null,
+                    });
+                }
+            }
             const createdTransfer = yield service_3.transferService.createTransfer(body);
             const transferAmount = parseFloat(body.amount);
             const txAlert = {
@@ -266,19 +280,9 @@ class AdminController {
                 transactionDate: createdTransfer.createdAt.toString(),
             };
             console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
-            const isTodayTransfer = (transferDate) => {
-                return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
-            };
             if (isTodayTransfer(body.transferDate.toString())) {
                 const userBalance = parseFloat(userExist.initialDeposit);
                 const transferAmount = parseFloat(body.amount);
-                // if (isNaN(userBalance) || isNaN(transferAmount)) {
-                //   return res.status(400).json({
-                //     message: MessageResponse.Error,
-                //     description: "Invalid amount or balance!",
-                //     data: null,
-                //   });
-                // }
                 if (transferAmount > userBalance) {
                     return res.status(400).json({
                         message: enum_1.MessageResponse.Error,
