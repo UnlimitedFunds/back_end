@@ -599,6 +599,7 @@ const sendAccountDeactivatedEmailToUser = (input) => __awaiter(void 0, void 0, v
 });
 exports.sendAccountDeactivatedEmailToUser = sendAccountDeactivatedEmailToUser;
 const sendDebitAlert = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("sending debit");
     return (0, exports.sendEmail)({
         receiverEmail: input.senderEmail,
         subject: "ACCOUNT APPROVED",
@@ -871,6 +872,7 @@ const sendDebitAlert = (input) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.sendDebitAlert = sendDebitAlert;
 const sendCreditAlert = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("sending credit");
     return (0, exports.sendEmail)({
         receiverEmail: input.senderEmail,
         subject: "ACCOUNT APPROVED",

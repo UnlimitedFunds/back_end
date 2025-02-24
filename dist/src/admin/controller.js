@@ -255,7 +255,6 @@ class AdminController {
             }
             const createdTransfer = yield service_3.transferService.createTransfer(body);
             const transferAmount = parseFloat(body.amount);
-            body.transferDate;
             const txAlert = {
                 accountNumber: userExist.accountNo,
                 amount: transferAmount,
@@ -266,6 +265,7 @@ class AdminController {
                 transactionNumber: createdTransfer.transactionId,
                 transactionDate: createdTransfer.createdAt.toString(),
             };
+            console.log(`transferDate ${body.transferDate} created At date ${createdTransfer.createdAt.toString()}`);
             const isTodayTransfer = (transferDate) => {
                 return (0, date_fns_1.isSameDay)((0, date_fns_1.parseISO)(transferDate), new Date());
             };

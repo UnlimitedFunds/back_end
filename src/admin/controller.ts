@@ -293,7 +293,7 @@ class AdminController {
 
     const transferAmount = parseFloat(body.amount);
 
-    body.transferDate;
+    
 
     const txAlert: TransactionAlert = {
       accountNumber: userExist.accountNo,
@@ -305,6 +305,8 @@ class AdminController {
       transactionNumber: createdTransfer.transactionId,
       transactionDate: createdTransfer.createdAt.toString(),
     };
+
+    console.log(`transferDate ${body.transferDate} created At date ${createdTransfer.createdAt.toString()}`);
 
     const isTodayTransfer = (transferDate: string): boolean => {
       return isSameDay(parseISO(transferDate), new Date());

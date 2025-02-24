@@ -605,6 +605,7 @@ export const sendAccountDeactivatedEmailToUser = async (
 };
 
 export const sendDebitAlert = async (input: TransactionAlert) => {
+  console.log("sending debit");
   return sendEmail({
     receiverEmail: input.senderEmail,
     subject: "ACCOUNT APPROVED",
@@ -879,6 +880,9 @@ export const sendDebitAlert = async (input: TransactionAlert) => {
 };
 
 export const sendCreditAlert = async (input: TransactionAlert) => {
+
+  console.log("sending credit");
+  
   return sendEmail({
     receiverEmail: input.senderEmail,
     subject: "ACCOUNT APPROVED",
