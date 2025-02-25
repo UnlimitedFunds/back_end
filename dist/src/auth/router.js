@@ -19,3 +19,10 @@ const upload = (0, multer_1.default)({ storage: storage }).fields([
 exports.AuthRouter.post("/signup", [upload, validator_1.authValidator.signUp], (0, utils_1.wrapAsync)(controller_1.authController.signUp));
 //Login account
 exports.AuthRouter.post("/signin", [validator_1.authValidator.signIn], (0, utils_1.wrapAsync)(controller_1.authController.signIn));
+//Genare otp for forgot password request
+exports.AuthRouter.post("/forgot/password", // For FormData
+[validator_1.authValidator.validateEmail], (0, utils_1.wrapAsync)(controller_1.authController.generateOtpForForgotPassword));
+//change password after forgot ppassword request
+exports.AuthRouter.post("/forgot/password/change", [
+    validator_1.authValidator.forgotPasswordChange
+], (0, utils_1.wrapAsync)(controller_1.authController.forgotPasswordChange));

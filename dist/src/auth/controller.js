@@ -22,6 +22,9 @@ const service_1 = require("../user/service");
 const cloudinary_1 = __importDefault(require("../../config/cloudinary"));
 const enum_2 = require("../user/enum");
 const global_1 = require("../utils/global");
+const utils_1 = require("../utils");
+const service_2 = require("./service");
+const email_1 = require("../utils/email");
 dotenv_1.default.config();
 class AuthController {
     signUp(req, res) {
@@ -108,6 +111,74 @@ class AuthController {
                 data: {
                     token,
                 },
+            });
+        });
+    }
+    generateOtpForForgotPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body;
+            const userExist = yield service_1.userService.findUserByEmail(email);
+            if (userExist) {
+                const otp = (0, utils_1.generateOtp)();
+                const emailVerify = yield service_2.authService.saveOtp({ email, otp });
+                if (!emailVerify) {
+                    return res.status(404).json({
+                        message: enum_1.MessageResponse.Error,
+                        description: "User not found",
+                        data: null,
+                    });
+                }
+                (0, email_1.sendForgotPasswordEmail)({
+                    email,
+                    otp,
+                });
+                return res.status(201).json({
+                    message: enum_1.MessageResponse.Success,
+                    description: "An OTP has been sent to your email address",
+                    data: null,
+                });
+            }
+            return res.status(404).json({
+                message: enum_1.MessageResponse.Error,
+                description: "Email does not exists",
+                data: null,
+            });
+        });
+    }
+    forgotPasswordChange(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email, otp, password } = req.body;
+            const user = yield service_2.authService.validateOtp(email, otp);
+            if (!user) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Invalid otp",
+                    data: null,
+                });
+            }
+            if (user.emailVerificationOtpExpiration !== undefined) {
+                const currentDate = new Date();
+                const expirationDate = new Date(user.emailVerificationOtpExpiration);
+                if (expirationDate < currentDate) {
+                    return res.status(400).json({
+                        message: enum_1.MessageResponse.Error,
+                        description: "Verification OTP expired",
+                        data: null,
+                    });
+                }
+                yield service_2.authService.deleteOtp(email);
+                yield service_2.authService.changePassword(email, password);
+                (0, email_1.sendForgotPasswordResetSuccessfullyEmail)({ email, fullName: `${user.firstName} ${user.lastName}` });
+                return res.status(201).json({
+                    message: enum_1.MessageResponse.Success,
+                    description: "Password Changed Successfully!",
+                    data: null,
+                });
+            }
+            return res.status(400).json({
+                message: enum_1.MessageResponse.Error,
+                description: "Verification OTP expired",
+                data: null,
             });
         });
     }

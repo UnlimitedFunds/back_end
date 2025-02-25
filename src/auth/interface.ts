@@ -1,6 +1,7 @@
 export interface IOTP {
   email: string;
-  otp: string;
+  otp?: string;
+  fullName?: string;
 }
 
 export interface IVerifiedEmail {

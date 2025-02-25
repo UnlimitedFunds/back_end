@@ -35,3 +35,9 @@ export interface ITransfer {
   transactionType: string;
   transactionId: string;
 }
+
+
+export interface IOTP {
+  email: string;
+  otp: string;
+}

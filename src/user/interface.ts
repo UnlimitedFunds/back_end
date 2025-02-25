@@ -52,8 +52,8 @@ export interface IUser {
   status: string;
   accountNo: string;
   monthlyIncome: string;
-  emailVerificationOtp: string;
-  emailVerificationOtpExpiration: string;
+  emailVerificationOtp: string | undefined;
+  emailVerificationOtpExpiration: Date | undefined;
   updatedAt: Date;
   createdAt: Date;
 }

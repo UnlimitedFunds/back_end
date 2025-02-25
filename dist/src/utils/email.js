@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendContactUsEmail = exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountActivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
+exports.sendForgotPasswordResetSuccessfullyEmail = exports.sendForgotPasswordEmail = exports.sendContactUsEmail = exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountActivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const _1 = require(".");
@@ -1142,7 +1142,7 @@ const sendContactUsEmail = (input) => __awaiter(void 0, void 0, void 0, function
           <div class="footer-flex">
             <h4> UnlimitedSfunds Bank</h4>
             <p>Thank you for reaching out to us. We will get back to you soon.</p>
-            <p>>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
           </div>
         </footer>
       </div>
@@ -1152,3 +1152,193 @@ const sendContactUsEmail = (input) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.sendContactUsEmail = sendContactUsEmail;
+const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = input.email;
+    const otp = input.otp;
+    const verificationLink = `${clientUrl}/reset-password/?token=${otp}&email=${email}`;
+    return (0, exports.sendEmail)({
+        receiverEmail: email,
+        subject: "Email Verification",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Reset Request</title>
+  </head>
+  <body style="margin: 0; padding: 0; width: 100%; background-color: #f4f4f4; font-family: Arial, Helvetica, sans-serif;">
+    <table
+      role="presentation"
+      align="center"
+      width="100%"
+      max-width="595px"
+      cellpadding="0"
+      cellspacing="0"
+      style="width: 100%; max-width: 595px; margin: 0 auto; background: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px;"
+    >
+      <tr>
+        <td style="padding: 30px;">
+          <!-- Header -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 20px;">
+                <img src="image/logo.png" alt="logo" width="150" style="max-width: 100%; height: auto;" />
+              </td>
+            </tr>
+          </table>
+
+          <!-- Email Title -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+            <tr>
+              <td style="text-align: center;">
+                <h2 style="font-size: 24px; font-weight: bold; margin: 0;">Password Reset Request</h2>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Email Content -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px 0;">
+            <tr>
+              <td style="text-align: left;">
+                <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                  You have requested to reset your password. Please click the link below to proceed:
+                </p>
+                <div style="background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-top: 15px;">
+                  <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                    <strong>Reset Password Link:</strong>
+                  </p>
+                  <a
+                    href="${verificationLink}n"
+                    style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;"
+                  >
+                   Reset password
+                  </a>
+                  <p style="font-size: 14px; line-height: 1.5; margin: 10px 0; color: #666;">
+                    This link will expire in <strong>1 hour</strong>.
+                  </p>
+                </div>
+                <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                  If you did not request this password reset, please ignore this email or contact support immediately.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background-color: #000; color: #fff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <h4 style="font-size: 16px; margin-bottom: 8px;">UnlimitedSfunds Bank</h4>
+                <p style="font-size: 14px; margin: 0 0 10px;">
+                  If you have any questions, feel free to contact us at ${contactUsEmail}
+                </p>
+                <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`,
+    });
+});
+exports.sendForgotPasswordEmail = sendForgotPasswordEmail;
+const sendForgotPasswordResetSuccessfullyEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = input.email;
+    return (0, exports.sendEmail)({
+        receiverEmail: email,
+        subject: "Password Reset Successful",
+        emailTemplate: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Reset Successful</title>
+  </head>
+  <body style="margin: 0; padding: 0; width: 100%; background-color: #f4f4f4; font-family: Arial, Helvetica, sans-serif;">
+    <table
+      role="presentation"
+      align="center"
+      width="100%"
+      max-width="595px"
+      cellpadding="0"
+      cellspacing="0"
+      style="width: 100%; max-width: 595px; margin: 0 auto; background: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px;"
+    >
+      <tr>
+        <td style="padding: 30px;">
+          <!-- Header -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 20px;">
+                <img src="image/logo.png" alt="logo" width="150" style="max-width: 100%; height: auto;" />
+              </td>
+            </tr>
+          </table>
+
+          <!-- Email Title -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+            <tr>
+              <td style="text-align: center;">
+                <h2 style="font-size: 24px; font-weight: bold; margin: 0;">Password Reset Successful</h2>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Email Content -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px 0;">
+            <tr>
+              <td style="text-align: left;">
+                <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                  Dear <strong>${input.fullName}</strong>,
+                </p>
+                <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                  Your password has been successfully reset. If you did not make this change, please contact our support team immediately.
+                </p>
+                <div style="background-color: #f9f9f9; padding: 15px; border-radius: 6px; margin-top: 15px;">
+                  <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                    <strong>Account Security Tips:</strong>
+                  </p>
+                  <ul style="font-size: 14px; line-height: 1.5; margin: 10px 0; padding-left: 20px;">
+                    <li>Use a strong, unique password.</li>
+                    <li>Do not share your password with anyone.</li>
+                  </ul>
+                </div>
+                <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
+                  If you have any questions or need further assistance, feel free to contact us at
+                  <a href="mailto:${contactUsEmail}" style="color: #007bff; text-decoration: none;">support@example.com</a>.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background-color: #000; color: #fff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <h4 style="font-size: 16px; margin-bottom: 8px;">UnlimitedSfunds Bank</h4>
+                <p style="font-size: 14px; margin: 0 0 10px;">
+                  Thank you for trusting us with your account security.
+                </p>
+                 <p style="font-size: 14px; margin: 0;">&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+              
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`,
+    });
+});
+exports.sendForgotPasswordResetSuccessfullyEmail = sendForgotPasswordResetSuccessfullyEmail;

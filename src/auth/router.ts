@@ -27,3 +27,19 @@ AuthRouter.post(
   [authValidator.signIn],
   wrapAsync(authController.signIn)
 );
+
+
+//Genare otp for forgot password request
+AuthRouter.post(
+  "/forgot/password",// For FormData
+  [authValidator.validateEmail],
+  wrapAsync(authController.generateOtpForForgotPassword)
+);
+
+//change password after forgot ppassword request
+AuthRouter.post(
+  "/forgot/password/change",
+  [
+    authValidator.forgotPasswordChange],
+  wrapAsync(authController.forgotPasswordChange)
+);
