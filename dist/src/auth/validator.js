@@ -179,18 +179,18 @@ class AuthValidator {
                     data: null,
                 });
             }
-            const allowedMimeTypes = ["image/png", "image/jpg"];
-            // Validate MIME type before uploading
-            for (const key of ["proofOfAddress", "profilePicture"]) {
-                const file = req.files[key][0];
-                if (!allowedMimeTypes.includes(file.mimetype)) {
-                    return res.status(400).json({
-                        message: enum_1.MessageResponse.Error,
-                        description: `${key} must be a valid image file (JPG, PNG)`,
-                        data: null,
-                    });
-                }
-            }
+            // const allowedMimeTypes = ["image/png", "image/jpg"];
+            // // Validate MIME type before uploading
+            // for (const key of ["proofOfAddress", "profilePicture"]) {
+            //   const file = req.files[key][0];
+            //   if (!allowedMimeTypes.includes(file.mimetype)) {
+            //     return res.status(400).json({
+            //       message: MessageResponse.Error,
+            //       description: `${key} must be a valid image file (JPG, PNG)`,
+            //       data: null,
+            //     });
+            //   }
+            // }
             return next();
         });
     }
