@@ -1158,8 +1158,9 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
     const verificationLink = `${clientUrl}/reset-password.html/?token=${otp}&email=${email}`;
     return (0, exports.sendEmail)({
         receiverEmail: email,
-        subject: "Email Verification",
+        subject: "Password Reset Request",
         emailTemplate: `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -1196,7 +1197,7 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
             </tr>
           </table>
 
-       
+          <!-- Email Content -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px 0;">
             <tr>
               <td style="text-align: left;">
@@ -1207,11 +1208,14 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
                   <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
                     <strong>Reset Password Link:</strong>
                   </p>
-                  <a href="${verificationLink}" style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;">
-                  ${verificationLink}
+                  <a
+                    href="${verificationLink}"
+                    style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;"
+                  >
+                    Reset password
                   </a>
                   <p style="font-size: 14px; line-height: 1.5; margin: 10px 0; color: #666;">
-                    This link will expire in <strong>1 hour</strong>.
+                    This link will expire in <strong>10 minutes</strong>.
                   </p>
                 </div>
                 <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
@@ -1223,17 +1227,17 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
         </td>
       </tr>
 
-     
+      <!-- Footer -->
       <tr>
         <td style="background-color: #000; color: #fff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td>
-                <h4 style="font-size: 16px; margin-bottom: 8px;">UnlimitedSfunds Bank</h4>
+                <h4 style="font-size: 16px; margin-bottom: 8px;">Your Company Name</h4>
                 <p style="font-size: 14px; margin: 0 0 10px;">
-                  If you have any questions, feel free to contact us at ${contactUsEmail}
+                  If you have any questions, feel free to contact us at support@example.com.
                 </p>
-                <p>&copy; ${new Date().getFullYear()} UnlimitedSfunds Bank - All rights reserved.</p>
+                <p style="font-size: 14px; margin: 0;">&copy; 2025 YourCompany - All rights reserved.</p>
               </td>
             </tr>
           </table>
