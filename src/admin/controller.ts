@@ -24,6 +24,7 @@ import {
   sendCreditAlert,
   sendDebitAlert,
 } from "../utils/email";
+import { DateTime } from "luxon";
 
 dotenv.config();
 
@@ -290,14 +291,15 @@ class AdminController {
     }
 
 
+
     const isTodayTransfer = (dateString: string): boolean => {
-      const transferDate = new Date(dateString);
-      const today = new Date();
+      const transferDate = DateTime.fromISO(dateString, { zone: "utc" }).toUTC();
+      const today = DateTime.now().toUTC();
     
       return (
-        transferDate.getFullYear() === today.getFullYear() &&
-        transferDate.getMonth() === today.getMonth() &&
-        transferDate.getDate() === today.getDate()
+        transferDate.year === today.year &&
+        transferDate.month === today.month &&
+        transferDate.day === today.day
       );
     };
     

@@ -22,6 +22,7 @@ const service_2 = require("../user/service");
 const enum_2 = require("../user/enum");
 const service_3 = require("../transfer/service");
 const email_1 = require("../utils/email");
+const luxon_1 = require("luxon");
 dotenv_1.default.config();
 class AdminController {
     adminSignUp(req, res) {
@@ -253,11 +254,11 @@ class AdminController {
                 });
             }
             const isTodayTransfer = (dateString) => {
-                const transferDate = new Date(dateString);
-                const today = new Date();
-                return (transferDate.getFullYear() === today.getFullYear() &&
-                    transferDate.getMonth() === today.getMonth() &&
-                    transferDate.getDate() === today.getDate());
+                const transferDate = luxon_1.DateTime.fromISO(dateString, { zone: "utc" }).toUTC();
+                const today = luxon_1.DateTime.now().toUTC();
+                return (transferDate.year === today.year &&
+                    transferDate.month === today.month &&
+                    transferDate.day === today.day);
             };
             console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
             if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
