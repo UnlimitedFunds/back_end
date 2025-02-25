@@ -1155,7 +1155,7 @@ exports.sendContactUsEmail = sendContactUsEmail;
 const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
     const email = input.email;
     const otp = input.otp;
-    const verificationLink = `http://127.0.0.1:5500/password.html/?token=${otp}&email=${email}`;
+    const verificationLink = `${clientUrl}/password.html/?token=${otp}&email=${email}`;
     return (0, exports.sendEmail)({
         receiverEmail: email,
         subject: "Password Reset Request",
