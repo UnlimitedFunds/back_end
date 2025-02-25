@@ -1194,7 +1194,7 @@ export const sendForgotPasswordEmail = async (input: IOTP) => {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 20px;">
-                <img src="image/logo.png" alt="logo" width="150" style="max-width: 100%; height: auto;" />
+                <img src="${clientUrl}/image/logo.png" alt="logo" width="150" style="max-width: 100%; height: auto;" />
               </td>
             </tr>
           </table>
@@ -1208,7 +1208,7 @@ export const sendForgotPasswordEmail = async (input: IOTP) => {
             </tr>
           </table>
 
-          <!-- Email Content -->
+       
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding: 20px 0;">
             <tr>
               <td style="text-align: left;">
@@ -1219,11 +1219,8 @@ export const sendForgotPasswordEmail = async (input: IOTP) => {
                   <p style="font-size: 16px; line-height: 1.5; margin: 10px 0;">
                     <strong>Reset Password Link:</strong>
                   </p>
-                  <a
-                    href="${verificationLink}"
-                    style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;"
-                  >
-                   Reset password
+                  <a href="${verificationLink}" style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;">
+                  ${verificationLink}
                   </a>
                   <p style="font-size: 14px; line-height: 1.5; margin: 10px 0; color: #666;">
                     This link will expire in <strong>1 hour</strong>.
@@ -1238,7 +1235,7 @@ export const sendForgotPasswordEmail = async (input: IOTP) => {
         </td>
       </tr>
 
-      <!-- Footer -->
+     
       <tr>
         <td style="background-color: #000; color: #fff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
