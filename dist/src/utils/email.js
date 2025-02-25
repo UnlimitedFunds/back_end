@@ -1155,7 +1155,7 @@ exports.sendContactUsEmail = sendContactUsEmail;
 const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
     const email = input.email;
     const otp = input.otp;
-    const verificationLink = `${clientUrl}/reset-password/?token=${otp}&email=${email}`;
+    const verificationLink = `${clientUrl}/reset-password.html/?token=${otp}&email=${email}`;
     return (0, exports.sendEmail)({
         receiverEmail: email,
         subject: "Email Verification",
@@ -1208,7 +1208,7 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
                     <strong>Reset Password Link:</strong>
                   </p>
                   <a
-                    href="${verificationLink}n"
+                    href="${verificationLink}"
                     style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;"
                   >
                    Reset password

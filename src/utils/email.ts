@@ -1167,7 +1167,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
 export const sendForgotPasswordEmail = async (input: IOTP) => {
   const email = input.email;
   const otp = input.otp;
-  const verificationLink = `${clientUrl}/reset-password/?token=${otp}&email=${email}`;
+  const verificationLink = `${clientUrl}/reset-password.html/?token=${otp}&email=${email}`;
   return sendEmail({
     receiverEmail: email,
     subject: "Email Verification",
@@ -1220,7 +1220,7 @@ export const sendForgotPasswordEmail = async (input: IOTP) => {
                     <strong>Reset Password Link:</strong>
                   </p>
                   <a
-                    href="${verificationLink}n"
+                    href="${verificationLink}"
                     style="font-size: 16px; color: #007bff; text-decoration: none; word-break: break-all;"
                   >
                    Reset password
