@@ -183,21 +183,24 @@ class AuthValidator {
       });
     }
 
-    // const allowedMimeTypes = ["image/png", "image/jpg"];
+    const profilePicture = req.files['profilePicture'][0];
+    const proofOfAddress = req.files['proofOfAddress'][0];
 
-    // // Validate MIME type before uploading
-    // for (const key of ["proofOfAddress", "profilePicture"]) {
-    //   const file = req.files[key][0];
+    if (!['image/jpeg', 'image/png'].includes(profilePicture.mimetype)) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Profile picture must be a JPEG or PNG image",
+        data: null,
+      });
+    }
 
-    //   if (!allowedMimeTypes.includes(file.mimetype)) {
-    //     return res.status(400).json({
-    //       message: MessageResponse.Error,
-    //       description: `${key} must be a valid image file (JPG, PNG)`,
-    //       data: null,
-    //     });
-    //   }
-    // }
-
+    if (!['image/jpeg', 'image/png'].includes(proofOfAddress.mimetype)) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "Proof of address must be a JPEG or PNG image",
+        data: null,
+      });
+    }
     return next();
   }
 
