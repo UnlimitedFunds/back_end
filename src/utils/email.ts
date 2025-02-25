@@ -1167,7 +1167,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
 export const sendForgotPasswordEmail = async (input: IOTP) => {
   const email = input.email;
   const otp = input.otp;
-  const verificationLink = `${clientUrl}/reset-password.html/?token=${otp}&email=${email}`;
+  const verificationLink = `http://127.0.0.1:5500/password.html/?token=${otp}&email=${email}`;
   return sendEmail({
     receiverEmail: email,
     subject: "Password Reset Request",
