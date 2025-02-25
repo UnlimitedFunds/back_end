@@ -229,7 +229,7 @@ class AdminController {
         fullName: `${userExist.firstName} ${userExist.lastName}`,
       };
       if (user?.status == AccountStatus.Active) {
-        sendAccountActivatedEmailToUser(approvalStatus)
+        sendAccountActivatedEmailToUser(approvalStatus);
       } else {
         sendAccountSuspendedmailToUser(approvalStatus);
       }
@@ -290,26 +290,29 @@ class AdminController {
       });
     }
 
-
-
     const isTodayTransfer = (dateString: string): boolean => {
-      const transferDate = DateTime.fromISO(dateString, { zone: "utc" }).toUTC();
+      const transferDate = DateTime.fromISO(dateString, {
+        zone: "utc",
+      }).toUTC();
       const today = DateTime.now().toUTC();
-    
+
       return (
         transferDate.year === today.year &&
         transferDate.month === today.month &&
         transferDate.day === today.day
       );
     };
-    
-    
-    
 
-    console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
-    
+    console.log(
+      `isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(
+        body.transferDate.toString()
+      )}`
+    );
 
-    if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == TransactionType.Debit) {
+    if (
+      isTodayTransfer(body.transferDate.toString()) &&
+      body.transactionType == TransactionType.Debit
+    ) {
       const userBalance = parseFloat(userExist.initialDeposit);
 
       const transferAmount = parseFloat(body.amount);
@@ -320,7 +323,7 @@ class AdminController {
           description: "Insufficient balance!",
           data: null,
         });
-      } 
+      }
     }
 
     const createdTransfer = await transferService.createTransfer(body);
@@ -338,31 +341,20 @@ class AdminController {
       transactionDate: createdTransfer.createdAt.toString(),
     };
 
-    console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
-
-  
+    console.log(
+      `transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`
+    );
 
     if (isTodayTransfer(body.transferDate.toString())) {
-      const userBalance = parseFloat(userExist.initialDeposit);
-
-      const transferAmount = parseFloat(body.amount);
-
-      if (transferAmount > userBalance) {
-        return res.status(400).json({
-          message: MessageResponse.Error,
-          description: "Insufficient balance!",
-          data: null,
-        });
-      }
 
       if (body.transactionType == TransactionType.Debit) {
-        await userService.debitUser(transferAmount, userExist._id)
-        
+        await userService.debitUser(transferAmount, userExist._id);
+
         sendDebitAlert(txAlert);
       }
 
       if (body.transactionType == TransactionType.Credit) {
-        await userService.creditUser(transferAmount, userExist._id)
+        await userService.creditUser(transferAmount, userExist._id);
 
         sendCreditAlert(txAlert);
       }

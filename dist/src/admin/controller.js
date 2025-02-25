@@ -254,14 +254,17 @@ class AdminController {
                 });
             }
             const isTodayTransfer = (dateString) => {
-                const transferDate = luxon_1.DateTime.fromISO(dateString, { zone: "utc" }).toUTC();
+                const transferDate = luxon_1.DateTime.fromISO(dateString, {
+                    zone: "utc",
+                }).toUTC();
                 const today = luxon_1.DateTime.now().toUTC();
                 return (transferDate.year === today.year &&
                     transferDate.month === today.month &&
                     transferDate.day === today.day);
             };
             console.log(`isTodayTransfer(body.transferDate.toString()) ==> ${isTodayTransfer(body.transferDate.toString())}`);
-            if (isTodayTransfer(body.transferDate.toString()) && body.transactionType == enum_1.TransactionType.Debit) {
+            if (isTodayTransfer(body.transferDate.toString()) &&
+                body.transactionType == enum_1.TransactionType.Debit) {
                 const userBalance = parseFloat(userExist.initialDeposit);
                 const transferAmount = parseFloat(body.amount);
                 if (transferAmount > userBalance) {
@@ -286,15 +289,6 @@ class AdminController {
             };
             console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
             if (isTodayTransfer(body.transferDate.toString())) {
-                const userBalance = parseFloat(userExist.initialDeposit);
-                const transferAmount = parseFloat(body.amount);
-                if (transferAmount > userBalance) {
-                    return res.status(400).json({
-                        message: enum_1.MessageResponse.Error,
-                        description: "Insufficient balance!",
-                        data: null,
-                    });
-                }
                 if (body.transactionType == enum_1.TransactionType.Debit) {
                     yield service_2.userService.debitUser(transferAmount, userExist._id);
                     (0, email_1.sendDebitAlert)(txAlert);
