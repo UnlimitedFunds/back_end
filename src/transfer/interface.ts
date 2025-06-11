@@ -16,6 +16,8 @@ export interface ITransferInput {
   transferPin?: string;
   transferDate: Date;
   transactionId: string;
+  transferType?: string;
+  country?: string
 }
 
 export interface ITransfer {
@@ -27,13 +29,15 @@ export interface ITransfer {
   amount: string;
   narration: string;
   swiftcode: string;
-  routingNumber: string;
+  routingNumber?: string;
   accountType: string;
   updatedAt: string;
   createdAt: string;
   serviceFee: string;
   transactionType: string;
   transactionId: string;
+  transferType: string;
+  country?: string
 }
 
 

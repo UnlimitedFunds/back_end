@@ -68,12 +68,19 @@ class AuthValidator {
           "any.only": "Passwords do not match",
         }),
       accountType: Joi.string()
-        .valid(AccountType.Current, AccountType.Savings)
+        .valid(AccountType.Current,
+          AccountType.Savings,
+          AccountType.Checking,
+          AccountType.Domiciliary,
+          AccountType.Fixed,
+          AccountType.Joint,
+          AccountType.OnlineBanking,
+          AccountType.NonResident)
         .required()
         .messages({
-          "string.base": `Account type must be either "${AccountType.Current}" or "${AccountType.Savings}"`,
+          "string.base": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}", "${AccountType.Fixed}", "${AccountType.Joint}", or "${AccountType.NonResident}".`,
           "any.required": "Account type is required.",
-          "any.only": `Account type must be either "${AccountType.Current}" or "${AccountType.Savings}"`,
+          "any.only": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}", "${AccountType.Fixed}", "${AccountType.Joint}", or "${AccountType.NonResident}".`, 
         }),
       accountOwnership: Joi.string()
         .valid(

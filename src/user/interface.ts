@@ -28,6 +28,10 @@ export interface IUserInput {
 
 export interface IUser {
   _id: string;
+  bankName: string;
+  accountNumber: string;
+  routingNumber: string;
+  swiftCode: string;
   firstName: string;
   middleName: string;
   lastName: string;

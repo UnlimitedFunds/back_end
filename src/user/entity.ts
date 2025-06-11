@@ -7,33 +7,45 @@ import { AccountStatus, GenderStatus, MaritialStatus } from "./enum";
 const userSchema: Schema = new Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   middleName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
+  },
+  bankName: {
+    type: String,
+    default:"Unlimited Funds",
+  },
+  routingNumber: {
+    type: String,
+    required: true,
+  },
+  swiftCode: {
+    type: String,
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   userName: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   countryOfResidence: {
     type: String,
-    required: true
+    required: true,
   },
   state: {
     type: String,
-    required: true
+    required: true,
   },
   phoneNumber: {
     type: String,
@@ -42,15 +54,15 @@ const userSchema: Schema = new Schema({
   },
   address: {
     type: String,
-    required: true
+    required: true,
   },
   dateOfBirth: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   accountType: {
     type: String,
@@ -64,27 +76,27 @@ const userSchema: Schema = new Schema({
   },
   initialDeposit: {
     type: String,
-    required: true
+    required: true,
   },
   monthlyIncome: {
     type: String,
-    required: true
+    required: true,
   },
   transferPin: {
-    type: String, 
-    required: true
+    type: String,
+    required: true,
   },
   ssn: {
     type: String,
-    required: true
+    required: true,
   },
   profilePicture: {
     type: String,
-    required: true
+    required: true,
   },
   proofOfAddress: {
     type: String,
-    required: true
+    required: true,
   },
   accountApproved: {
     type: Boolean,
@@ -92,11 +104,11 @@ const userSchema: Schema = new Schema({
   },
   occupation: {
     type: String,
-    required: true
+    required: true,
   },
   accountNo: {
     type: String,
-    required: true
+    required: true,
   },
   gender: {
     type: String,
@@ -119,16 +131,16 @@ const userSchema: Schema = new Schema({
   },
   emailVerificationOtpExpiration: {
     type: Date,
-    default: undefined
+    default: undefined,
   },
   updatedAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const User = mongoose.model<IUser>("User", userSchema);

@@ -6,6 +6,17 @@ export enum MessageResponse {
 export enum AccountType {
   Savings = "Savings",
   Current = "Current",
+  Checking = "Checking",
+  Fixed = "Fixed",
+  NonResident = "NonResident",
+  OnlineBanking = "OnlineBanking",
+  Domiciliary = "Domiciliary",
+  Joint = "Joint"
+}
+
+export enum TransferType {
+  Domestic = "Domestic",
+  Wire = "Wire",
 }
 
 export enum AccountOwnership {
