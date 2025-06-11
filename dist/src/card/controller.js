@@ -53,5 +53,31 @@ class CardController {
             });
         });
     }
+    fetchCard(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { userId } = req;
+            const userExist = yield service_1.userService.findUserByIdWithoutPassword(userId);
+            if (!userExist) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "User does not exist!",
+                    data: null,
+                });
+            }
+            const doesUserHaveCard = yield service_2.cardService.findCardByUserId(userExist._id.toString());
+            if (!doesUserHaveCard) {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "You have not created a card!",
+                    data: null,
+                });
+            }
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Card fetched successfully!",
+                data: doesUserHaveCard,
+            });
+        });
+    }
 }
 exports.cardController = new CardController();
