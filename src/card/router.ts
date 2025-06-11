@@ -8,7 +8,13 @@ export const CardRouter = Router();
    //a
 //Create transfer
 CardRouter.post(
-  "/user/create/card",
+  "/user/card",
   [isAuth],
   wrapAsync(cardController.createCard)
+);
+
+CardRouter.get(
+  "/user/card",
+  [isAuth],
+  wrapAsync(cardController.fetchCard)
 );

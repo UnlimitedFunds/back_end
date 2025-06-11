@@ -68,7 +68,6 @@ class TransferValidator {
           "any.required": "Account type is required.",
           "any.only": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}", "${AccountType.Fixed}, "${AccountType.Joint}", "${AccountType.NonResident}" or "${AccountType.Checking}"`,
         }),
-
       transferType: Joi.string()
         .valid(TransferType.Domestic, TransferType.Wire)
         .required()

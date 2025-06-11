@@ -53,5 +53,38 @@ class CardController {
       data: null,
     });
   }
+
+    public async fetchCard(req: Request, res: Response) {
+    const { userId } = req as CustomRequest;
+
+    const userExist = await userService.findUserByIdWithoutPassword(userId);
+
+    if (!userExist) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "User does not exist!",
+        data: null,
+      });   
+    } 
+
+     const doesUserHaveCard = await cardService.findCardByUserId(
+      userExist._id.toString()
+    );
+    
+    if (!doesUserHaveCard) {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: "You have not created a card!",
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Card fetched successfully!",
+      data: doesUserHaveCard,
+    });
+
+}
 }
 export const cardController = new CardController();
