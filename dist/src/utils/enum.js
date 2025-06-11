@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransactionType = exports.AccountOwnership = exports.AccountType = exports.MessageResponse = void 0;
+exports.TransactionType = exports.AccountOwnership = exports.TransferType = exports.AccountType = exports.MessageResponse = void 0;
 var MessageResponse;
 (function (MessageResponse) {
     MessageResponse["Error"] = "error";
@@ -10,7 +10,18 @@ var AccountType;
 (function (AccountType) {
     AccountType["Savings"] = "Savings";
     AccountType["Current"] = "Current";
+    AccountType["Checking"] = "Checking";
+    AccountType["Fixed"] = "Fixed";
+    AccountType["NonResident"] = "NonResident";
+    AccountType["OnlineBanking"] = "OnlineBanking";
+    AccountType["Domiciliary"] = "Domiciliary";
+    AccountType["Joint"] = "Joint";
 })(AccountType || (exports.AccountType = AccountType = {}));
+var TransferType;
+(function (TransferType) {
+    TransferType["Domestic"] = "Domestic";
+    TransferType["Wire"] = "Wire";
+})(TransferType || (exports.TransferType = TransferType = {}));
 var AccountOwnership;
 (function (AccountOwnership) {
     AccountOwnership["Company"] = "Company";

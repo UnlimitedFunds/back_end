@@ -34,67 +34,19 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const enum_1 = require("../utils/enum");
-const transferSchema = new mongoose_1.Schema({
-    userId: { type: mongoose_1.default.Schema.Types.ObjectId, required: true, ref: "User", },
-    transactionId: {
+const cardSchema = new mongoose_1.Schema({
+    userId: { type: mongoose_1.default.Schema.Types.ObjectId, required: true, ref: "User" },
+    cardNumber: {
         type: String,
         required: true,
     },
-    bankName: {
+    cvv: {
         type: String,
         required: true,
     },
-    beneficiaryName: {
-        type: String,
-        required: true,
-    },
-    beneficiaryAccountNumber: {
-        type: String,
-        required: true,
-    },
-    beneficiaryCountry: {
-        type: String,
-        required: true,
-    },
-    amount: {
-        type: String,
-        required: true,
-    },
-    narration: {
-        type: String,
-        required: true,
-    },
-    swiftcode: {
-        type: String,
-        required: true,
-    },
-    serviceFee: {
-        type: String,
-        required: true,
-    },
-    //For Wire TF
-    routingNumber: {
-        type: String,
-    },
-    accountType: {
-        type: String,
-        required: true,
-        enum: Object.values(enum_1.AccountType),
-    },
-    transferType: {
-        type: String,
-        required: true,
-        enum: Object.values(enum_1.TransferType),
-    },
-    transactionType: {
-        type: String,
-        default: enum_1.TransactionType.Debit,
-        enum: Object.values(enum_1.TransactionType),
-    },
-    //For Wire TF
-    country: {
-        type: String
+    expiryDate: {
+        type: Date,
+        default: Date.now,
     },
     updatedAt: {
         type: Date,
@@ -105,5 +57,5 @@ const transferSchema = new mongoose_1.Schema({
         default: Date.now,
     },
 });
-const Transfer = mongoose_1.default.model("Transfer", transferSchema);
-exports.default = Transfer;
+const Card = mongoose_1.default.model("Card", cardSchema);
+exports.default = Card;

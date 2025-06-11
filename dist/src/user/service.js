@@ -18,7 +18,7 @@ const utils_1 = require("../utils");
 class UserService {
     createUser(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newUser = new entity_1.default(Object.assign(Object.assign({}, input), { accountNo: (0, utils_1.generateAccNo)() }));
+            let newUser = new entity_1.default(Object.assign(Object.assign({}, input), { accountNo: (0, utils_1.generateAccNo)(), routingNumber: (0, utils_1.generateRoutingNumber)(), swiftCode: (0, utils_1.generateSwiftCode)() }));
             newUser = yield newUser.save();
             return newUser;
         });

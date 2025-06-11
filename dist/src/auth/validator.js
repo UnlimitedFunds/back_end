@@ -80,12 +80,12 @@ class AuthValidator {
                     "any.only": "Passwords do not match",
                 }),
                 accountType: joi_1.default.string()
-                    .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings)
+                    .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings, enum_1.AccountType.Checking, enum_1.AccountType.Domiciliary, enum_1.AccountType.Fixed, enum_1.AccountType.Joint, enum_1.AccountType.OnlineBanking, enum_1.AccountType.NonResident)
                     .required()
                     .messages({
-                    "string.base": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                    "string.base": `Account type must be either "${enum_1.AccountType.Current}", "${enum_1.AccountType.OnlineBanking}", "${enum_1.AccountType.Savings}", "${enum_1.AccountType.Checking}, "${enum_1.AccountType.Domiciliary}", "${enum_1.AccountType.Fixed}", "${enum_1.AccountType.Joint}", or "${enum_1.AccountType.NonResident}".`,
                     "any.required": "Account type is required.",
-                    "any.only": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                    "any.only": `Account type must be either "${enum_1.AccountType.Current}", "${enum_1.AccountType.OnlineBanking}", "${enum_1.AccountType.Savings}", "${enum_1.AccountType.Checking}, "${enum_1.AccountType.Domiciliary}", "${enum_1.AccountType.Fixed}", "${enum_1.AccountType.Joint}", or "${enum_1.AccountType.NonResident}".`,
                 }),
                 accountOwnership: joi_1.default.string()
                     .valid(enum_1.AccountOwnership.Company, enum_1.AccountOwnership.Joint, enum_1.AccountOwnership.Personal, enum_1.AccountOwnership.Others)

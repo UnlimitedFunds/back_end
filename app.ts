@@ -11,6 +11,7 @@ import { UserRouter } from "./src/user/router";
 import { AdminRouter } from "./src/admin/router";
 import { TransferRouter } from "./src/transfer/router";
 import { ContactUsRouter } from "./src/contact_us/router";
+import { CardRouter } from "./src/card/router";
 
 const app: Express = express();
 
@@ -56,7 +57,8 @@ const StartServer = () => {
    UserRouter,
    AdminRouter,
    TransferRouter,
-   ContactUsRouter
+   ContactUsRouter,
+   CardRouter
   );
 
   // Health check
