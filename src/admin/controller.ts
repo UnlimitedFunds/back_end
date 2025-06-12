@@ -326,7 +326,7 @@ class AdminController {
       }
     }
 
-    const createdTransfer = await transferService.createTransfer(body);
+    const createdTransfer = await transferService.createTransfer(body, body.transferDate);
 
     const transferAmount = parseFloat(body.amount);
 

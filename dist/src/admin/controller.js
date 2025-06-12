@@ -275,7 +275,7 @@ class AdminController {
                     });
                 }
             }
-            const createdTransfer = yield service_3.transferService.createTransfer(body);
+            const createdTransfer = yield service_3.transferService.createTransfer(body, body.transferDate);
             const transferAmount = parseFloat(body.amount);
             const txAlert = {
                 accountNumber: userExist.accountNo,

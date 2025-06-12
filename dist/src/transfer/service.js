@@ -16,9 +16,9 @@ exports.transferService = void 0;
 const entity_1 = __importDefault(require("./entity"));
 const utils_1 = require("../utils");
 class TransferService {
-    createTransfer(input) {
+    createTransfer(input, createdAt) {
         return __awaiter(this, void 0, void 0, function* () {
-            let newTransfer = new entity_1.default(Object.assign(Object.assign({}, input), { amount: input.amount.toString(), serviceFee: input.serviceFee.toString(), transactionId: (0, utils_1.generateTransactionId)() }));
+            let newTransfer = new entity_1.default(Object.assign(Object.assign({}, input), { createdAt, amount: input.amount.toString(), serviceFee: input.serviceFee.toString(), transactionId: (0, utils_1.generateTransactionId)() }));
             newTransfer = yield newTransfer.save();
             return newTransfer;
         });

@@ -3,9 +3,10 @@ import Transfer from "./entity";
 import { generateTransactionId } from "../utils";
 
 class TransferService {
-  public async createTransfer(input: ITransferInput) {
+  public async createTransfer(input: ITransferInput, createdAt?: Date) {
     let newTransfer = new Transfer({
       ...input,
+      createdAt,
       amount: input.amount.toString(),
       serviceFee: input.serviceFee.toString(),
       transactionId: generateTransactionId()
