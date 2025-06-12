@@ -63,7 +63,6 @@ const transferSchema = new mongoose_1.Schema({
     },
     swiftcode: {
         type: String,
-        required: true,
     },
     serviceFee: {
         type: String,

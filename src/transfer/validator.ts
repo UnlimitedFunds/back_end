@@ -38,14 +38,7 @@ class TransferValidator {
         "string.base": "Narration must be text",
         "any.required": "Narration is required.",
       }),
-      swiftcode: Joi.string()
-        .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
-        .required()
-        .messages({
-          "string.pattern.base":
-            "Swift code must be 8 or 11 characters (letters and numbers).",
-          "any.required": "Swift code is required.",
-        }),
+     
       accountType: Joi.string()
         .valid(
           AccountType.Current,
@@ -83,6 +76,19 @@ class TransferValidator {
               "Routing number must be a 9 digit numeric value.",
             "any.required": "Routing number is required for wire transfers.",
           }),
+        otherwise: Joi.forbidden(),
+      }),
+
+       swiftcode: Joi.when("transferType", {
+        is: TransferType.Wire,
+        then: Joi.string()
+        .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+        .required()
+        .messages({
+          "string.pattern.base":
+            "Swift code must be 8 or 11 characters (letters and numbers).",
+          "any.required": "Swift code is required.",
+        }),
         otherwise: Joi.forbidden(),
       }),
 

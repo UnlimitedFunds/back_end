@@ -5,10 +5,10 @@ export interface ITransferInput {
   bankName: string;
   beneficiaryName: string;
   beneficiaryAccountNumber: string;
-  beneficiaryCountry: string;
+  beneficiaryCountry?: string;
   amount: string;
   narration: string;
-  swiftcode: string;
+  swiftcode?: string;
   routingNumber: string;
   accountType: string;
   serviceFee: string;
@@ -24,10 +24,10 @@ export interface ITransfer {
   bankName: string;
   beneficiaryName: string;
   beneficiaryAccountNumber: string;
-  beneficiaryCountry: string;
+  beneficiaryCountry?: string;
   amount: string;
   narration: string;
-  swiftcode: string;
+  swiftcode?: string;
   routingNumber?: string;
   accountType: string;
   updatedAt: string;

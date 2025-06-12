@@ -32,7 +32,6 @@ const transferSchema: Schema = new Schema({
   },
   swiftcode: {
     type: String,
-    required: true,
   },
   serviceFee: {
     type: String,

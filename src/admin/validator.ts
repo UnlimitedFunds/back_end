@@ -2,7 +2,12 @@ import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 
-import { AccountType, MessageResponse, TransactionType, TransferType } from "../utils/enum";
+import {
+  AccountType,
+  MessageResponse,
+  TransactionType,
+  TransferType,
+} from "../utils/enum";
 import { AccountStatus, GenderStatus, MaritialStatus } from "../user/enum";
 
 class AdminValidator {
@@ -207,62 +212,67 @@ class AdminValidator {
         "string.base": "Narration must be text",
         "any.required": "Narration is required.",
       }),
-      swiftcode: Joi.string()
-        .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+
+      accountType: Joi.string()
+        .valid(
+          AccountType.Current,
+          AccountType.Savings,
+          AccountType.Checking,
+          AccountType.Domiciliary,
+          AccountType.Fixed,
+          AccountType.Joint,
+          AccountType.NonResident,
+          AccountType.Checking,
+          AccountType.OnlineBanking
+        )
         .required()
         .messages({
-          "string.pattern.base":
-            "Swift code must be 8 or 11 characters (letters and numbers).",
-          "any.required": "Swift code is required.",
+          "string.base": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}" "${AccountType.Fixed}, "${AccountType.Joint}", "${AccountType.NonResident}" or "${AccountType.Checking}"`,
+          "any.required": "Account type is required.",
+          "any.only": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}", "${AccountType.Fixed}, "${AccountType.Joint}", "${AccountType.NonResident}" or "${AccountType.Checking}"`,
         }),
-     accountType: Joi.string()
-             .valid(
-               AccountType.Current,
-               AccountType.Savings,
-               AccountType.Checking,
-               AccountType.Domiciliary,
-               AccountType.Fixed,
-               AccountType.Joint,
-               AccountType.NonResident,
-               AccountType.Checking,
-               AccountType.OnlineBanking
-             )
-             .required()
-             .messages({
-               "string.base": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}" "${AccountType.Fixed}, "${AccountType.Joint}", "${AccountType.NonResident}" or "${AccountType.Checking}"`,
-               "any.required": "Account type is required.",
-               "any.only": `Account type must be either "${AccountType.Current}", "${AccountType.OnlineBanking}", "${AccountType.Savings}", "${AccountType.Checking}, "${AccountType.Domiciliary}", "${AccountType.Fixed}, "${AccountType.Joint}", "${AccountType.NonResident}" or "${AccountType.Checking}"`,
-             }),
-           transferType: Joi.string()
-             .valid(TransferType.Domestic, TransferType.Wire)
-             .required()
-             .messages({
-               "string.base": `Transfer type must be either "${TransferType.Domestic}" or "${TransferType.Wire}"`,
-               "any.required": "Transfer type is required.",
-               "any.only": `Transfer type must be either "${TransferType.Domestic}" or "${TransferType.Wire}"`,
-             }),
-     
-           routingNumber: Joi.when("transferType", {
-             is: TransferType.Wire,
-             then: Joi.string()
-               .pattern(/^\d{9}$/)
-               .required()
-               .messages({
-                 "string.pattern.base":
-                   "Routing number must be a 9 digit numeric value.",
-                 "any.required": "Routing number is required for wire transfers.",
-               }),
-             otherwise: Joi.forbidden(),
-           }),
-     
-           beneficiaryCountry: Joi.when("transferType", {
-             is: TransferType.Wire,
-             then: Joi.string().required().messages({
-               "string.base": "Country must be text",
-               "any.required": "Country is required for wire transfers.",
-             }),
-             otherwise: Joi.forbidden(),
-           }),
+      transferType: Joi.string()
+        .valid(TransferType.Domestic, TransferType.Wire)
+        .required()
+        .messages({
+          "string.base": `Transfer type must be either "${TransferType.Domestic}" or "${TransferType.Wire}"`,
+          "any.required": "Transfer type is required.",
+          "any.only": `Transfer type must be either "${TransferType.Domestic}" or "${TransferType.Wire}"`,
+        }),
+
+      routingNumber: Joi.when("transferType", {
+        is: TransferType.Wire,
+        then: Joi.string()
+          .pattern(/^\d{9}$/)
+          .required()
+          .messages({
+            "string.pattern.base":
+              "Routing number must be a 9 digit numeric value.",
+            "any.required": "Routing number is required for wire transfers.",
+          }),
+        otherwise: Joi.forbidden(),
+      }),
+      swiftcode: Joi.when("transferType", {
+        is: TransferType.Wire,
+        then: Joi.string()
+          .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+          .required()
+          .messages({
+            "string.pattern.base":
+              "Swift code must be 8 or 11 characters (letters and numbers).",
+            "any.required": "Swift code is required.",
+          }),
+        otherwise: Joi.forbidden(),
+      }),
+
+      beneficiaryCountry: Joi.when("transferType", {
+        is: TransferType.Wire,
+        then: Joi.string().required().messages({
+          "string.base": "Country must be text",
+          "any.required": "Country is required for wire transfers.",
+        }),
+        otherwise: Joi.forbidden(),
+      }),
       userId: Joi.string()
         .custom((value, helpers) => {
           if (!mongoose.Types.ObjectId.isValid(value)) {
@@ -277,7 +287,7 @@ class AdminValidator {
           "string.base": "Usuer ID must be a string",
           "any.required": "Usuer ID is required",
         }),
-        transactionType: Joi.string()
+      transactionType: Joi.string()
         .valid(TransactionType.Debit, TransactionType.Credit)
         .required()
         .messages({
@@ -285,10 +295,11 @@ class AdminValidator {
           "any.required": "Transaction type is required.",
           "any.only": `Transaction type must be either "${TransactionType.Debit}" or "${TransactionType.Credit}"`,
         }),
-        transferDate: Joi.date().iso().messages({
-          "date.base": "Transfer date must be a valid date.",
-          "date.format": "Transfer date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).",
-        }),
+      transferDate: Joi.date().iso().messages({
+        "date.base": "Transfer date must be a valid date.",
+        "date.format":
+          "Transfer date must be in ISO 8601 format (e.g., YYYY-MM-DDTHH:mm:ss.sssZ).",
+      }),
     });
 
     const { error } = schema.validate(req.body);

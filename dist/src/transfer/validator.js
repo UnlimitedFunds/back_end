@@ -52,13 +52,6 @@ class TransferValidator {
                     "string.base": "Narration must be text",
                     "any.required": "Narration is required.",
                 }),
-                swiftcode: joi_1.default.string()
-                    .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
-                    .required()
-                    .messages({
-                    "string.pattern.base": "Swift code must be 8 or 11 characters (letters and numbers).",
-                    "any.required": "Swift code is required.",
-                }),
                 accountType: joi_1.default.string()
                     .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings, enum_1.AccountType.Checking, enum_1.AccountType.Domiciliary, enum_1.AccountType.Fixed, enum_1.AccountType.Joint, enum_1.AccountType.NonResident, enum_1.AccountType.Checking, enum_1.AccountType.OnlineBanking)
                     .required()
@@ -83,6 +76,17 @@ class TransferValidator {
                         .messages({
                         "string.pattern.base": "Routing number must be a 9 digit numeric value.",
                         "any.required": "Routing number is required for wire transfers.",
+                    }),
+                    otherwise: joi_1.default.forbidden(),
+                }),
+                swiftcode: joi_1.default.when("transferType", {
+                    is: enum_1.TransferType.Wire,
+                    then: joi_1.default.string()
+                        .pattern(/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/)
+                        .required()
+                        .messages({
+                        "string.pattern.base": "Swift code must be 8 or 11 characters (letters and numbers).",
+                        "any.required": "Swift code is required.",
                     }),
                     otherwise: joi_1.default.forbidden(),
                 }),
