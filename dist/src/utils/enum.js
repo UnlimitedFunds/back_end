@@ -13,7 +13,7 @@ var AccountType;
     AccountType["Checking"] = "Checking";
     AccountType["Fixed"] = "Fixed";
     AccountType["NonResident"] = "NonResident";
-    AccountType["OnlineBanking"] = "OnlineBanking";
+    AccountType["OnlineBanking"] = "Online Banking";
     AccountType["Domiciliary"] = "Domiciliary";
     AccountType["Joint"] = "Joint";
 })(AccountType || (exports.AccountType = AccountType = {}));

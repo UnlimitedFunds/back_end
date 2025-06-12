@@ -220,20 +220,40 @@ class AdminValidator {
                     "string.pattern.base": "Swift code must be 8 or 11 characters (letters and numbers).",
                     "any.required": "Swift code is required.",
                 }),
-                routingNumber: joi_1.default.string()
-                    .pattern(/^\d{9}$/)
-                    .required()
-                    .messages({
-                    "string.pattern.base": "Routing number must be a 9 digit numeric value.",
-                    "any.required": "Routing number is required.",
-                }),
                 accountType: joi_1.default.string()
-                    .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings)
+                    .valid(enum_1.AccountType.Current, enum_1.AccountType.Savings, enum_1.AccountType.Checking, enum_1.AccountType.Domiciliary, enum_1.AccountType.Fixed, enum_1.AccountType.Joint, enum_1.AccountType.NonResident, enum_1.AccountType.Checking, enum_1.AccountType.OnlineBanking)
                     .required()
                     .messages({
-                    "string.base": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                    "string.base": `Account type must be either "${enum_1.AccountType.Current}", "${enum_1.AccountType.OnlineBanking}", "${enum_1.AccountType.Savings}", "${enum_1.AccountType.Checking}, "${enum_1.AccountType.Domiciliary}" "${enum_1.AccountType.Fixed}, "${enum_1.AccountType.Joint}", "${enum_1.AccountType.NonResident}" or "${enum_1.AccountType.Checking}"`,
                     "any.required": "Account type is required.",
-                    "any.only": `Account type must be either "${enum_1.AccountType.Current}" or "${enum_1.AccountType.Savings}"`,
+                    "any.only": `Account type must be either "${enum_1.AccountType.Current}", "${enum_1.AccountType.OnlineBanking}", "${enum_1.AccountType.Savings}", "${enum_1.AccountType.Checking}, "${enum_1.AccountType.Domiciliary}", "${enum_1.AccountType.Fixed}, "${enum_1.AccountType.Joint}", "${enum_1.AccountType.NonResident}" or "${enum_1.AccountType.Checking}"`,
+                }),
+                transferType: joi_1.default.string()
+                    .valid(enum_1.TransferType.Domestic, enum_1.TransferType.Wire)
+                    .required()
+                    .messages({
+                    "string.base": `Transfer type must be either "${enum_1.TransferType.Domestic}" or "${enum_1.TransferType.Wire}"`,
+                    "any.required": "Transfer type is required.",
+                    "any.only": `Transfer type must be either "${enum_1.TransferType.Domestic}" or "${enum_1.TransferType.Wire}"`,
+                }),
+                routingNumber: joi_1.default.when("transferType", {
+                    is: enum_1.TransferType.Wire,
+                    then: joi_1.default.string()
+                        .pattern(/^\d{9}$/)
+                        .required()
+                        .messages({
+                        "string.pattern.base": "Routing number must be a 9 digit numeric value.",
+                        "any.required": "Routing number is required for wire transfers.",
+                    }),
+                    otherwise: joi_1.default.forbidden(),
+                }),
+                country: joi_1.default.when("transferType", {
+                    is: enum_1.TransferType.Wire,
+                    then: joi_1.default.string().required().messages({
+                        "string.base": "Country must be text",
+                        "any.required": "Country is required for wire transfers.",
+                    }),
+                    otherwise: joi_1.default.forbidden(),
                 }),
                 userId: joi_1.default.string()
                     .custom((value, helpers) => {

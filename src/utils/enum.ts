@@ -9,7 +9,7 @@ export enum AccountType {
   Checking = "Checking",
   Fixed = "Fixed",
   NonResident = "NonResident",
-  OnlineBanking = "OnlineBanking",
+  OnlineBanking = "Online Banking",
   Domiciliary = "Domiciliary",
   Joint = "Joint"
 }
