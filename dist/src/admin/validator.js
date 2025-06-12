@@ -191,10 +191,6 @@ class AdminValidator {
                     "string.base": "Beneficiary account number must be text",
                     "any.required": "Beneficiary account number is required.",
                 }),
-                beneficiaryCountry: joi_1.default.string().required().messages({
-                    "string.base": "Beneficiary country must be text",
-                    "any.required": "Beneficiary country is required.",
-                }),
                 amount: joi_1.default.alternatives()
                     .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
                     .required()
@@ -247,7 +243,7 @@ class AdminValidator {
                     }),
                     otherwise: joi_1.default.forbidden(),
                 }),
-                country: joi_1.default.when("transferType", {
+                beneficiaryCountry: joi_1.default.when("transferType", {
                     is: enum_1.TransferType.Wire,
                     then: joi_1.default.string().required().messages({
                         "string.base": "Country must be text",

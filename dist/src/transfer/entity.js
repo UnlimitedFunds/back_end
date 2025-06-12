@@ -53,10 +53,6 @@ const transferSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    beneficiaryCountry: {
-        type: String,
-        required: true,
-    },
     amount: {
         type: String,
         required: true,
@@ -93,7 +89,7 @@ const transferSchema = new mongoose_1.Schema({
         enum: Object.values(enum_1.TransactionType),
     },
     //For Wire TF
-    country: {
+    beneficiaryCountry: {
         type: String
     },
     updatedAt: {

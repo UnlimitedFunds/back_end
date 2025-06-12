@@ -17,7 +17,6 @@ export interface ITransferInput {
   transferDate: Date;
   transactionId: string;
   transferType?: string;
-  country?: string
 }
 
 export interface ITransfer {
@@ -37,7 +36,6 @@ export interface ITransfer {
   transactionType: string;
   transactionId: string;
   transferType: string;
-  country?: string
 }
 
 

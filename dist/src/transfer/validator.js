@@ -34,10 +34,6 @@ class TransferValidator {
                 transferPin: joi_1.default.string().required().messages({
                     "any.required": "Transfer pin is required!",
                 }),
-                beneficiaryCountry: joi_1.default.string().required().messages({
-                    "string.base": "Beneficiary country must be text",
-                    "any.required": "Beneficiary country is required.",
-                }),
                 amount: joi_1.default.alternatives()
                     .try(joi_1.default.number().positive(), joi_1.default.string().pattern(/^\d+(\.\d+)?$/))
                     .required()
@@ -90,11 +86,11 @@ class TransferValidator {
                     }),
                     otherwise: joi_1.default.forbidden(),
                 }),
-                country: joi_1.default.when("transferType", {
+                beneficiaryCountry: joi_1.default.when("transferType", {
                     is: enum_1.TransferType.Wire,
                     then: joi_1.default.string().required().messages({
-                        "string.base": "Country must be text",
-                        "any.required": "Country is required for wire transfers.",
+                        "string.base": "Beneficiary country must be text",
+                        "any.required": "Beneficiary country is required for wire transfers.",
                     }),
                     otherwise: joi_1.default.forbidden(),
                 }),

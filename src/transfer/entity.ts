@@ -11,7 +11,6 @@ const transferSchema: Schema = new Schema({
     required: true,
   },
   bankName: {
-
     type: String,
     required: true,
   },
@@ -20,10 +19,6 @@ const transferSchema: Schema = new Schema({
     required: true,
   },
   beneficiaryAccountNumber: {
-    type: String,
-    required: true,
-  },
-  beneficiaryCountry: {
     type: String,
     required: true,
   },
@@ -63,7 +58,7 @@ const transferSchema: Schema = new Schema({
     enum: Object.values(TransactionType),
   },
   //For Wire TF
-  country: {
+  beneficiaryCountry: {
     type: String
   },
   updatedAt: {
