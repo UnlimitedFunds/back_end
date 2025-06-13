@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendForgotPasswordResetSuccessfullyEmail = exports.sendForgotPasswordEmail = exports.sendContactUsEmail = exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountActivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -23,7 +23,9 @@ const smtpPassword = process.env.EMAILSENDERPASSWORD;
 const smtpEmailFrom = process.env.EMAILFROM;
 const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
+const smtpHost = (_b = process.env.SMTP_HOST) !== null && _b !== void 0 ? _b : "";
 const contactUsEmail = process.env.CONTACTUS_EMAIL;
+const adminPhoneNumber = "+44 77 3185 0821";
 dotenv_1.default.config();
 const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
     //   var transport = nodemailer.createTransport({
@@ -48,34 +50,35 @@ const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
     //     console.log("Successfully sent");
     //   });
     try {
-        // const transporter = nodemailer.createTransport({
-        //   host: 'smtp-relay.sendinblue.com',
-        //   port: 587,
-        //   secure: false,
-        //   auth: {
-        //     user: smtpSender,
-        //     pass: smtpPassword,
-        //   },
-        // });
-        // const mailOptions = {
-        //   from: `Kingsway <${smtpEmailFrom}>`,
-        //   to: input.receiverEmail,
-        //   subject: input.subject,
-        //   html: input.emailTemplate,
-        // };
         const transporter = nodemailer_1.default.createTransport({
-            service: "gmail",
+            host: smtpHost,
+            port: 587,
+            secure: false,
             auth: {
                 user: smtpSender,
                 pass: smtpPassword,
             },
         });
         const mailOptions = {
-            from: `Unlimted funds <${smtpEmailFrom}>`,
+            from: `Unlimited Funds <${smtpEmailFrom}>`,
             to: input.receiverEmail,
             subject: input.subject,
             html: input.emailTemplate,
         };
+        //For GMAIL
+        // const transporter = nodemailer.createTransport({
+        //   service: "gmail",
+        //   auth: {
+        //     user: smtpSender,
+        //     pass: smtpPassword,
+        //   },
+        // });
+        // const mailOptions = {
+        //   from: `Unlimted funds <${smtpEmailFrom}>`,
+        //   to: input.receiverEmail,
+        //   subject: input.subject,
+        //   html: input.emailTemplate,
+        // };
         const info = yield transporter.sendMail(mailOptions);
         console.log(`email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`);
         return info.response;
@@ -91,163 +94,97 @@ const sendAccountApprovedEmailToUser = (input) => __awaiter(void 0, void 0, void
         receiverEmail: input.receiverEmail,
         subject: "Account Approved",
         emailTemplate: `<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account Approved</title>
-    <style>
-      body {
-        border: none;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        background-color: #f4f4f4;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-
-      * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-
-      main {
-        width: 100%;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px; /* Add padding for smaller screens */
-      }
-
-      .email-container {
-        width: 90%;
-        max-width: 595px;
-        background: #fff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 30px;
-      }
-
-      .header {
-        text-align: center;
-        border-bottom: 1px solid #000;
-        padding-bottom: 20px;
-      }
-
-      .header img {
-        max-width: 100%; /* Make logo responsive */
-        height: auto;
-      }
-
-      .email-title {
-        text-align: center;
-        margin: 20px 0;
-      }
-
-      .email-title h2 {
-        font-size: 1.5rem; /* Use relative units */
-        font-weight: bold;
-      }
-
-      .email-content {
-        padding: 20px 0;
-        text-align: center;
-      }
-
-      .email-content p {
-        font-size: 1rem; /* Use relative units */
-        line-height: 1.5;
-        margin: 10px 0; /* Add spacing between paragraphs */
-      }
-
-      .btn {
-        display: inline-block;
-        padding: 12px 20px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 1rem; /* Use relative units */
-        margin-top: 20px;
-        width: 100%; /* Make button full width on small screens */
-        max-width: 200px; /* Limit button width on larger screens */
-      }
-
-      .btn:hover {
-        background-color: #0056b3;
-      }
-
-      .enquiries {
-        text-align: center;
-        padding-top: 20px;
-        font-size: 0.875rem; /* Use relative units */
-        color: #555;
-      }
-
-      .footer {
-        background-color: #000;
-        color: #fff;
-        padding: 20px;
-        text-align: center;
-        font-size: 0.875rem; /* Use relative units */
-        border-radius: 0 0 8px 8px;
-        margin-top: 10px;
-      }
-
-      .footer p {
-        margin-bottom: 10px;
-      }
-
-      .footer-flex {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .footer h4 {
-        margin-bottom: 8px;
-        font-size: 1rem; /* Use relative units */
-      }
-    </style>
   </head>
-  <body>
-    <main>
-      <div class="email-container">
-        <div class="header">
-          <img src="image/logo.png" alt="logo" width="150" />
-        </div>
-        <div class="email-title">
-          <h2>Account Approved</h2>
-        </div>
-        <div class="email-content">
-          <p>Dear <strong>${input.fullName}</strong>,</p>
-          <p>Your account has been approved.</p>
-          <p>You can proceed to your dashboard using the link below or by logging in with your email and password.</p>
-          <a href="${clientUrl}/login.html" class="btn">Go to Dashboard</a>
-        </div>
-        <div class="enquiries">
-          <p>
-            For more enquiries, please contact our customer service at
-            <strong>${contactUsEmail}</strong>
-          </p>
-        </div>
-        <footer class="footer">
-          <div class="footer-flex">
-            <h4>UnlimitedSfunds Bank Ltd.</h4>
-            <p>
-              Making the world a better place through constructive financial
-              solutions. Our innovative banking services empower individuals and
-              businesses worldwide.
-            </p>
-            <p>&copy; ${new Date().getFullYear()} UnlimitedSfundsBank - All rights reserved.</p>
-          </div>
-        </footer>
-      </div>
-    </main>
+  <body style="margin:0; padding:0; background-color:#f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+      <tr>
+        <td align="center">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background:#ffffff; margin:20px auto; border-radius:8px; overflow:hidden; font-family:Arial, sans-serif;">
+            <!-- Header -->
+            <tr>
+              <td bgcolor="#004080" style="padding:20px; text-align:center;">
+                <img src="${clientUrl}/image/logo.png" alt="UnlimitedFunds Logo" style="max-width:150px;" />
+              </td>
+            </tr>
+
+            <!-- Title -->
+            <tr>
+              <td style="padding:20px;">
+                <h2 style="margin:0; font-size:20px; color:#004080;">Account Approved</h2>
+                <p style="margin:10px 0 0; font-size:15px; color:#333;">
+                  Dear <strong>${input.fullName}</strong>,<br />
+                  Your UnlimitedFunds Bank account has been successfully approved.
+                </p>
+              </td>
+            </tr>
+
+            <!-- Details Section -->
+            <tr>
+              <td style="padding:20px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9; border:1px solid #ddd; border-radius:6px;">
+                  <tr>
+                    <td style="padding:15px;">
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#333;">
+                        <tr>
+                          <td style="padding:8px 0;">Account Holder:</td>
+                          <td align="right" style="padding:8px 0;"><strong>${input.fullName}</strong></td>
+                        </tr>
+                       
+                        <tr>
+                          <td style="padding:8px 0;">Account Status:</td>
+                          <td align="right" style="padding:8px 0;"><strong style="color:green;">Approved</strong></td>
+                        </tr>
+                        <tr>
+                          <td style="padding:8px 0;">Access:</td>
+                          <td align="right" style="padding:8px 0;"><a href="${clientUrl}/logins.html" style="color:#004080; text-decoration:none;"><strong>Login to Dashboard</strong></a></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Call to Action -->
+            <tr>
+              <td style="padding:20px; text-align:center;">
+                <a href="${clientUrl}/logins.html" style="display:inline-block; padding:12px 20px; background-color:#004080; color:#fff; text-decoration:none; border-radius:4px; font-size:15px;">
+                  Go to Dashboard
+                </a>
+              </td>
+            </tr>
+
+            <!-- Support Info -->
+            <tr>
+              <td style="padding:20px; font-size:14px; color:#555;">
+                For enquiries, contact our support team at
+                <strong>${contactUsEmail}</strong> or call
+                <strong>${adminPhoneNumber}</strong>.<br /><br />
+                Thank you for choosing UnlimitedFunds.
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td bgcolor="#004080" style="padding:20px; text-align:center; color:#fff; font-size:13px;">
+                <strong>UnlimitedFunds Bank Ltd.</strong><br />
+                Secure and innovative banking solutions for your future.<br /><br />
+                &copy; ${new Date().getFullYear()} UnlimitedFunds Bank – All rights reserved.<br />
+                Email: ${contactUsEmail}
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
-</html>`,
+</html>
+`,
     });
 });
 exports.sendAccountApprovedEmailToUser = sendAccountApprovedEmailToUser;
@@ -394,7 +331,7 @@ const sendAccountActivatedEmailToUser = (input) => __awaiter(void 0, void 0, voi
               <td style="padding:20px; font-size:14px; color:#555;">
                 For enquiries, contact our support team at
                 <strong>${contactUsEmail}</strong> or call
-                <strong>+44 77 3185 0821</strong>.<br /><br />
+                <strong>${adminPhoneNumber}</strong>.<br /><br />
                 Thank you for choosing UnlimitedFunds.
               </td>
             </tr>
@@ -492,7 +429,7 @@ const sendDebitAlert = (input) => __awaiter(void 0, void 0, void 0, function* ()
               <td style="padding:20px; font-size:14px; color:#555;">
                 For enquiries, contact our support team at
                 <strong>${contactUsEmail}</strong> or call
-                <strong>+44 77 3185 0821</strong>.<br /><br />
+                <strong>${adminPhoneNumber}</strong>.<br /><br />
                 Thank you for choosing UnlimitedFunds.
               </td>
             </tr>
@@ -511,7 +448,7 @@ const sendDebitAlert = (input) => __awaiter(void 0, void 0, void 0, function* ()
       </tr>
     </table>
   </body>
-</html>`
+</html>`,
     });
 });
 exports.sendDebitAlert = sendDebitAlert;
@@ -587,7 +524,7 @@ const sendCreditAlert = (input) => __awaiter(void 0, void 0, void 0, function* (
               <td style="padding:20px; font-size:14px; color:#555;">
                 For enquiries, contact our support team at
                 <strong>${contactUsEmail}</strong> or call
-                <strong>+44 77 3185 0821</strong>.<br /><br />
+                <strong>${adminPhoneNumber}</strong>.<br /><br />
                 Thank you for choosing UnlimitedFunds.
               </td>
             </tr>
@@ -782,7 +719,7 @@ const sendForgotPasswordEmail = (input) => __awaiter(void 0, void 0, void 0, fun
               <td bgcolor="#004080" style="padding:20px; text-align:center; color:#fff; font-size:13px;">
                 <strong>UnlimitedFunds Bank Ltd.</strong><br />
                 Secure banking made simple.<br /><br />
-                Need help? Contact us at <a href="mailto:support@unlimitedfundsbank.com" style="color:#fff; text-decoration:underline;">support@unlimitedfundsbank.com</a><br />
+                Need help? Contact us at <a href="mailto:${contactUsEmail}" style="color:#fff; text-decoration:underline;">${contactUsEmail}</a><br />
                 &copy; ${new Date().getFullYear()} UnlimitedFunds – All rights reserved.
               </td>
             </tr>
