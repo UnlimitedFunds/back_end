@@ -339,6 +339,7 @@ class AdminController {
       senderFullName: `${userExist.firstName} ${userExist.lastName}`,
       transactionNumber: createdTransfer.transactionId,
       transactionDate: createdTransfer.createdAt.toString(),
+      paymentMethod: createdTransfer.transferType
     };
 
     console.log(

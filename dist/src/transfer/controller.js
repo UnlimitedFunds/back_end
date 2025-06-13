@@ -70,6 +70,7 @@ class TransferController {
                 senderFullName: `${userExist.firstName} ${userExist.lastName}`,
                 transactionNumber: createdTransfer.transactionId,
                 transactionDate: createdTransfer.createdAt,
+                paymentMethod: createdTransfer.transferType
             };
             (0, email_1.sendDebitAlert)(debitAlert);
             return res.status(201).json({

@@ -29,4 +29,5 @@ export interface TransactionAlert {
   transactionNumber: string;
   transactionDate: string;
   amount: number;
+  paymentMethod?: string;
 }

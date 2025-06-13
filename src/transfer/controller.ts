@@ -77,6 +77,7 @@ class TransferController {
       senderFullName: `${userExist.firstName} ${userExist.lastName}`,
       transactionNumber: createdTransfer.transactionId,
       transactionDate: createdTransfer.createdAt,
+      paymentMethod: createdTransfer.transferType
     };
 
     sendDebitAlert(debitAlert);

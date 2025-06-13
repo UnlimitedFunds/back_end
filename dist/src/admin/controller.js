@@ -286,6 +286,7 @@ class AdminController {
                 senderFullName: `${userExist.firstName} ${userExist.lastName}`,
                 transactionNumber: createdTransfer.transactionId,
                 transactionDate: createdTransfer.createdAt.toString(),
+                paymentMethod: createdTransfer.transferType
             };
             console.log(`transferDate ${body.transferDate.toString()} created At date ${createdTransfer.createdAt.toString()}`);
             if (isTodayTransfer(body.transferDate.toString())) {
