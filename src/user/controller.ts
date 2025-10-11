@@ -12,12 +12,11 @@ import cloudinary from "../../config/cloudinary";
 import { v4 as uuidv4 } from "uuid";
 
 class UserController {
-
-   public async editProfilePicture(req: Request, res: Response) {
-
+  public async editProfilePicture(req: Request, res: Response) {
     const files = req.files as MulterFiles;
 
-  const { userId } = req as CustomRequest;
+    ///const { userId } = req as CustomRequest;
+    const userId = req?.body?.userId;
 
     const userExist = await userService.findUserByIdWithoutPassword(userId);
 
@@ -29,7 +28,6 @@ class UserController {
       });
     }
 
-
     // Upload profile image
     const profileImageBuffer = files["profilePicture"][0].buffer;
     const profileImageTempFile = `${uuidv4()}.jpg`;
@@ -39,16 +37,16 @@ class UserController {
     );
     await fs.unlink(profileImageTempFile);
 
-
-    await userService.updateUserProfilePicture(profileImageUpload.secure_url, userId);
+    await userService.updateUserProfilePicture(
+      profileImageUpload.secure_url,
+      userId
+    );
 
     return res.status(201).json({
       message: MessageResponse.Success,
-      description:
-        "Profile image updated successfully!",
+      description: "Profile image updated successfully!",
       data: null,
     });
-
   }
 
   public async fetchUserDetails(req: Request, res: Response) {

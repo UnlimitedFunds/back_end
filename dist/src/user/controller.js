@@ -22,8 +22,10 @@ const uuid_1 = require("uuid");
 class UserController {
     editProfilePicture(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const files = req.files;
-            const { userId } = req;
+            ///const { userId } = req as CustomRequest;
+            const userId = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.userId;
             const userExist = yield service_1.userService.findUserByIdWithoutPassword(userId);
             if (!userExist) {
                 return res.status(404).json({
