@@ -31,6 +31,17 @@ class UserService {
             return user;
         });
     }
+    updateUserProfilePicture(profilePicture, _id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield entity_1.default.findOneAndUpdate({ _id }, // Query to find the user by ID
+            {
+                profilePicture,
+            }, // Update the values
+            { new: true } // Return the updated document
+            );
+            return user;
+        });
+    }
     findUserByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield entity_1.default.findOne({

@@ -30,6 +30,18 @@ class UserService {
     return user;
   }
 
+   public async updateUserProfilePicture(profilePicture: string, _id: string) {
+    const user = await User.findOneAndUpdate(
+      { _id }, // Query to find the user by ID
+      {
+       profilePicture,
+      }, // Update the values
+      { new: true } // Return the updated document
+    );
+
+    return user;
+  }
+
   public async findUserByEmail(email: string) {
     const user = await User.findOne({
       email,

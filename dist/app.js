@@ -34,7 +34,8 @@ const StartServer = () => {
         origin: [
             "http://127.0.0.1:5500",
             "https://unlimitedfunds.vercel.app",
-            "https://unlimitedfb.com"
+            "https://unlimitedfb.com",
+            "https://www.unlimitedfb.com",
         ],
         credentials: true,
     }));
