@@ -33,7 +33,7 @@ const StartServer = () => {
     app.use((0, cors_1.default)({
         origin: [
             "http://127.0.0.1:5500",
-            "http://127.0.0.1:5501"
+            "http://127.0.0.1:5501",
             "https://unlimitedfunds.vercel.app",
             "https://unlimitedfb.com",
             "https://www.unlimitedfb.com",
