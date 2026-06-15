@@ -15,7 +15,7 @@ var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendForgotPasswordResetSuccessfullyEmail = exports.sendForgotPasswordEmail = exports.sendContactUsEmail = exports.sendCreditAlert = exports.sendDebitAlert = exports.sendAccountActivatedEmailToUser = exports.sendAccountSuspendedmailToUser = exports.sendAccountApprovedEmailToUser = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
-const nodemailer_1 = __importDefault(require("nodemailer"));
+const resend_1 = require("resend");
 const _1 = require(".");
 dotenv_1.default.config();
 const smtpSender = process.env.EMAILSENDER;
@@ -50,38 +50,19 @@ const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
     //     console.log("Successfully sent");
     //   });
     try {
-        const transporter = nodemailer_1.default.createTransport({
-            host: smtpHost,
-            port: 587,
-            secure: false,
-            auth: {
-                user: smtpSender,
-                pass: smtpPassword,
-            },
-        });
-        const mailOptions = {
+        const resend = new resend_1.Resend(process.env.RESEND_API_KEY);
+        const { data, error } = yield resend.emails.send({
             from: `Unlimited Funds <${smtpEmailFrom}>`,
             to: input.receiverEmail,
             subject: input.subject,
             html: input.emailTemplate,
-        };
-        //For GMAIL
-        // const transporter = nodemailer.createTransport({
-        //   service: "gmail",
-        //   auth: {
-        //     user: smtpSender,
-        //     pass: smtpPassword,
-        //   },
-        // });
-        // const mailOptions = {
-        //   from: `Unlimted funds <${smtpEmailFrom}>`,
-        //   to: input.receiverEmail,
-        //   subject: input.subject,
-        //   html: input.emailTemplate,
-        // };
-        const info = yield transporter.sendMail(mailOptions);
-        console.log(`email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`);
-        return info.response;
+        });
+        if (error) {
+            console.error("Resend API error:", error);
+            return null;
+        }
+        console.log(`email response ==> sent to ${input.receiverEmail} info response ${data === null || data === void 0 ? void 0 : data.id}`);
+        return data === null || data === void 0 ? void 0 : data.id;
     }
     catch (error) {
         console.error("Email sending error:", error);

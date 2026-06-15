@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 import { AccountApproved, ISendEmail, TransactionAlert } from "./interface";
 import { formatAmount, formatDate, maskNumber } from ".";
@@ -44,46 +45,24 @@ export const sendEmail = async (input: ISendEmail) => {
   //     console.log("Successfully sent");
   //   });
   try {
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: 587,
-      secure: false,
-      auth: {
-        user: smtpSender,
-        pass: smtpPassword,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const mailOptions = {
+    const { data, error } = await resend.emails.send({
       from: `Unlimited Funds <${smtpEmailFrom}>`,
       to: input.receiverEmail,
       subject: input.subject,
       html: input.emailTemplate,
-    };
+    });
 
-    //For GMAIL
-
-    // const transporter = nodemailer.createTransport({
-    //   service: "gmail",
-    //   auth: {
-    //     user: smtpSender,
-    //     pass: smtpPassword,
-    //   },
-    // });
-
-    // const mailOptions = {
-    //   from: `Unlimted funds <${smtpEmailFrom}>`,
-    //   to: input.receiverEmail,
-    //   subject: input.subject,
-    //   html: input.emailTemplate,
-    // };
-
-    const info = await transporter.sendMail(mailOptions);
+    if (error) {
+      console.error("Resend API error:", error);
+      return null;
+    }
 
     console.log(
-      `email response ==> sent to ${input.receiverEmail} info reponse ${info.response}`
+      `email response ==> sent to ${input.receiverEmail} info response ${data?.id}`
     );
-    return info.response;
+    return data?.id;
   } catch (error) {
     console.error("Email sending error:", error);
     // throw error;
