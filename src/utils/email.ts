@@ -637,7 +637,7 @@ export const sendContactUsEmail = async (input: IContactUs) => {
             <!-- CTA Button -->
             <tr>
               <td style="padding:20px; text-align:center;">
-                <a href="${contactUsEmail}" style="display:inline-block; padding:12px 20px; background-color:#004080; color:#fff; text-decoration:none; border-radius:4px; font-size:15px;">
+                <a href="${input.senderEmail}" style="display:inline-block; padding:12px 20px; background-color:#004080; color:#fff; text-decoration:none; border-radius:4px; font-size:15px;">
                   Reply to Email
                 </a>
               </td>
